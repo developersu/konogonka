@@ -11,7 +11,7 @@ public class NCASectionBlock {
     private byte fsType;
     private byte hashType;
     private byte cryptoType;
-    private byte padding;
+    private byte[] padding;
     private SuperBlockIVFC superBlockIVFC;
     private SuperBlockPFS0 superBlockPFS0;
     private byte[] BKTRfullHeader;
@@ -30,8 +30,9 @@ public class NCASectionBlock {
     private int BKTRs32Section2;
     private byte[] BKTRunknownSection2;
 
-    private byte[] BKTRunknown1;
-    private byte[] BKTRunknown2;
+    private byte[] sectionCTRlow;
+    private byte[] sectionCTRhigh;
+    private byte[] unknownEndPadding;
 
     public NCASectionBlock(byte[] tableBlockBytes) throws Exception{
         if (tableBlockBytes.length != 0x200)
@@ -40,7 +41,7 @@ public class NCASectionBlock {
         fsType = tableBlockBytes[0x2];
         hashType = tableBlockBytes[0x3];
         cryptoType = tableBlockBytes[0x4];
-        padding = tableBlockBytes[0x5];
+        padding = Arrays.copyOfRange(tableBlockBytes, 0x5, 0x8);
         byte[] superBlockBytes = Arrays.copyOfRange(tableBlockBytes, 0x8, 0xf8);
 
         if ((fsType == 0) && (hashType == 0x3))
@@ -48,8 +49,8 @@ public class NCASectionBlock {
         else if ((fsType == 0x1) && (hashType == 0x2))
             superBlockPFS0 = new SuperBlockPFS0(superBlockBytes);
 
-        BKTRfullHeader = Arrays.copyOfRange(tableBlockBytes, 0x100, 0x200);
-        
+        BKTRfullHeader = Arrays.copyOfRange(tableBlockBytes, 0x100, 0x140);
+
         BKTRoffsetSection1 = getLElong(BKTRfullHeader, 0);
         BKTRsizeSection1 = getLElong(BKTRfullHeader, 0x8);
         BKTRmagicSection1 = new String(Arrays.copyOfRange(BKTRfullHeader, 0x10, 0x14), StandardCharsets.US_ASCII);
@@ -62,17 +63,18 @@ public class NCASectionBlock {
         BKTRmagicSection2 = new String(Arrays.copyOfRange(BKTRfullHeader, 0x30, 0x34), StandardCharsets.US_ASCII);
         BKTRu32Section2 = getLEint(BKTRfullHeader, 0x34);
         BKTRs32Section2 = getLEint(BKTRfullHeader, 0x38);
-        BKTRunknownSection2 = Arrays.copyOfRange(tableBlockBytes, 0x3c, 0x40);
+        BKTRunknownSection2 = Arrays.copyOfRange(BKTRfullHeader, 0x3c, 0x40);
 
-        BKTRunknown1 = Arrays.copyOfRange(tableBlockBytes, 0x40, 0x44);
-        BKTRunknown2 = Arrays.copyOfRange(tableBlockBytes, 0x44, 0x48);
+        sectionCTRlow = Arrays.copyOfRange(tableBlockBytes, 0x140, 0x144);
+        sectionCTRhigh = Arrays.copyOfRange(tableBlockBytes, 0x144, 0x148);
+        unknownEndPadding = Arrays.copyOfRange(tableBlockBytes, 0x148, 0x200);
     }
 
     public byte[] getVersion() { return version; }
     public byte getFsType() { return fsType; }
     public byte getHashType() { return hashType; }
     public byte getCryptoType() { return cryptoType; }
-    public byte getPadding() { return padding; }
+    public byte[] getPadding() { return padding; }
     public SuperBlockIVFC getSuperBlockIVFC() { return superBlockIVFC; }
     public SuperBlockPFS0 getSuperBlockPFS0() { return superBlockPFS0; }
     public byte[] getBKTRfullHeader() { return BKTRfullHeader; }
@@ -89,8 +91,8 @@ public class NCASectionBlock {
     public int getBKTRu32Section2() { return BKTRu32Section2; }
     public int getBKTRs32Section2() { return BKTRs32Section2; }
     public byte[] getBKTRunknownSection2() { return BKTRunknownSection2; }
-    public byte[] getBKTRunknown1() { return BKTRunknown1; }
-    public byte[] getBKTRunknown2() { return BKTRunknown2; }
-
+    public byte[] getSectionCTRlow() { return sectionCTRlow; }
+    public byte[] getSectionCTRhigh() { return sectionCTRhigh; }
+    public byte[] getUnknownEndPadding() { return unknownEndPadding; }
 }
 

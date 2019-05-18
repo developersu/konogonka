@@ -28,6 +28,9 @@
         <RowConstraints maxHeight="30.0" minHeight="30.0" />
         <RowConstraints minHeight="110.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="110.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints />
     </rowConstraints>
     <children>
@@ -153,7 +156,7 @@
         </AnchorPane>
         <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="5">
             <children>
-                <Label text="0x1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <Label text="0x3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <padding>
                         <Insets left="5.0" right="5.0" />
                     </padding>
@@ -189,7 +192,7 @@
         </AnchorPane>
         <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="7">
             <children>
-                <Label text="0x200(?)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <Label text="0x40" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <padding>
                         <Insets left="5.0" right="5.0" />
                     </padding>
@@ -1268,8 +1271,6 @@
                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <AnchorPane styleClass="customTitleGrid">
@@ -1390,16 +1391,6 @@
                                     <Insets left="5.0" right="5.0" />
                                  </padding>
                               </Label>
-                              <Label text="0x40" GridPane.rowIndex="13">
-                                 <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                 </padding>
-                              </Label>
-                              <Label text="0x4?" GridPane.columnIndex="1" GridPane.rowIndex="13">
-                                 <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                 </padding>
-                              </Label>
                               <Label text="Magic &quot;BKTR&quot;" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                  <padding>
                                     <Insets left="5.0" right="5.0" />
@@ -1416,26 +1407,6 @@
                                  </padding>
                               </Label>
                               <Label text="Unknown" GridPane.columnIndex="2" GridPane.rowIndex="6">
-                                 <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                 </padding>
-                              </Label>
-                              <Label text="Unknown" GridPane.columnIndex="2" GridPane.rowIndex="13">
-                                 <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                 </padding>
-                              </Label>
-                              <Label text="0x44" GridPane.rowIndex="14">
-                                 <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                 </padding>
-                              </Label>
-                              <Label text="0x4?" GridPane.columnIndex="1" GridPane.rowIndex="14">
-                                 <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                 </padding>
-                              </Label>
-                              <Label text="Unknown" GridPane.columnIndex="2" GridPane.rowIndex="14">
                                  <padding>
                                     <Insets left="5.0" right="5.0" />
                                  </padding>
@@ -1466,16 +1437,6 @@
                                  </padding>
                               </Label>
                               <Label fx:id="BKTRunknownSection2Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="12">
-                                 <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                 </padding>
-                              </Label>
-                              <Label fx:id="BKTRunknown1Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="13">
-                                 <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                 </padding>
-                              </Label>
-                              <Label fx:id="BKTRunknown2Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="14">
                                  <padding>
                                     <Insets left="5.0" right="5.0" />
                                  </padding>
@@ -1611,6 +1572,110 @@
             </VBox>
          </content>
       </ScrollPane>
+      <AnchorPane styleClass="customGrid" GridPane.rowIndex="8">
+         <children>
+            <Label layoutX="13.0" layoutY="6.0" text="0x140" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="8">
+         <children>
+            <Label text="0x4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="customGrid" GridPane.rowIndex="9">
+         <children>
+            <Label text="0x144" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="9">
+         <children>
+            <Label text="0x4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="customGrid" GridPane.rowIndex="10">
+         <children>
+            <Label text="0x148" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="10">
+         <children>
+            <Label text="0xB8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="9">
+         <children>
+            <Label text="Section CTR high" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="8">
+         <children>
+            <Label text="Section CTR low" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="10">
+         <children>
+            <Label text="Unknown (Padding?)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="customGrid" GridPane.columnIndex="3" GridPane.rowIndex="8">
+         <children>
+            <Label fx:id="sectionCTRlowLbl" layoutX="42.0" layoutY="7.0" text="-" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="customGrid" GridPane.columnIndex="3" GridPane.rowIndex="9">
+         <children>
+            <Label fx:id="sectionCTRhighLbl" layoutX="28.0" layoutY="6.0" text="-" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="customGrid" GridPane.columnIndex="3" GridPane.rowIndex="10">
+         <children>
+            <TextField fx:id="unknwnEndPaddingTF" layoutX="-59.0" layoutY="3.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
     </children>
     <VBox.margin>
         <Insets />

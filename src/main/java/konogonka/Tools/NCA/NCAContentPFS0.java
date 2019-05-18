@@ -70,10 +70,12 @@ public class NCAContentPFS0 {
 
                     rawData = new byte[0x20];       // 32 bytes - size of SHA256 hash
 
+                    /*
                     if (raf.read(rawData) != -1) {
                         System.out.println("Encrypted");
                         RainbowHexDump.hexDumpUTF8(rawData);
                     }
+                     */
                     try {
                         /*
                         System.out.println("Decrypted?");

@@ -75,7 +75,8 @@ public class NCASectionHeaderBlockController {
     @FXML
     private TextField
             romFsUnknownTf,
-            romFsHashTf;
+            romFsHashTf,
+            unknwnEndPaddingTF;
 
     @FXML
     private Label
@@ -91,8 +92,8 @@ public class NCASectionHeaderBlockController {
             BKTRu32Section2Lbl,
             BKTRs32Section2Lbl,
             BKTRunknownSection2Lbl,
-            BKTRunknown1Lbl,
-            BKTRunknown2Lbl;
+            sectionCTRlowLbl,
+            sectionCTRhighLbl;
 
     public void resetTab() {
         versionLbl.setText("-");
@@ -166,8 +167,9 @@ public class NCASectionHeaderBlockController {
         BKTRu32Section2Lbl.setText("-");
         BKTRs32Section2Lbl.setText("-");
         BKTRunknownSection2Lbl.setText("-");
-        BKTRunknown1Lbl.setText("-");
-        BKTRunknown2Lbl.setText("-");
+        sectionCTRlowLbl.setText("-");
+        sectionCTRhighLbl.setText("-");
+        unknwnEndPaddingTF.setText("-");
     }
 
     public void populateTab(NCASectionBlock ncaSectionBlock){
@@ -187,7 +189,7 @@ public class NCASectionHeaderBlockController {
             sb.append("(PFS0)");
         hashTypeLbl.setText(sb.toString());
         cryptoTypeLbl.setText(String.format("%02x ", ncaSectionBlock.getCryptoType()));
-        paddingLbl.setText(String.format("%02x ", ncaSectionBlock.getPadding()));
+        paddingLbl.setText(byteArrToHexString(ncaSectionBlock.getPadding()));
         if ((ncaSectionBlock.getFsType() == 0) && (ncaSectionBlock.getHashType() == 0x3)){
             romFsMagicLbl.setText(ncaSectionBlock.getSuperBlockIVFC().getMagic());
             romFsMagicNumberLbl.setText(ncaSectionBlock.getSuperBlockIVFC().getMagicNumber()
@@ -256,7 +258,8 @@ public class NCASectionHeaderBlockController {
         BKTRu32Section2Lbl.setText(Integer.toString(ncaSectionBlock.getBKTRu32Section2()));
         BKTRs32Section2Lbl.setText(Integer.toString(ncaSectionBlock.getBKTRs32Section2()));
         BKTRunknownSection2Lbl.setText(byteArrToHexString(ncaSectionBlock.getBKTRunknownSection2()));
-        BKTRunknown1Lbl.setText(byteArrToHexString(ncaSectionBlock.getBKTRunknown1()));
-        BKTRunknown2Lbl.setText(byteArrToHexString(ncaSectionBlock.getBKTRunknown2()));
+        sectionCTRlowLbl.setText(byteArrToHexString(ncaSectionBlock.getSectionCTRlow()));
+        sectionCTRhighLbl.setText(byteArrToHexString(ncaSectionBlock.getSectionCTRhigh()));
+        unknwnEndPaddingTF.setText(byteArrToHexString(ncaSectionBlock.getUnknownEndPadding()));
     }
 }
