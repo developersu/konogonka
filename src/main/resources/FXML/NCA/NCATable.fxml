@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane gridLinesVisible="true" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Controllers.NCA.NCATableController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="100.0" prefWidth="150.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="100.0" prefWidth="110.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+      <AnchorPane prefHeight="200.0" styleClass="customTitleGrid">
+         <children>
+              <Label text="Offset" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <font>
+                      <Font name="System Bold" size="13.0" />
+                  </font>
+                  <padding>
+                      <Insets left="5.0" right="5.0" />
+                  </padding>
+              </Label>
+         </children>
+      </AnchorPane>
+        <Label text="0x0" GridPane.rowIndex="1">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label text="0x4" GridPane.rowIndex="2">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label text="0x8" GridPane.rowIndex="3">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label text="0xC" GridPane.rowIndex="4">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label text="Unknown" GridPane.columnIndex="2" GridPane.rowIndex="4">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label text="Unknown" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label text="Media end-offset" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label text="Media offset " GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label fx:id="unknwn2Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="4">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label fx:id="unknwn1Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="3">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label fx:id="mediaEndOffsetLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="2">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+        <Label fx:id="mediaStartOffsetLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="1">
+            <padding>
+                <Insets left="5.0" right="5.0" />
+            </padding>
+        </Label>
+      <AnchorPane styleClass="customTitleGrid" GridPane.columnIndex="1">
+         <children>
+              <Label layoutX="-6.0" layoutY="6.0" text="Size" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <font>
+                      <Font name="System Bold" size="13.0" />
+                  </font>
+                  <padding>
+                      <Insets left="5.0" right="5.0" />
+                  </padding>
+              </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="customTitleGrid" GridPane.columnIndex="2">
+         <children>
+              <Label layoutX="3.0" layoutY="8.0" text="Description" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <font>
+                      <Font name="System Bold" size="13.0" />
+                  </font>
+                  <padding>
+                      <Insets left="5.0" right="5.0" />
+                  </padding>
+              </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="customTitleGrid" GridPane.columnIndex="3">
+         <children>
+              <Label layoutX="24.0" layoutY="8.0" text="Value" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <font>
+                      <Font name="System Bold" size="13.0" />
+                  </font>
+                  <padding>
+                      <Insets left="5.0" right="5.0" />
+                  </padding>
+              </Label>
+         </children>
+      </AnchorPane>
+    </children>
+</GridPane>

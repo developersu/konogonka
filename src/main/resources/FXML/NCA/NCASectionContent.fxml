@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Controllers.NCA.NCASectionContentController">
+    <children>
+        <TitledPane text="PFS0">
+         <content>
+            <VBox spacing="5.0">
+               <HBox VBox.vgrow="ALWAYS">
+                  <children>
+                     <Label text="         #">
+                        <padding>
+                           <Insets left="5.0" right="5.0" />
+                        </padding>
+                        <font>
+                           <Font name="System Bold" size="13.0" />
+                        </font>
+                     </Label>
+                     <Label text="SHA256 Hash">
+                        <padding>
+                           <Insets left="5.0" right="5.0" />
+                        </padding>
+                        <font>
+                           <Font name="System Bold" size="13.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </HBox>
+               <VBox fx:id="sha256pane" VBox.vgrow="ALWAYS" />
+               <Separator prefWidth="200.0" />
+                <fx:include fx:id="SectionPFS0" source="../NSP/NSPTab.fxml" />
+            </VBox>
+         </content></TitledPane>
+    </children>
+</VBox>
