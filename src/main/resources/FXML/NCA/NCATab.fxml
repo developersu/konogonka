@@ -696,12 +696,12 @@
                             <fx:include fx:id="NCASectionContentSecond" source="../NCA/NCASectionContent.fxml" />
                         </content>
                      </TitledPane>
-                     <TitledPane text="Section 2">
+                     <TitledPane expanded="false" text="Section 2">
                         <content>
                             <fx:include fx:id="NCASectionContentThird" source="../NCA/NCASectionContent.fxml" />
                         </content>
                      </TitledPane>
-                     <TitledPane text="Section 3">
+                     <TitledPane expanded="false" text="Section 3">
                         <content>
                             <fx:include fx:id="NCASectionContentFourth" source="../NCA/NCASectionContent.fxml" />
                         </content>

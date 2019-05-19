@@ -19,4 +19,12 @@ public class LoperConverter {
             sb.append(String.format("%02x", b));
         return sb.toString();
     }
+    public static byte[] flip(byte[] bytes){
+        int size = bytes.length;
+        byte[] ret = new byte[size];
+        for (int i = 0; i < size; i++){
+            ret[size-i-1] = bytes[i];
+        }
+        return ret;
+    }
 }

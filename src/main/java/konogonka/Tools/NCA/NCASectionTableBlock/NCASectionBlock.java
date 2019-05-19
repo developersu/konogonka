@@ -1,5 +1,6 @@
 package konogonka.Tools.NCA.NCASectionTableBlock;
 
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -30,8 +31,7 @@ public class NCASectionBlock {
     private int BKTRs32Section2;
     private byte[] BKTRunknownSection2;
 
-    private byte[] sectionCTRlow;
-    private byte[] sectionCTRhigh;
+    private byte[] sectionCTR;
     private byte[] unknownEndPadding;
 
     public NCASectionBlock(byte[] tableBlockBytes) throws Exception{
@@ -65,8 +65,7 @@ public class NCASectionBlock {
         BKTRs32Section2 = getLEint(BKTRfullHeader, 0x38);
         BKTRunknownSection2 = Arrays.copyOfRange(BKTRfullHeader, 0x3c, 0x40);
 
-        sectionCTRlow = Arrays.copyOfRange(tableBlockBytes, 0x140, 0x144);
-        sectionCTRhigh = Arrays.copyOfRange(tableBlockBytes, 0x144, 0x148);
+        sectionCTR = Arrays.copyOfRange(tableBlockBytes, 0x140, 0x148);
         unknownEndPadding = Arrays.copyOfRange(tableBlockBytes, 0x148, 0x200);
     }
 
@@ -91,8 +90,11 @@ public class NCASectionBlock {
     public int getBKTRu32Section2() { return BKTRu32Section2; }
     public int getBKTRs32Section2() { return BKTRs32Section2; }
     public byte[] getBKTRunknownSection2() { return BKTRunknownSection2; }
-    public byte[] getSectionCTRlow() { return sectionCTRlow; }
-    public byte[] getSectionCTRhigh() { return sectionCTRhigh; }
+    public byte[] getSectionCTR() { return sectionCTR; }
+    // Sugar
+    public byte[] getSectionCTRlow() { return Arrays.copyOfRange(sectionCTR, 0, 0x8); }
+    public byte[] getSectionCTRhigh() { return Arrays.copyOfRange(sectionCTR, 0x8, 0x10); }
+
     public byte[] getUnknownEndPadding() { return unknownEndPadding; }
 }
 

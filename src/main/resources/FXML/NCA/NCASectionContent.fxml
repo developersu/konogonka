@@ -13,27 +13,35 @@
         <TitledPane text="PFS0">
          <content>
             <VBox spacing="5.0">
-               <HBox VBox.vgrow="ALWAYS">
-                  <children>
-                     <Label text="         #">
-                        <padding>
-                           <Insets left="5.0" right="5.0" />
-                        </padding>
-                        <font>
-                           <Font name="System Bold" size="13.0" />
-                        </font>
-                     </Label>
-                     <Label text="SHA256 Hash">
-                        <padding>
-                           <Insets left="5.0" right="5.0" />
-                        </padding>
-                        <font>
-                           <Font name="System Bold" size="13.0" />
-                        </font>
-                     </Label>
-                  </children>
-               </HBox>
-               <VBox fx:id="sha256pane" VBox.vgrow="ALWAYS" />
+               <TitledPane expanded="false" text="SHA256 hashes">
+                  <content>
+                     <VBox>
+                        <children>
+                           <HBox VBox.vgrow="ALWAYS">
+                              <children>
+                                 <Label text="         #">
+                                    <padding>
+                                       <Insets left="5.0" right="5.0" />
+                                    </padding>
+                                    <font>
+                                       <Font name="System Bold" size="13.0" />
+                                    </font>
+                                 </Label>
+                                 <Label text="SHA256 Hash">
+                                    <padding>
+                                       <Insets left="5.0" right="5.0" />
+                                    </padding>
+                                    <font>
+                                       <Font name="System Bold" size="13.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </HBox>
+                           <VBox fx:id="sha256pane" />
+                        </children>
+                     </VBox>
+                  </content>
+               </TitledPane>
                <Separator prefWidth="200.0" />
                 <fx:include fx:id="SectionPFS0" source="../NSP/NSPTab.fxml" />
             </VBox>

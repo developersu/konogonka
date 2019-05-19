@@ -24,16 +24,6 @@ public class SuperBlockPFS0 {
         pfs0offset = getLElong(sbBytes, 0x38);
         pfs0size = getLElong(sbBytes, 0x40);
         zeroes = Arrays.copyOfRange(sbBytes, 0x48, 0xf8);
-        /*
-        RainbowHexDump.hexDumpUTF8(SHA256hash);
-        System.out.println(blockSize);
-        System.out.println(unknownNumberTwo);
-        System.out.println(hashTableOffset);
-        System.out.println(hashTableSize);
-        System.out.println(pfs0offset);
-        System.out.println(pfs0size);
-        RainbowHexDump.hexDumpUTF8(zeroes);
-        */
     }
 
     public byte[] getSHA256hash() { return SHA256hash; }

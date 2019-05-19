@@ -178,10 +178,14 @@ public class NCAController implements TabController {
             NCASectionHeaderFourthController.populateTab(ncaProvider.getSectionBlock3());
             // Section content blocks
             // TODO: FIX: This code executes getNCAContentPFS0() method twice
-            NCASectionContentFirstController.populateFields(ncaProvider.getNCAContentPFS0(0).getPfs0(), selectedFile, ncaProvider.getNCAContentPFS0(0).getSHA256hashes());
-            NCASectionContentSecondController.populateFields(ncaProvider.getNCAContentPFS0(1).getPfs0(), selectedFile, ncaProvider.getNCAContentPFS0(1).getSHA256hashes());
-            NCASectionContentThirdController.populateFields(ncaProvider.getNCAContentPFS0(2).getPfs0(), selectedFile, ncaProvider.getNCAContentPFS0(2).getSHA256hashes());
-            NCASectionContentFourthController.populateFields(ncaProvider.getNCAContentPFS0(3).getPfs0(), selectedFile, ncaProvider.getNCAContentPFS0(3).getSHA256hashes());
+            NCAContentPFS0 ncaContentPFS0 = ncaProvider.getNCAContentPFS0(0);
+            NCASectionContentFirstController.populateFields(ncaContentPFS0.getPfs0(), selectedFile, ncaContentPFS0.getSHA256hashes());
+            ncaContentPFS0 = ncaProvider.getNCAContentPFS0(1);
+            NCASectionContentSecondController.populateFields(ncaContentPFS0.getPfs0(), selectedFile, ncaContentPFS0.getSHA256hashes());
+            ncaContentPFS0 = ncaProvider.getNCAContentPFS0(2);
+            NCASectionContentThirdController.populateFields(ncaContentPFS0.getPfs0(), selectedFile, ncaContentPFS0.getSHA256hashes());
+            ncaContentPFS0 = ncaProvider.getNCAContentPFS0(3);
+            NCASectionContentFourthController.populateFields(ncaContentPFS0.getPfs0(), selectedFile, ncaContentPFS0.getSHA256hashes());
         }
     }
 }
