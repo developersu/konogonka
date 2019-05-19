@@ -11,7 +11,6 @@ import java.util.Arrays;
 import static konogonka.LoperConverter.*;
 
 public class PFS0Provider {
-    private long pfs0offsetPosition;
     private long rawFileDataStart;
 
     private String magic;
@@ -23,8 +22,6 @@ public class PFS0Provider {
     public PFS0Provider(File fileWithPfs0) throws Exception{ this(fileWithPfs0, 0); }
 
     public PFS0Provider(File fileWithPfs0, long pfs0offsetPosition) throws Exception{
-        this.pfs0offsetPosition = pfs0offsetPosition;
-
         try {
             RandomAccessFile raf = new RandomAccessFile(fileWithPfs0, "r");
 
@@ -101,7 +98,6 @@ public class PFS0Provider {
         }
     }
 
-    public long getPfs0offsetPosition() { return pfs0offsetPosition; }
     public String getMagic() { return magic; }
     public int getFilesCount() { return filesCount; }
     public int getStringTableSize() { return stringTableSize; }

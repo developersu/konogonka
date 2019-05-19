@@ -6,8 +6,7 @@ import konogonka.Tools.NCA.NCASectionTableBlock.NCASectionBlock;
 import konogonka.Tools.PFS0.PFS0Provider;
 import konogonka.ctraes.AesCtr;
 
-import java.io.File;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -86,22 +85,29 @@ public class NCAContentPFS0 {
 
                         byte[] encryptedBlock;
                         byte[] dectyptedBlock;
-                        long mediaBlockSize = ncaHeaderTableEntry.getMediaEndOffset()-ncaHeaderTableEntry.getMediaStartOffset();
+                        long mediaBlockSize = ncaHeaderTableEntry.getMediaEndOffset() - ncaHeaderTableEntry.getMediaStartOffset();
+                        // Prepare thread to parse encrypted data
+                        PipedOutputStream streamOut = new PipedOutputStream();
+                        PipedInputStream streamInp = new PipedInputStream(streamOut);
 
-                        int j = 0;
-
+                        new Thread(new ParseEncrypted(
+                                SHA256hashes,
+                                streamInp,
+                                ncaSectionBlock.getSuperBlockPFS0().getPfs0offset(),
+                                ncaSectionBlock.getSuperBlockPFS0().getPfs0size(),
+                                ncaSectionBlock.getSuperBlockPFS0().getHashTableOffset(),
+                                ncaSectionBlock.getSuperBlockPFS0().getHashTableSize()
+                        )).start();
+                        // Decrypt data
                         for (int i = 0; i < mediaBlockSize; i++){
                             encryptedBlock = new byte[0x200];
                             if (raf.read(encryptedBlock) != -1){
                                 dectyptedBlock = aesCtr.decrypt(encryptedBlock);
-
-                                System.out.println(new String(dectyptedBlock, (int)ncaSectionBlock.getSuperBlockPFS0().getPfs0offset(), 0x4, StandardCharsets.US_ASCII));
-/*
-*/
-                                j++;
-
+                                // Writing decrypted data to pipe
+                                streamOut.write(dectyptedBlock);
                             }
                         }
+                        streamOut.flush();
 
                         /*
                         System.arraycopy(dectyptedBlock, 0, decryptedHeader, i * 0x200, 0x200);
@@ -163,4 +169,84 @@ public class NCAContentPFS0 {
 
     public LinkedList<byte[]> getSHA256hashes() { return SHA256hashes; }
     public PFS0Provider getPfs0() { return pfs0; }
+
+
+    private class ParseEncrypted implements Runnable{
+
+        LinkedList<byte[]> SHA256hashes;
+        PipedInputStream pipedInputStream;
+
+        long hashTableOffset;
+        long hashTableSize;
+        long hashTableRecordsCount;
+        long pfs0offset;
+        long pfs0size;
+
+        ParseEncrypted(LinkedList<byte[]> SHA256hashes, PipedInputStream pipedInputStream, long pfs0offset, long pfs0size, long hashTableOffset, long hashTableSize){
+            this.SHA256hashes = SHA256hashes;
+            this.pipedInputStream = pipedInputStream;
+            this.hashTableOffset = hashTableOffset;
+            this.hashTableSize = hashTableSize;
+            this.hashTableRecordsCount = hashTableSize / 0x20;
+            this.pfs0offset = pfs0offset;
+            this.pfs0size = pfs0size;
+        }
+
+        @Override
+        public void run() {
+            long counter = 0;       // How many bytes already read
+
+            try{
+                if (hashTableOffset > 0){
+                    while (counter < hashTableOffset) {
+                        pipedInputStream.read();
+                        counter++;
+                    }
+                }
+                // Main loop
+                while (true){
+                    // Loop for collecting all recrods from sha256 hash table
+                    while ((counter - hashTableOffset) < hashTableSize){
+                        int hashCounter = 0;
+                        byte[] sectionHash = new byte[0x20];
+                        // Loop for collecting bytes for every SINGLE records, where record size == 0x20
+                        while (hashCounter < 0x20){
+                            int currentByte = pipedInputStream.read();
+                            if (currentByte == -1)
+                                break;
+                            sectionHash[hashCounter] = (byte)currentByte;
+                            hashCounter++;
+                            counter++;
+                        }
+                        // Write after collecting
+                        SHA256hashes.add(sectionHash);
+                    }
+                    // Skip padding and go to PFS0 location
+                    if (counter < pfs0offset){
+                        while (counter < pfs0offset){
+                            pipedInputStream.read();
+                            counter++;
+                        }
+                    }
+                    //---------------------------------------------------------
+                    byte[] magic = new byte[0x4];
+                    for (int i = 0; i < 4; i++){
+                        int currentByte = pipedInputStream.read();
+                        if (currentByte == -1)
+                            break;
+                        magic[i] = (byte)currentByte;
+                    }
+                    RainbowHexDump.hexDumpUTF8(magic);
+                    break;
+                }
+            }
+            catch (IOException ioe){
+                System.out.println("'ParseEncrypted' thread exception");
+                ioe.printStackTrace();
+            }
+            finally {
+                System.out.println("Thread died.");
+            }
+        }
+    }
 }
