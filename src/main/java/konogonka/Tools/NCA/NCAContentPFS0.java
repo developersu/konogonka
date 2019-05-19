@@ -8,6 +8,8 @@ import konogonka.ctraes.AesCtr;
 
 import java.io.File;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class NCAContentPFS0 {
@@ -39,22 +41,26 @@ public class NCAContentPFS0 {
                         else
                             break;                      // TODO: fix
                     }
-                    // Get pfs0
-                    raf.seek(pfs0Location);
-                    pfs0 = new PFS0Provider(file, pfs0Location);
-
                     raf.close();
+                    // Get pfs0
+                    pfs0 = new PFS0Provider(file, pfs0Location);
                 }
                 // If encrypted (regular) todo: check keys provided
                 else if (ncaSectionBlock.getCryptoType() == 0x3){           // d0c1...
+                    if (decryptedKey == null)
+                        return; // TODO: FIX
+
                     //--------------------------------------------------------------------------------------------------
                     System.out.println("Media start location: " + ncaHeaderTableEntry.getMediaStartOffset());
                     System.out.println("Media end location:   " + ncaHeaderTableEntry.getMediaEndOffset());
-                    System.out.println("Media size = sha h.tbl.size: " + (ncaHeaderTableEntry.getMediaEndOffset()-ncaHeaderTableEntry.getMediaStartOffset()));
+                    System.out.println("Media size          : " + (ncaHeaderTableEntry.getMediaEndOffset()-ncaHeaderTableEntry.getMediaStartOffset()));
                     System.out.println("Media act. location:  " + (offsetPosition + (ncaHeaderTableEntry.getMediaStartOffset() * 0x200)));
                     System.out.println("SHA256 hash tbl size: " + ncaSectionBlock.getSuperBlockPFS0().getHashTableSize());
+                    System.out.println("SHA256 hash tbl offs: " + ncaSectionBlock.getSuperBlockPFS0().getHashTableOffset());
                     System.out.println("SHA256 records:       " + (ncaSectionBlock.getSuperBlockPFS0().getHashTableSize() / 0x20));
                     System.out.println("KEY:                  " + LoperConverter.byteArrToHexString(decryptedKey));
+                    System.out.println("CTR:                  " + LoperConverter.byteArrToHexString(ncaSectionBlock.getSectionCTR()));
+                    System.out.println("PFS0 Offs:            "+ncaSectionBlock.getSuperBlockPFS0().getPfs0offset());
                     System.out.println();
                     //--------------------------------------------------------------------------------------------------
                     long thisMediaLocation = offsetPosition + (ncaHeaderTableEntry.getMediaStartOffset() * 0x200);          // According to real file
@@ -66,7 +72,7 @@ public class NCAContentPFS0 {
                         // IV for CTR == 32 bytes
                         byte[] IVarray = new byte[0x10];
                         // Populate first 8 bytes taken from Header's section Block CTR
-                        System.arraycopy(LoperConverter.flip(ncaSectionBlock.getSectionCTR()), 0, IVarray,0, 8);
+                        System.arraycopy(LoperConverter.flip(ncaSectionBlock.getSectionCTR()), 0x0, IVarray,0x0, 0x8);
                         // Populate last 8 bytes calculated. Thanks hactool project!
                         // TODO: here is too much magic. It MUST be clarified and simplified
                         long mediaStrtOffReal = ncaHeaderTableEntry.getMediaStartOffset() * 0x200;                          // NOTE: long actually should be unsigned.. for calculation it's not critical, but for representation it is
@@ -82,14 +88,17 @@ public class NCAContentPFS0 {
                         byte[] dectyptedBlock;
                         long mediaBlockSize = ncaHeaderTableEntry.getMediaEndOffset()-ncaHeaderTableEntry.getMediaStartOffset();
 
+                        int j = 0;
+
                         for (int i = 0; i < mediaBlockSize; i++){
                             encryptedBlock = new byte[0x200];
                             if (raf.read(encryptedBlock) != -1){
                                 dectyptedBlock = aesCtr.decrypt(encryptedBlock);
 
-
-
-
+                                System.out.println(new String(dectyptedBlock, (int)ncaSectionBlock.getSuperBlockPFS0().getPfs0offset(), 0x4, StandardCharsets.US_ASCII));
+/*
+*/
+                                j++;
 
                             }
                         }

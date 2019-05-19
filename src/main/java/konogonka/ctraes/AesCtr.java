@@ -18,7 +18,7 @@ public class AesCtr {
 
     private Cipher cipher;
 
-    public AesCtr(byte[] IVarray, byte[] keyArray) throws Exception{
+    public AesCtr(byte[] keyArray, byte[] IVarray) throws Exception{
         if ( ! BCinitialized)
             initBCProvider();
 
