@@ -7,8 +7,6 @@ import konogonka.Tools.PFS0.PFS0Provider;
 import konogonka.ctraes.AesCtr;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 public class NCAContentPFS0 {
@@ -38,7 +36,7 @@ public class NCAContentPFS0 {
                         if (raf.read(rawData) != -1)
                             SHA256hashes.add(rawData);
                         else
-                            break;                      // TODO: fix
+                            return;                      // TODO: fix
                     }
                     raf.close();
                     // Get pfs0
@@ -109,48 +107,10 @@ public class NCAContentPFS0 {
                         }
                         streamOut.flush();
 
-                        /*
-                        System.arraycopy(dectyptedBlock, 0, decryptedHeader, i * 0x200, 0x200);
-                        */
-
-
-                        //RainbowHexDump.hexDumpUTF8(dectyptedBlock);
-
-                        /*
-                        // Calculate hashes count
-                        long sha256recordsNumber = ncaSectionBlock.getSuperBlockPFS0().getHashTableSize() / 0x20;
-
-                        long currentHashStart = ncaSectionBlock.getSuperBlockPFS0().getHashTableOffset();
-                        for (int i = 0; i < sha256recordsNumber; i++){
-                            currentHashStart += i * 0x20;
-                            encryptedBlock = Arrays.copyOfRange(dectyptedBlock, currentHashStart, currentHashStart + 0x20); //[0x20];       // 32 bytes - size of SHA256 hash
-                            SHA256hashes.add(encryptedBlock);
-                        }
-                        */
                     }
                     catch (Exception e){
                         e.printStackTrace();
                     }
-
-
-                    /*
-                    byte[] rawData;
-                    long sha256recordsNumber = ncaSectionBlock.getSuperBlockPFS0().getHashTableSize() / 0x20;
-                    // Collect hashes
-                    for (int i = 0; i < sha256recordsNumber; i++){
-                        rawData = new byte[0x20];       // 32 bytes - size of SHA256 hash
-                        if (raf.read(rawData) != -1)
-                            SHA256hashes.add(rawData);
-                        else
-                            break;                      // TODO: fix
-                    }
-                    // Get pfs0
-                    raf.seek(pfs0Location);
-
-                    rawData = new byte[0x20];       // 32 bytes - size of SHA256 hash
-                    */
-
-
 
                     raf.close();
                 }
