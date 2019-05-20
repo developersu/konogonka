@@ -76,7 +76,7 @@ public class NCAController implements TabController {
         this.selectedFile = file;
         HashMap<String, String> keysMap = new HashMap<>();
         keysMap.put("header_key", AppPreferences.getInstance().getHeaderKey());
-        for (int i = 0; i < 6; i++){
+        for (int i = 0; i < 8; i++){
             keysMap.put("key_area_key_application_0"+i, AppPreferences.getInstance().getApplicationKey(i));
             keysMap.put("key_area_key_ocean_0"+i, AppPreferences.getInstance().getOceanKey(i));
             keysMap.put("key_area_key_system_0"+i, AppPreferences.getInstance().getSystemKey(i));

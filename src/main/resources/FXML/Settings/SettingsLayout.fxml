@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Settings.SettingsController">
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Settings.SettingsController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -82,6 +82,18 @@
                         </HBox>
                         <HBox spacing="5.0">
                            <children>
+                              <Label text="key_area_key_application_06" />
+                              <TextField fx:id="keyApp6TF" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox spacing="5.0">
+                           <children>
+                              <Label text="key_area_key_application_07" />
+                              <TextField fx:id="keyApp7TF" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox spacing="5.0">
+                           <children>
                               <Label text="key_area_key_ocean_00" />
                               <TextField fx:id="keyOcean0TF" HBox.hgrow="ALWAYS" />
                            </children>
@@ -118,6 +130,18 @@
                         </HBox>
                         <HBox spacing="5.0">
                            <children>
+                              <Label text="key_area_key_ocean_06" />
+                              <TextField fx:id="keyOcean6TF" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox spacing="5.0">
+                           <children>
+                              <Label text="key_area_key_ocean_07" />
+                              <TextField fx:id="keyOcean7TF" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox spacing="5.0">
+                           <children>
                               <Label text="key_area_key_system_00" />
                               <TextField fx:id="keySys0TF" HBox.hgrow="ALWAYS" />
                            </children>
@@ -150,6 +174,18 @@
                            <children>
                               <Label text="key_area_key_system_05" />
                               <TextField fx:id="keySys5TF" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox spacing="5.0">
+                           <children>
+                              <Label text="key_area_key_system_06" />
+                              <TextField fx:id="keySys6TF" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox spacing="5.0">
+                           <children>
+                              <Label text="key_area_key_system_07" />
+                              <TextField fx:id="keySys7TF" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                         <Separator prefWidth="200.0" />

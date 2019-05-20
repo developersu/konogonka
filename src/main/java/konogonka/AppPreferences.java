@@ -20,18 +20,24 @@ public class AppPreferences {
             String applicationKey3,
             String applicationKey4,
             String applicationKey5,
+            String applicationKey6,
+            String applicationKey7,
             String oceanKey0,
             String oceanKey1,
             String oceanKey2,
             String oceanKey3,
             String oceanKey4,
             String oceanKey5,
+            String oceanKey6,
+            String oceanKey7,
             String systemKey0,
             String systemKey1,
             String systemKey2,
             String systemKey3,
             String systemKey4,
-            String systemKey5
+            String systemKey5,
+            String systemKey6,
+            String systemKey7
     ) {
         setXciHeaderKey(xciHeaderKey);
         setHeaderKey(headerKey);
@@ -42,6 +48,8 @@ public class AppPreferences {
         setApplicationKey(3, applicationKey3);
         setApplicationKey(4, applicationKey4);
         setApplicationKey(5, applicationKey5);
+        setApplicationKey(6, applicationKey6);
+        setApplicationKey(7, applicationKey7);
 
         setOceanKey(0, oceanKey0);
         setOceanKey(1, oceanKey1);
@@ -49,6 +57,8 @@ public class AppPreferences {
         setOceanKey(3, oceanKey3);
         setOceanKey(4, oceanKey4);
         setOceanKey(5, oceanKey5);
+        setOceanKey(6, oceanKey6);
+        setOceanKey(7, oceanKey7);
 
         setSystemKey(0, systemKey0);
         setSystemKey(1, systemKey1);
@@ -56,6 +66,8 @@ public class AppPreferences {
         setSystemKey(3, systemKey3);
         setSystemKey(4, systemKey4);
         setSystemKey(5, systemKey5);
+        setSystemKey(6, systemKey6);
+        setSystemKey(7, systemKey7);
     }
 
     public String getRecentPath(){return preferences.get("recent_path", System.getProperty("user.home"));}

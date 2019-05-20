@@ -57,7 +57,7 @@ public class NCAContentPFS0 {
                     System.out.println("SHA256 records:       " + (ncaSectionBlock.getSuperBlockPFS0().getHashTableSize() / 0x20));
                     System.out.println("KEY:                  " + LoperConverter.byteArrToHexString(decryptedKey));
                     System.out.println("CTR:                  " + LoperConverter.byteArrToHexString(ncaSectionBlock.getSectionCTR()));
-                    System.out.println("PFS0 Offs:            "+ncaSectionBlock.getSuperBlockPFS0().getPfs0offset());
+                    System.out.println("PFS0 Offs:            " + ncaSectionBlock.getSuperBlockPFS0().getPfs0offset());
                     System.out.println();
                     //--------------------------------------------------------------------------------------------------
                     long thisMediaLocation = offsetPosition + (ncaHeaderTableEntry.getMediaStartOffset() * 0x200);          // According to real file
@@ -159,7 +159,7 @@ public class NCAContentPFS0 {
             try{
                 if (hashTableOffset > 0){
                     while (counter < hashTableOffset) {
-                        pipedInputStream.read();
+                        pipedInputStream.read();                // todo: .skip()
                         counter++;
                     }
                 }
