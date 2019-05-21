@@ -17,18 +17,19 @@ public class AesCtr {
     }
 
     private Cipher cipher;
+    private SecretKeySpec key;
 
-    public AesCtr(byte[] keyArray, byte[] IVarray) throws Exception{
+    public AesCtr(byte[] keyArray) throws Exception{
         if ( ! BCinitialized)
             initBCProvider();
 
-        IvParameterSpec iv = new IvParameterSpec(IVarray);
-        SecretKeySpec key = new SecretKeySpec(keyArray, "AES");
+        key = new SecretKeySpec(keyArray, "AES");
         cipher = Cipher.getInstance("AES/CTR/NoPadding", "BC");
-        cipher.init(Cipher.DECRYPT_MODE, key, iv);
     }
 
-    public byte[] decrypt(byte[] encryptedData) throws Exception{
+    public byte[] decrypt(byte[] encryptedData, byte[] IVarray) throws Exception{
+        IvParameterSpec iv = new IvParameterSpec(IVarray);
+        cipher.init(Cipher.DECRYPT_MODE, key, iv);
         return cipher.doFinal(encryptedData);
     }
 }
