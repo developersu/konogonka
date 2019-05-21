@@ -80,6 +80,7 @@ public class NCAController implements TabController {
             keysMap.put("key_area_key_application_0"+i, AppPreferences.getInstance().getApplicationKey(i));
             keysMap.put("key_area_key_ocean_0"+i, AppPreferences.getInstance().getOceanKey(i));
             keysMap.put("key_area_key_system_0"+i, AppPreferences.getInstance().getSystemKey(i));
+            // TODO: Add titlekeys
         }
         
         AnalyzerNCA analyzerNCA = new AnalyzerNCA(file, keysMap);

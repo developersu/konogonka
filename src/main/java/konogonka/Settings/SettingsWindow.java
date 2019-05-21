@@ -38,7 +38,9 @@ public class SettingsWindow {
                     new Image(MainFx.class.getResourceAsStream("/res/settings_icon128x128.png"))
             );
 
-            stageSettings.setScene(new Scene(parentAbout, 570, 500));
+            Scene settingsScene = new Scene(parentAbout, 800, 800);
+            settingsScene.getStylesheets().add("/res/app_light.css");
+            stageSettings.setScene(settingsScene);
             stageSettings.setMinWidth(550.0);
             stageSettings.setMinHeight(550.0);
             stageSettings.show();

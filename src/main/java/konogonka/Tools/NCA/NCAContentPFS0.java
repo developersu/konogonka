@@ -136,7 +136,7 @@ public class NCAContentPFS0 {
                 // IV for CTR == 16 bytes
                 IVarray = new byte[0x10];
                 // Populate first 8 bytes taken from Header's section Block CTR
-                System.arraycopy(LoperConverter.flip(sectionCTR), 0x0, IVarray,0x0, 0x8);
+                System.arraycopy(LoperConverter.flip(sectionCTR), 0x0, IVarray, 0x0, 0x8);
             }
 
             public byte[] dectyptNext(byte[] enctyptedBlock) throws Exception{
@@ -207,9 +207,10 @@ public class NCAContentPFS0 {
                         }
                         // Skip padding and go to PFS0 location
                         if (counter < pfs0offset){
-                            if ((pfs0offset-counter) != pipedInputStream.skip(pfs0offset-counter))
+                            long toSkip = pfs0offset-counter;
+                            if (toSkip != pipedInputStream.skip(toSkip))
                                 return;                                                     // TODO: fix?
-                            counter += pfs0offset-counter;
+                            counter += toSkip;
                         }
                         //---------------------------------------------------------
                         byte[] magic = new byte[0x4];

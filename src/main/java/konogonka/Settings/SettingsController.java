@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import konogonka.AppPreferences;
@@ -17,7 +18,9 @@ import java.util.ResourceBundle;
 
 public class SettingsController implements Initializable {
     @FXML
-    private Button okBtn, cancelBtn, importBtn;
+    private Button okBtn, cancelBtn, importKeysBtn, importTitleKeysBtn;
+    @FXML
+    private VBox titleKeysVbox;
     @FXML
     private TextField
             xciHdrKeyTF,
@@ -103,13 +106,13 @@ public class SettingsController implements Initializable {
         setTextValidation(keySys6TF);
         setTextValidation(keySys7TF);
 
-        importBtn.setOnAction(e->{
+        importKeysBtn.setOnAction(e->{
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("prod.keys");
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("prod.keys", "prod.keys"));
 
-            File prodKeysFile = fileChooser.showOpenDialog(importBtn.getScene().getWindow());
+            File prodKeysFile = fileChooser.showOpenDialog(importKeysBtn.getScene().getWindow());
 
             if (prodKeysFile != null && prodKeysFile.exists()) {
                 HashMap<String, String > fileMap = new HashMap<>();

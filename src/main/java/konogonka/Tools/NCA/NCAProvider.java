@@ -253,6 +253,8 @@ public class NCAProvider {
      * @param sectionNumber should be 1-4
      * */
     public NCAContentPFS0 getNCAContentPFS0(int sectionNumber){
+        // TODO: provide titleKey if needed
+
         switch (sectionNumber){
             case 0:
                 return new NCAContentPFS0(file, offset, sectionBlock0, tableEntry0, decryptedKey2);     // TODO: remove decryptedKey2

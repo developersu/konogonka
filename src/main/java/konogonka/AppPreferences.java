@@ -98,4 +98,11 @@ public class AppPreferences {
     public String getSystemKey(int number){ return preferences.get("key_area_key_system_0"+number, "");}
     public void setSystemKey(int number, String key){ preferences.put("key_area_key_system_0"+number, key); }
 
+    public int getTitleKeysCount(){ return preferences.getInt("title_keys_count", 0);}
+    public void setTitleKeysCount(int number){ preferences.putInt("title_keys_count", number);}
+
+    public String[] getTitleKey(int number){
+        return  preferences.get(Integer.toString(number), "0 = 0").split(" = ", 2);
+    }
+    public void setTitleKey(int number, String name, String value){ preferences.put(Integer.toString(number), name+" = "+value); }
 }
