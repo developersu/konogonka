@@ -85,7 +85,7 @@ public class NCAContentPFS0 {
             //--------------------------------------------------------------------------------------------------
 
             if (decryptedKey == null)
-                throw new Exception("CryptoSection03: unable to proceed. No Key Area Encryption Keys provided.");
+                throw new Exception("CryptoSection03: unable to proceed. No decrypted key provided.");
 
             RandomAccessFile raf = new RandomAccessFile(file, "r");
             raf.seek(offsetPosition + (mediaStartOffset * 0x200));
