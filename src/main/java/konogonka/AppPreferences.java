@@ -52,7 +52,7 @@ public class AppPreferences {
 
 
 
-    public int getTitleKeysCount(){
+    public int getTitleKeysCount(){                                                                                     // TODO: do the same for other multi-keys and single
         return preferences.getInt("title_keys_count", 0);
     }
     // Since we don't want to store title keys that are no longer in use, we have to (try to) remove them.

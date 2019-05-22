@@ -36,7 +36,7 @@ public class SettingsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ListSelectorKAEKAppController.initSelector(32, "key_area_key_application_");
         ListSelectorKAEKOceanController.initSelector(32, "key_area_key_ocean_");
-        ListSelectorKAEKSysController.initSelector(32, "key_area_key_sys_");
+        ListSelectorKAEKSysController.initSelector(32, "key_area_key_system_");
         ListSelectorTitleKeysController.initSelector(32, null);  // 32 required
 
         LinkedHashMap<String, String> preparedPairsMapInit = new LinkedHashMap<>();
@@ -60,7 +60,7 @@ public class SettingsController implements Initializable {
         preparedPairsMapInit.clear();
         cnt = 0;
         while (!(kaekApp = AppPreferences.getInstance().getSystemKey(cnt)).isEmpty()){
-            preparedPairsMapInit.put("key_area_key_sys_"+String.format("%02d", cnt), kaekApp);
+            preparedPairsMapInit.put("key_area_key_system_"+String.format("%02d", cnt), kaekApp);
             cnt++;
         }
         ListSelectorKAEKSysController.setList(preparedPairsMapInit);
@@ -195,7 +195,7 @@ public class SettingsController implements Initializable {
             String[] kaekSysKeySet = ListSelectorKAEKSysController.getList();
             if (kaekSysKeySet != null){
                 for (int i = 0; i < kaekSysKeySet.length; i++)
-                    AppPreferences.getInstance().setOceanKey(i, kaekSysKeySet[i].split("\\s=\\s", 2)[1]);
+                    AppPreferences.getInstance().setSystemKey(i, kaekSysKeySet[i].split("\\s=\\s", 2)[1]);
             }
 
             String[] titleKeysSet = ListSelectorTitleKeysController.getList();
