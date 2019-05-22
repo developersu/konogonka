@@ -82,6 +82,11 @@ public class NCAController implements TabController {
             keysMap.put("key_area_key_system_0"+i, AppPreferences.getInstance().getSystemKey(i));
             // TODO: Add titlekeys
         }
+        for (int i = 0; i < AppPreferences.getInstance().getTitleKeysCount(); i++){
+            String[] pair = AppPreferences.getInstance().getTitleKeyPair(i);
+            if ( ! pair[0].equals("0") && ! pair[1].equals("0"))
+                keysMap.put(pair[0], pair[1]);
+        }
         
         AnalyzerNCA analyzerNCA = new AnalyzerNCA(file, keysMap);
         analyzerNCA.setOnSucceeded(e->{

@@ -1,6 +1,5 @@
 package konogonka;
 
-import java.util.HashMap;
 import java.util.prefs.Preferences;
 
 public class AppPreferences {
@@ -8,8 +7,12 @@ public class AppPreferences {
     public static AppPreferences getInstance() { return INSTANCE; }
 
     private Preferences preferences;
+    private int titleKeysCount;
 
-    private AppPreferences(){ preferences = Preferences.userRoot().node("konogonka"); }
+    private AppPreferences(){
+        preferences = Preferences.userRoot().node("konogonka");
+        titleKeysCount = getTitleKeysCount();
+    }
 
     public void setAll(
             String xciHeaderKey,
@@ -98,11 +101,25 @@ public class AppPreferences {
     public String getSystemKey(int number){ return preferences.get("key_area_key_system_0"+number, "");}
     public void setSystemKey(int number, String key){ preferences.put("key_area_key_system_0"+number, key); }
 
-    public int getTitleKeysCount(){ return preferences.getInt("title_keys_count", 0);}
-    public void setTitleKeysCount(int number){ preferences.putInt("title_keys_count", number);}
 
-    public String[] getTitleKey(int number){
-        return  preferences.get(Integer.toString(number), "0 = 0").split(" = ", 2);
+
+    public int getTitleKeysCount(){
+        return preferences.getInt("title_keys_count", 0);
     }
-    public void setTitleKey(int number, String name, String value){ preferences.put(Integer.toString(number), name+" = "+value); }
+    // Since we don't want to store title keys that are no longer in use, we have to (try to) remove them.
+    // This part of code works as a charm. Don't touch.
+    public void setTitleKeysCount(int number){
+        if (this.titleKeysCount > number){
+            for (int i = number; i < this.titleKeysCount; i++) {
+                preferences.remove("title_key_"+i);
+            }
+        }
+        preferences.putInt("title_keys_count", number);
+        this.titleKeysCount = number;
+    }
+
+    public String[] getTitleKeyPair(int number){
+        return  preferences.get("title_key_"+number, "0 = 0").split(" = ", 2);
+    }
+    public void setTitleKey(int number, String pair){ preferences.put("title_key_"+number, pair); }
 }

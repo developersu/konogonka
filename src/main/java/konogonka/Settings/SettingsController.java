@@ -5,7 +5,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import konogonka.AppPreferences;
@@ -19,8 +18,10 @@ import java.util.ResourceBundle;
 public class SettingsController implements Initializable {
     @FXML
     private Button okBtn, cancelBtn, importKeysBtn, importTitleKeysBtn;
+
     @FXML
-    private VBox titleKeysVbox;
+    ListSelectorController ListSelectorTitleKeysController;
+
     @FXML
     private TextField
             xciHdrKeyTF,
@@ -52,6 +53,17 @@ public class SettingsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ListSelectorTitleKeysController.initSelector(32, null);  // 32 required
+
+        HashMap<String, String> preparedPairsMapInit = new HashMap<>();
+        for (int i = 0; i < AppPreferences.getInstance().getTitleKeysCount(); i++){
+            preparedPairsMapInit.put(
+                    AppPreferences.getInstance().getTitleKeyPair(i)[0],
+                    AppPreferences.getInstance().getTitleKeyPair(i)[1]
+            );
+        }
+        ListSelectorTitleKeysController.setList(preparedPairsMapInit);
+
         xciHdrKeyTF.setText(AppPreferences.getInstance().getXciHeaderKey());
         hdrKeyTF.setText(AppPreferences.getInstance().getHeaderKey());
         keyApp0TF.setText(AppPreferences.getInstance().getApplicationKey(0));
@@ -157,12 +169,37 @@ public class SettingsController implements Initializable {
                 catch (IOException ioe){
                     ioe.printStackTrace();
                 }
-                /*
-                for (String key: fileMap.keySet()){
-                    System.out.print(key+ " - ");
-                    System.out.println(fileMap.get(key));
+            }
+        });
+
+        importTitleKeysBtn.setOnAction(e->{
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("title.keys");
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("title.keys", "title.keys"));
+
+            File prodKeysFile = fileChooser.showOpenDialog(importKeysBtn.getScene().getWindow());
+
+            if (prodKeysFile != null && prodKeysFile.exists()) {
+                try {
+                    BufferedReader br = new BufferedReader(
+                            new FileReader(prodKeysFile)
+                    );
+
+                    String fileLine;
+                    String[] keyValue;
+                    HashMap<String, String> preparedPairsMap = new HashMap<>();
+                    while ((fileLine = br.readLine()) != null){
+                        keyValue = fileLine.trim().split("\\s+?=\\s+?", 2);
+                        if (keyValue.length == 2 && keyValue[0].length() == 32 && keyValue[1].length() == 32){
+                            preparedPairsMap.put(keyValue[0], keyValue[1]);
+                        }
+                    }
+                    ListSelectorTitleKeysController.setList(preparedPairsMap);
                 }
-                //*/
+                catch (IOException ioe){
+                    ioe.printStackTrace();
+                }
             }
         });
 
@@ -201,16 +238,21 @@ public class SettingsController implements Initializable {
                     keySys6TF.getText(),
                     keySys7TF.getText()
             );
+            String[] titleKeysSet = ListSelectorTitleKeysController.getList();
+            if (titleKeysSet != null){
+                AppPreferences.getInstance().setTitleKeysCount(titleKeysSet.length);
+                for (int i = 0; i < titleKeysSet.length; i++)
+                    AppPreferences.getInstance().setTitleKey(i, titleKeysSet[i]);
+            }
             thisStage.close();
         });
     }
     
     private void setTextValidation(TextField tf){
         tf.setTextFormatter(new TextFormatter<Object>(change -> {
-            if (change.getControlNewText().contains(" ") | change.getControlNewText().contains("\t"))
+            if (change.getControlNewText().contains(" ") || change.getControlNewText().contains("\t"))
                 return null;
-            else
-                return change;
+            return change;
         }));
     }
 }
