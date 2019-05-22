@@ -50,6 +50,9 @@ public class AppPreferences {
     public String getSystemKey(int number){ return preferences.get("key_area_key_system_0"+number, "");}
     public void setSystemKey(int number, String key){ preferences.put("key_area_key_system_0"+number, key); }
 
+    public String getTitleKek(int number){ return preferences.get("titlekek_"+number, "");}
+    public void setTitleKek(int number, String key){ preferences.put("titlekek_"+number, key); }
+
 
 
     public int getTitleKeysCount(){                                                                                     // TODO: do the same for other multi-keys and single

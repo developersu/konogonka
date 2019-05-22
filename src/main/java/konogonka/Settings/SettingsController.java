@@ -25,6 +25,7 @@ public class SettingsController implements Initializable {
             ListSelectorKAEKAppController,
             ListSelectorKAEKOceanController,
             ListSelectorKAEKSysController,
+            ListSelectorTitleKeksController,
             ListSelectorTitleKeysController;
 
     @FXML
@@ -37,6 +38,7 @@ public class SettingsController implements Initializable {
         ListSelectorKAEKAppController.initSelector(32, "key_area_key_application_");
         ListSelectorKAEKOceanController.initSelector(32, "key_area_key_ocean_");
         ListSelectorKAEKSysController.initSelector(32, "key_area_key_system_");
+        ListSelectorTitleKeksController.initSelector(32, "titlekek_");
         ListSelectorTitleKeysController.initSelector(32, null);  // 32 required
 
         LinkedHashMap<String, String> preparedPairsMapInit = new LinkedHashMap<>();
@@ -56,6 +58,14 @@ public class SettingsController implements Initializable {
             cnt++;
         }
         ListSelectorKAEKOceanController.setList(preparedPairsMapInit);
+
+        preparedPairsMapInit.clear();
+        cnt = 0;
+        while (!(kaekApp = AppPreferences.getInstance().getTitleKek(cnt)).isEmpty()){
+            preparedPairsMapInit.put("titlekek_"+String.format("%02d", cnt), kaekApp);
+            cnt++;
+        }
+        ListSelectorTitleKeksController.setList(preparedPairsMapInit);
 
         preparedPairsMapInit.clear();
         cnt = 0;
@@ -129,6 +139,14 @@ public class SettingsController implements Initializable {
                         counter++;
                     }
                     ListSelectorKAEKSysController.setList(kaekSingle);
+
+                    kaekSingle.clear();
+                    counter = 0;
+                    while ((keyParsed = fileMap.get("titlekek_"+String.format("%02d", counter))) != null){
+                        kaekSingle.put("titlekek_"+String.format("%02d", counter), keyParsed);
+                        counter++;
+                    }
+                    ListSelectorTitleKeksController.setList(kaekSingle);
                 }
                 catch (IOException ioe){
                     ioe.printStackTrace();
@@ -196,6 +214,12 @@ public class SettingsController implements Initializable {
             if (kaekSysKeySet != null){
                 for (int i = 0; i < kaekSysKeySet.length; i++)
                     AppPreferences.getInstance().setSystemKey(i, kaekSysKeySet[i].split("\\s=\\s", 2)[1]);
+            }
+
+            String[] titleKekSet = ListSelectorTitleKeksController.getList();
+            if (titleKekSet != null){
+                for (int i = 0; i < titleKekSet.length; i++)
+                    AppPreferences.getInstance().setTitleKek(i, titleKekSet[i].split("\\s=\\s", 2)[1]);
             }
 
             String[] titleKeysSet = ListSelectorTitleKeysController.getList();

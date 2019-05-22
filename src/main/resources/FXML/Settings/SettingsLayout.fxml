@@ -48,14 +48,17 @@
                               <Label disable="true" text="Length should be 64 symbols" wrapText="true" />
                               <Pane VBox.vgrow="ALWAYS" />
                               <Separator prefWidth="200.0" />
-                              <Label text="Label" />
+                              <Label text="Key area key &quot;Application&quot;" />
                               <fx:include fx:id="ListSelectorKAEKApp" source="ListSelectorLayout.fxml" VBox.vgrow="ALWAYS" />
                               <Separator prefWidth="200.0" />
-                              <Label text="Label" />
+                              <Label text="Key area key &quot;Ocean&quot;" />
                               <fx:include fx:id="ListSelectorKAEKOcean" source="ListSelectorLayout.fxml" VBox.vgrow="ALWAYS" />
                               <Separator prefWidth="200.0" />
-                              <Label text="Label" />
+                              <Label text="Key area key &quot;System&quot;" />
                               <fx:include fx:id="ListSelectorKAEKSys" source="ListSelectorLayout.fxml" VBox.vgrow="ALWAYS" />
+                              <Separator prefWidth="200.0" />
+                              <Label text="Title KEKs" />
+                              <fx:include fx:id="ListSelectorTitleKeks" source="ListSelectorLayout.fxml" VBox.vgrow="ALWAYS" />
                               <Separator prefWidth="200.0" />
                            </children>
                            <padding>
@@ -108,8 +111,7 @@
       </TabPane>
       <ButtonBar>
         <buttons>
-            
-                              <Button fx:id="okBtn" mnemonicParsing="false" text="Ok" />
+            <Button fx:id="okBtn" mnemonicParsing="false" text="Ok" />
           <Button fx:id="cancelBtn" mnemonicParsing="false" text="Cancel" />
         </buttons>
          <padding>

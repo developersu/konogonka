@@ -1,5 +1,6 @@
 package konogonka.Tools.NCA;
 
+import konogonka.LoperConverter;
 import konogonka.Tools.NCA.NCASectionTableBlock.NCASectionBlock;
 import konogonka.xtsaes.XTSAESCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
@@ -11,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static konogonka.LoperConverter.byteArrToHexString;
 import static konogonka.LoperConverter.getLElong;
 
 // TODO: check file size
@@ -31,6 +33,8 @@ public class NCAProvider {
     private byte[] sdkVersion;                  // version ver_revision.ver_micro.vev_minor.ver_major
     private byte cryptoType2;                   // keyblob index. Considering as number within application/ocean/system
     private byte[] rightsId;
+
+    private byte cryptoTypeReal;
 
     private byte[] sha256hash0;
     private byte[] sha256hash1;
@@ -152,32 +156,28 @@ public class NCAProvider {
         encryptedKey2 = Arrays.copyOfRange(encryptedKeysArea, 0x20, 0x30);
         encryptedKey3 = Arrays.copyOfRange(encryptedKeysArea, 0x30, 0x40);
 
+        // Calculate real Crypto Type
+        if (cryptoType1 < cryptoType2)
+            cryptoTypeReal = cryptoType2;
+        else
+            cryptoTypeReal = cryptoType1;
+
+        if (cryptoTypeReal > 0)     // TODO: CLARIFY WHY THEH FUCK IS IT FAIR????
+            cryptoTypeReal -= 1;
+
         //todo: if nca3 proceed
-        // If no rights ID (ticket?) exists
+        // Decrypt keys if encrypted
         if (Arrays.equals(rightsId, new byte[0x10])) {
-            byte realCryptoType;
-            if (cryptoType1 < cryptoType2)
-                realCryptoType = cryptoType2;
-            else
-                realCryptoType = cryptoType1;
-
-            if (realCryptoType > 0)     // TODO: CLARIFY WHY THEH FUCK IS IT FAIR????
-                realCryptoType -= 1;
-
-
             String keyAreaKey;
             switch (keyIndex){
                 case 0:
-                    keyAreaKey = keys.get("key_area_key_application_0"+realCryptoType);
-                    System.out.println("Using key_area_key_application_0"+realCryptoType);
+                    keyAreaKey = keys.get("key_area_key_application_"+String.format("%02d", cryptoTypeReal));
                     break;
                 case 1:
-                    keyAreaKey = keys.get("key_area_key_ocean_0"+realCryptoType);
-                    System.out.println("Using key_area_key_ocean_0"+realCryptoType);
+                    keyAreaKey = keys.get("key_area_key_ocean_"+String.format("%02d", cryptoTypeReal));
                     break;
                 case 2:
-                    keyAreaKey = keys.get("key_area_key_system_0"+realCryptoType);
-                    System.out.println("Using key_area_key_system_0"+realCryptoType);
+                    keyAreaKey = keys.get("key_area_key_system_"+String.format("%02d", cryptoTypeReal));
                     break;
                 default:
                     keyAreaKey = null;
@@ -192,11 +192,6 @@ public class NCAProvider {
                 decryptedKey2 = cipher.doFinal(encryptedKey2);
                 decryptedKey3 = cipher.doFinal(encryptedKey3);
             }
-        }
-        else {
-
-            // TODO
-
         }
 
         tableEntry0 = new NCAHeaderTableEntry(tableBytes);
@@ -253,33 +248,39 @@ public class NCAProvider {
      * @param sectionNumber should be 1-4
      * */
     public NCAContentPFS0 getNCAContentPFS0(int sectionNumber){
-        // TODO: provide titleKey if needed
+        byte[] key;
 
-        switch (sectionNumber){
+        // If empty Rights ID
+        if (Arrays.equals(rightsId, new byte[0x10])) {
+            key = decryptedKey2;                                       // TODO: Just remember this dumb hach
+        }
+        else {
+            byte[] rightsIDkey = hexStrToByteArray(keys.get(byteArrToHexString(rightsId)));
+
+            try {
+                SecretKeySpec skSpec = new SecretKeySpec(
+                        hexStrToByteArray(keys.get("titlekek_"+String.format("%02d", cryptoTypeReal))
+                        ), "AES");
+                Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
+                cipher.init(Cipher.DECRYPT_MODE, skSpec);
+                key = cipher.doFinal(rightsIDkey);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                return null;
+            }
+        }
+        switch (sectionNumber) {
             case 0:
-                return new NCAContentPFS0(file, offset, sectionBlock0, tableEntry0, decryptedKey2);     // TODO: remove decryptedKey2
+                return new NCAContentPFS0(file, offset, sectionBlock0, tableEntry0, key);     // TODO: remove decryptedKey2
             case 1:
-                return new NCAContentPFS0(file, offset, sectionBlock1, tableEntry1, decryptedKey2);
+                return new NCAContentPFS0(file, offset, sectionBlock1, tableEntry1, key);
             case 2:
-                return new NCAContentPFS0(file, offset, sectionBlock2, tableEntry2, decryptedKey2);
+                return new NCAContentPFS0(file, offset, sectionBlock2, tableEntry2, key);
             case 3:
-                return new NCAContentPFS0(file, offset, sectionBlock3, tableEntry3, decryptedKey2);
+                return new NCAContentPFS0(file, offset, sectionBlock3, tableEntry3, key);
             default:
                 return null;
         }
     }
 }
-// 0 OR 2  crypto type
-// 0,1,2 kaek index
-//settings.keyset.key_area_keys[ctx->crypto_type][ctx->header.kaek_ind]
-            /*
-            0x207 =
-            0: key_area_key_application_  0x206 range:[0-6]; usually used 0 or 2
-            1: key_area_key_ocean [0-6]
-            2: key_area_key_system [0-6]
-
-            if(ncahdr_x206 < ncahdr_x220){ret = ncahdr_x220; } else { ret = ncahdr_x206; } return ret;
-
-            ret > 0? ret--
-
-             */
