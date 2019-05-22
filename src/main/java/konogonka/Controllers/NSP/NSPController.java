@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import konogonka.Controllers.IRowModel;
 import konogonka.Controllers.TabController;
 import konogonka.MediatorControl;
+import konogonka.Tools.PFS0.IPFS0Provider;
 import konogonka.Tools.PFS0.PFS0Provider;
 import konogonka.Workers.AnalyzerNSP;
 import konogonka.Workers.NspXciExtractor;
@@ -102,7 +103,7 @@ public class NSPController implements TabController {
     /**
      * Just populate fields by already analyzed PFS0
      * */
-    public void setData(PFS0Provider pfs0, File fileWithNca){
+    public void setData(IPFS0Provider pfs0, File fileWithNca){
         if (pfs0 != null){
             if (fileWithNca != null)
                 this.selectedFile = fileWithNca;

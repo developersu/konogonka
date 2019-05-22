@@ -7,6 +7,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import konogonka.Controllers.NSP.NSPController;
 import konogonka.LoperConverter;
+import konogonka.Tools.PFS0.IPFS0Provider;
 import konogonka.Tools.PFS0.PFS0Provider;
 
 import java.io.File;
@@ -23,7 +24,7 @@ public class NCASectionContentController{
         sha256pane.getChildren().clear();
     }
 
-    public void populateFields(PFS0Provider pfs0, File file, LinkedList<byte[]> sha256hashList) {
+    public void populateFields(IPFS0Provider pfs0, File file, LinkedList<byte[]> sha256hashList) {
         resetTab();
         SectionPFS0Controller.setData(pfs0, file);
         if (sha256hashList != null){

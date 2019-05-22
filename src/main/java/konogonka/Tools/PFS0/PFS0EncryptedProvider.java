@@ -1,15 +1,13 @@
 package konogonka.Tools.PFS0;
 
-import konogonka.RainbowHexDump;
-
-import java.io.File;
-import java.io.RandomAccessFile;
+import java.io.PipedInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import static konogonka.LoperConverter.*;
+import static konogonka.LoperConverter.getLEint;
+import static konogonka.LoperConverter.getLElong;
 
-public class PFS0Provider implements IPFS0Provider{
+public class PFS0EncryptedProvider implements IPFS0Provider{
     private long rawFileDataStart;          // If -1 then this PFS0 located @ encrypted region
 
     private String magic;
@@ -18,35 +16,39 @@ public class PFS0Provider implements IPFS0Provider{
     private byte[] padding;
     private PFS0subFile[] pfs0subFiles;
 
-    public PFS0Provider(File fileWithPfs0) throws Exception{ this(fileWithPfs0, 0); }
+    //---------------------------------------
+    /*
+    absOffsetPosOfMediaBlock
 
-    public PFS0Provider(File fileWithPfs0, long pfs0offsetPosition) throws Exception{
+    Counter - PFS0 Position
+    mediaBlockSize - PFS0 Subsustem Size
+    * */
+    //---------------------------------------
 
-        RandomAccessFile raf = new RandomAccessFile(fileWithPfs0, "r");         // TODO: replace to bufferedInputStream
-
-        raf.seek(pfs0offsetPosition);
+    public PFS0EncryptedProvider(PipedInputStream pipedInputStream) throws Exception{
         byte[] fileStartingBytes = new byte[0x10];
         // Read PFS0Provider, files count, header, padding (4 zero bytes)
-        if (raf.read(fileStartingBytes) != 0x10){
-            raf.close();
-            throw new Exception("PFS0Provider: Unable to read starting bytes");
+
+        for (int i = 0; i < 0x10; i++){
+            int currentByte = pipedInputStream.read();
+            if (currentByte == -1) {
+                throw new Exception("PFS0: Reading stream suddenly ended while trying to read starting 0x10 bytes");
+            }
+            fileStartingBytes[i] = (byte)currentByte;
         }
         // Check PFS0Provider
         magic = new String(fileStartingBytes, 0x0, 0x4, StandardCharsets.US_ASCII);
         if (! magic.equals("PFS0")){
-            raf.close();
             throw new Exception("PFS0Provider: Bad magic");
         }
         // Get files count
         filesCount = getLEint(fileStartingBytes, 0x4);
         if (filesCount <= 0 ) {
-            raf.close();
             throw new Exception("PFS0Provider: Files count is too small");
         }
         // Get string table
         stringTableSize = getLEint(fileStartingBytes, 0x8);
         if (stringTableSize <= 0 ){
-            raf.close();
             throw new Exception("PFS0Provider: String table is too small");
         }
         padding = Arrays.copyOfRange(fileStartingBytes, 0xc, 0x10);
@@ -59,9 +61,14 @@ public class PFS0Provider implements IPFS0Provider{
         byte[][] zeroBytes = new byte[filesCount][];
 
         byte[] fileEntryTable = new byte[0x18];
-        for (int i=0; i<filesCount; i++){
-            if (raf.read(fileEntryTable) != 0x18)
-                throw new Exception("PFS0Provider: String table is too small");
+        for (int i=0; i < filesCount; i++){
+            for (int j = 0; j < 0x18; j++){
+                int currentByte = pipedInputStream.read();
+                if (currentByte == -1) {
+                    throw new Exception("PFS0: Reading stream suddenly ended while trying to read File Entry Table #"+i);
+                }
+                fileEntryTable[j] = (byte)currentByte;
+            }
             offsetsSubFiles[i] = getLElong(fileEntryTable, 0);
             sizesSubFiles[i] = getLElong(fileEntryTable, 0x8);
             strTableOffsets[i] = getLEint(fileEntryTable, 0x10);
@@ -71,8 +78,13 @@ public class PFS0Provider implements IPFS0Provider{
         // In here pointer in front of String table
         String[] subFileNames = new String[filesCount];
         byte[] stringTbl = new byte[stringTableSize];
-        if (raf.read(stringTbl) != stringTableSize){
-            throw new Exception("Read PFS0Provider String table failure. Can't read requested string table size ("+stringTableSize+")");
+
+        for (int i = 0; i < stringTableSize; i++){
+            int currentByte = pipedInputStream.read();
+            if (currentByte == -1) {
+                throw new Exception("PFS0: Reading stream suddenly ended while trying to read string table");
+            }
+            stringTbl[i] = (byte)currentByte;
         }
 
         for (int i=0; i < filesCount; i++){
@@ -89,8 +101,7 @@ public class PFS0Provider implements IPFS0Provider{
                     zeroBytes[i]
             );
         }
-        rawFileDataStart = raf.getFilePointer();
-        raf.close();
+        rawFileDataStart = -1;
     }
 
     public String getMagic() { return magic; }

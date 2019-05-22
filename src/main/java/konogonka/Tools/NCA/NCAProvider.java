@@ -267,6 +267,7 @@ public class NCAProvider {
             }
             catch (Exception e){
                 e.printStackTrace();
+                System.out.println("No title.keys loaded?");
                 return null;
             }
         }

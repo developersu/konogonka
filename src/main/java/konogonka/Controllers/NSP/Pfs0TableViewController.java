@@ -17,6 +17,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import konogonka.Controllers.IRowModel;
+import konogonka.Tools.PFS0.IPFS0Provider;
 import konogonka.Tools.PFS0.PFS0Provider;
 
 import java.net.URL;
@@ -144,7 +145,7 @@ public class Pfs0TableViewController implements Initializable {
     /**
      * Add files when user selected them
      * */
-    public void setNSPToTable(PFS0Provider pfs){
+    public void setNSPToTable(IPFS0Provider pfs){
         rowsObsLst.clear();
         Pfs0RowModel.resetNumCnt();
         if (pfs == null) {

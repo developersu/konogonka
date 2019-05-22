@@ -3,6 +3,8 @@ package konogonka.Tools.NCA;
 import konogonka.LoperConverter;
 import konogonka.RainbowHexDump;
 import konogonka.Tools.NCA.NCASectionTableBlock.NCASectionBlock;
+import konogonka.Tools.PFS0.IPFS0Provider;
+import konogonka.Tools.PFS0.PFS0EncryptedProvider;
 import konogonka.Tools.PFS0.PFS0Provider;
 import konogonka.ctraes.AesCtr;
 
@@ -11,66 +13,68 @@ import java.util.LinkedList;
 
 public class NCAContentPFS0 {
     private LinkedList<byte[]> SHA256hashes;
-    private PFS0Provider pfs0;
+    private IPFS0Provider pfs0;
 
     // TODO: if decryptedKey is empty, thorow exception ??
     public NCAContentPFS0(File file, long offsetPosition, NCASectionBlock ncaSectionBlock, NCAHeaderTableEntry ncaHeaderTableEntry, byte[] decryptedKey){
         SHA256hashes = new LinkedList<>();
-        try {
             // If it's PFS0Provider
             if (ncaSectionBlock.getSuperBlockPFS0() != null){
-                // IF NO ENCRYPTION
-                if (ncaSectionBlock.getCryptoType() == 0x1) {
-                    RandomAccessFile raf = new RandomAccessFile(file, "r");
-                    long thisMediaLocation = offsetPosition + (ncaHeaderTableEntry.getMediaStartOffset() * 0x200);
-                    long hashTableLocation = thisMediaLocation + ncaSectionBlock.getSuperBlockPFS0().getHashTableOffset();
-                    long pfs0Location = thisMediaLocation + ncaSectionBlock.getSuperBlockPFS0().getPfs0offset();
+                try {
+                    // IF NO ENCRYPTION
+                    if (ncaSectionBlock.getCryptoType() == 0x1) {
+                        RandomAccessFile raf = new RandomAccessFile(file, "r");
+                        long thisMediaLocation = offsetPosition + (ncaHeaderTableEntry.getMediaStartOffset() * 0x200);
+                        long hashTableLocation = thisMediaLocation + ncaSectionBlock.getSuperBlockPFS0().getHashTableOffset();
+                        long pfs0Location = thisMediaLocation + ncaSectionBlock.getSuperBlockPFS0().getPfs0offset();
 
-                    raf.seek(hashTableLocation);
+                        raf.seek(hashTableLocation);
 
-                    byte[] rawData;
-                    long sha256recordsNumber = ncaSectionBlock.getSuperBlockPFS0().getHashTableSize() / 0x20;
-                    // Collect hashes
-                    for (int i = 0; i < sha256recordsNumber; i++){
-                        rawData = new byte[0x20];       // 32 bytes - size of SHA256 hash
-                        if (raf.read(rawData) != -1)
-                            SHA256hashes.add(rawData);
-                        else
-                            return;                      // TODO: fix
+                        byte[] rawData;
+                        long sha256recordsNumber = ncaSectionBlock.getSuperBlockPFS0().getHashTableSize() / 0x20;
+                        // Collect hashes
+                        for (int i = 0; i < sha256recordsNumber; i++){
+                            rawData = new byte[0x20];       // 32 bytes - size of SHA256 hash
+                            if (raf.read(rawData) != -1)
+                                SHA256hashes.add(rawData);
+                            else {
+                                raf.close();
+                                return;                      // TODO: fix
+                            }
+                        }
+                        raf.close();
+                        // Get pfs0
+                        pfs0 = new PFS0Provider(file, pfs0Location);
                     }
-                    raf.close();
-                    // Get pfs0
-                    pfs0 = new PFS0Provider(file, pfs0Location);
+                    // If encrypted (regular)
+                    else if (ncaSectionBlock.getCryptoType() == 0x3){
+                        new CryptoSection03(file,
+                                offsetPosition,
+                                decryptedKey,
+                                ncaSectionBlock,
+                                ncaHeaderTableEntry.getMediaStartOffset(),
+                                ncaHeaderTableEntry.getMediaEndOffset());
+                    }
                 }
-                // If encrypted (regular)
-                else if (ncaSectionBlock.getCryptoType() == 0x3){           // d0c1...
-                    new CryptoSection03(file,
-                            offsetPosition,
-                            decryptedKey,
-                            ncaSectionBlock,
-                            ncaHeaderTableEntry.getMediaStartOffset(),
-                            ncaHeaderTableEntry.getMediaEndOffset());
+                catch (Exception e){
+                    e.printStackTrace();
                 }
             }
             else if (ncaSectionBlock.getSuperBlockIVFC() != null){
-
+                // TODO
             }
             else {
                 return;         // TODO: FIX THIS STUFF
             }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
     public LinkedList<byte[]> getSHA256hashes() { return SHA256hashes; }
-    public PFS0Provider getPfs0() { return pfs0; }
+    public IPFS0Provider getPfs0() { return pfs0; }
 
     private class CryptoSection03{
         
         CryptoSection03(File file, long offsetPosition, byte[] decryptedKey, NCASectionBlock ncaSectionBlock, long mediaStartOffset, long mediaEndOffset) throws Exception{
-            //--------------------------------------------------------------------------------------------------
+            /*//--------------------------------------------------------------------------------------------------
             System.out.println("Media start location: " + mediaStartOffset);
             System.out.println("Media end location:   " + mediaEndOffset);
             System.out.println("Media size          : " + (mediaEndOffset-mediaStartOffset));
@@ -82,13 +86,13 @@ public class NCAContentPFS0 {
             System.out.println("KEY:                  " + LoperConverter.byteArrToHexString(decryptedKey));
             System.out.println("CTR:                  " + LoperConverter.byteArrToHexString(ncaSectionBlock.getSectionCTR()));
             System.out.println();
-            //--------------------------------------------------------------------------------------------------
-
+            //--------------------------------------------------------------------------------------------------*/
             if (decryptedKey == null)
                 throw new Exception("CryptoSection03: unable to proceed. No decrypted key provided.");
 
             RandomAccessFile raf = new RandomAccessFile(file, "r");
-            raf.seek(offsetPosition + (mediaStartOffset * 0x200));
+            long abosluteOffsetPosition = offsetPosition + (mediaStartOffset * 0x200);
+            raf.seek(abosluteOffsetPosition);
 
             AesCtrDecryptor decryptor = new AesCtrDecryptor(decryptedKey, ncaSectionBlock.getSectionCTR(), mediaStartOffset * 0x200);
 
@@ -99,13 +103,14 @@ public class NCAContentPFS0 {
             PipedOutputStream streamOut = new PipedOutputStream();
             PipedInputStream streamInp = new PipedInputStream(streamOut);
 
-            new Thread(new ParseThread(
+            Thread pThread = new Thread(new ParseThread(
                     streamInp,
                     ncaSectionBlock.getSuperBlockPFS0().getPfs0offset(),
                     ncaSectionBlock.getSuperBlockPFS0().getPfs0size(),
                     ncaSectionBlock.getSuperBlockPFS0().getHashTableOffset(),
                     ncaSectionBlock.getSuperBlockPFS0().getHashTableSize()
-            )).start();
+            ));
+            pThread.start();
             // Decrypt data
             for (int i = 0; i < mediaBlockSize; i++){
                 encryptedBlock = new byte[0x200];
@@ -113,12 +118,16 @@ public class NCAContentPFS0 {
                     //dectyptedBlock = aesCtr.decrypt(encryptedBlock);
                     dectyptedBlock = decryptor.dectyptNext(encryptedBlock);
                     // Writing decrypted data to pipe
-                    streamOut.write(dectyptedBlock);
+                    try {
+                        streamOut.write(dectyptedBlock);
+                    }
+                    catch (IOException e){
+                        break;
+                    }
                 }
             }
-            streamOut.flush();
+            pThread.join();
             streamOut.close();
-
             raf.close();
         }
         /*
@@ -187,51 +196,39 @@ public class NCAContentPFS0 {
                             return;                                                     // TODO: fix?
                         counter = hashTableOffset;
                     }
-                    // Main loop
-                    while (true){
-                        // Loop for collecting all recrods from sha256 hash table
-                        while ((counter - hashTableOffset) < hashTableSize){
-                            int hashCounter = 0;
-                            byte[] sectionHash = new byte[0x20];
-                            // Loop for collecting bytes for every SINGLE records, where record size == 0x20
-                            while (hashCounter < 0x20){
-                                int currentByte = pipedInputStream.read();
-                                if (currentByte == -1)
-                                    break;
-                                sectionHash[hashCounter] = (byte)currentByte;
-                                hashCounter++;
-                                counter++;
-                            }
-                            // Write after collecting
-                            SHA256hashes.add(sectionHash);  // From the NCAContentProvider obviously
-                        }
-                        // Skip padding and go to PFS0 location
-                        if (counter < pfs0offset){
-                            long toSkip = pfs0offset-counter;
-                            if (toSkip != pipedInputStream.skip(toSkip))
-                                return;                                                     // TODO: fix?
-                            counter += toSkip;
-                        }
-                        //---------------------------------------------------------
-                        byte[] magic = new byte[0x4];
-                        for (int i = 0; i < 4; i++){
+                    // Loop for collecting all recrods from sha256 hash table
+                    while ((counter - hashTableOffset) < hashTableSize){
+                        int hashCounter = 0;
+                        byte[] sectionHash = new byte[0x20];
+                        // Loop for collecting bytes for every SINGLE records, where record size == 0x20
+                        while (hashCounter < 0x20){
                             int currentByte = pipedInputStream.read();
                             if (currentByte == -1)
                                 break;
-                            magic[i] = (byte)currentByte;
+                            sectionHash[hashCounter] = (byte)currentByte;
+                            hashCounter++;
+                            counter++;
                         }
-                        RainbowHexDump.hexDumpUTF8(magic);
-                        while (pipedInputStream.read() != -1)
-                            ;
-                        break;
+                        // Write after collecting
+                        SHA256hashes.add(sectionHash);  // From the NCAContentProvider obviously
                     }
+                    // Skip padding and go to PFS0 location
+                    if (counter < pfs0offset){
+                        long toSkip = pfs0offset-counter;
+                        if (toSkip != pipedInputStream.skip(toSkip))
+                            return;                                                     // TODO: fix?
+                        counter += toSkip;
+                    }
+                    //---------------------------------------------------------
+                    pfs0 = new PFS0EncryptedProvider(pipedInputStream);
+                    pipedInputStream.close();
                 }
-                catch (IOException ioe){
+                catch (Exception e){
                     System.out.println("'ParseThread' thread exception");
-                    ioe.printStackTrace();
+                    e.printStackTrace();
                 }
                 finally {
-                    System.out.println("ParseThread thread died.");
+                    System.out.println("Thread dies");
                 }
             }
         }
