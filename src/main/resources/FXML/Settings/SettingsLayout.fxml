@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<VBox minHeight="600.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Settings.SettingsController">
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Settings.SettingsController">
    <children>
       <TabPane side="LEFT" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0" tabMaxWidth="80.0" tabMinHeight="80.0" tabMinWidth="50.0" VBox.vgrow="ALWAYS">
          <tabs>
@@ -47,150 +47,15 @@
                               </HBox>
                               <Label disable="true" text="Length should be 64 symbols" wrapText="true" />
                               <Pane VBox.vgrow="ALWAYS" />
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_application_00" />
-                                    <TextField fx:id="keyApp0TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_application_01" />
-                                    <TextField fx:id="keyApp1TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_application_02" />
-                                    <TextField fx:id="keyApp2TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_application_03" />
-                                    <TextField fx:id="keyApp3TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_application_04" />
-                                    <TextField fx:id="keyApp4TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_application_05" />
-                                    <TextField fx:id="keyApp5TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_application_06" />
-                                    <TextField fx:id="keyApp6TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_application_07" />
-                                    <TextField fx:id="keyApp7TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_ocean_00" />
-                                    <TextField fx:id="keyOcean0TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_ocean_01" />
-                                    <TextField fx:id="keyOcean1TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_ocean_02" />
-                                    <TextField fx:id="keyOcean2TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_ocean_03" />
-                                    <TextField fx:id="keyOcean3TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_ocean_04" />
-                                    <TextField fx:id="keyOcean4TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_ocean_05" />
-                                    <TextField fx:id="keyOcean5TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_ocean_06" />
-                                    <TextField fx:id="keyOcean6TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_ocean_07" />
-                                    <TextField fx:id="keyOcean7TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_system_00" />
-                                    <TextField fx:id="keySys0TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_system_01" />
-                                    <TextField fx:id="keySys1TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_system_02" />
-                                    <TextField fx:id="keySys2TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_system_03" />
-                                    <TextField fx:id="keySys3TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_system_04" />
-                                    <TextField fx:id="keySys4TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_system_05" />
-                                    <TextField fx:id="keySys5TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_system_06" />
-                                    <TextField fx:id="keySys6TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label text="key_area_key_system_07" />
-                                    <TextField fx:id="keySys7TF" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
+                              <Separator prefWidth="200.0" />
+                              <Label text="Label" />
+                              <fx:include fx:id="ListSelectorKAEKApp" source="ListSelectorLayout.fxml" VBox.vgrow="ALWAYS" />
+                              <Separator prefWidth="200.0" />
+                              <Label text="Label" />
+                              <fx:include fx:id="ListSelectorKAEKOcean" source="ListSelectorLayout.fxml" VBox.vgrow="ALWAYS" />
+                              <Separator prefWidth="200.0" />
+                              <Label text="Label" />
+                              <fx:include fx:id="ListSelectorKAEKSys" source="ListSelectorLayout.fxml" VBox.vgrow="ALWAYS" />
                               <Separator prefWidth="200.0" />
                            </children>
                            <padding>

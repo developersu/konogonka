@@ -13,6 +13,7 @@ import konogonka.ServiceWindow;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.ResourceBundle;
 
 public class ListSelectorController implements Initializable {
@@ -61,7 +62,7 @@ public class ListSelectorController implements Initializable {
      * Must be run on start
      * Set list content
      */
-    void setList(HashMap<String, String> stringPairsArray){
+    void setList(LinkedHashMap<String, String> stringPairsArray){
         if (stringPairsArray != null && ! stringPairsArray.isEmpty())
             for (String name: stringPairsArray.keySet())
                 validateAndAdd(name+" = "+stringPairsArray.get(name));

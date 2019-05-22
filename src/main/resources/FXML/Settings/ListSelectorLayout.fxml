@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<VBox spacing="5.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Settings.ListSelectorController">
+<VBox minHeight="250.0" spacing="5.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Settings.ListSelectorController">
     <children>
         <HBox alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="ALWAYS">
             <children>
-                <ListView fx:id="listView" onKeyPressed="#listKeyPressed" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                <ListView fx:id="listView" onKeyPressed="#listKeyPressed" HBox.hgrow="ALWAYS" />
                 <VBox spacing="5.0">
                     <children>
                         <Button mnemonicParsing="false" onAction="#removeRecord">
