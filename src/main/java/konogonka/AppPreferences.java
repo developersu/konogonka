@@ -7,10 +7,21 @@ public class AppPreferences {
     public static AppPreferences getInstance() { return INSTANCE; }
 
     private Preferences preferences;
-    private int titleKeysCount;
+
+    private int
+            kakAppCount,
+            kakOceanCount,
+            kakSysCount,
+            titleKeksCount,
+            titleKeysCount;
 
     private AppPreferences(){
         preferences = Preferences.userRoot().node("konogonka");
+
+        kakAppCount = getKAKAppCount();
+        kakOceanCount = getKAKOceanCount();
+        kakSysCount = getKAKSysCount();
+        titleKeksCount = getTitleKeksCount();
         titleKeysCount = getTitleKeysCount();
     }
 
@@ -41,23 +52,65 @@ public class AppPreferences {
     public String getHeaderKey(){ return preferences.get("header_key", "");}
     public void setHeaderKey(String key){ preferences.put("header_key", key); }
 
-    public String getApplicationKey(int number){ return preferences.get("key_area_key_application_0"+number, "");}
-    public void setApplicationKey(int number, String key){ preferences.put("key_area_key_application_0"+number, key); }
-
-    public String getOceanKey(int number){ return preferences.get("key_area_key_ocean_0"+number, "");}
-    public void setOceanKey(int number, String key){ preferences.put("key_area_key_ocean_0"+number, key); }
-
-    public String getSystemKey(int number){ return preferences.get("key_area_key_system_0"+number, "");}
-    public void setSystemKey(int number, String key){ preferences.put("key_area_key_system_0"+number, key); }
-
-    public String getTitleKek(int number){ return preferences.get("titlekek_"+number, "");}
-    public void setTitleKek(int number, String key){ preferences.put("titlekek_"+number, key); }
-
-
-
-    public int getTitleKeysCount(){                                                                                     // TODO: do the same for other multi-keys and single
-        return preferences.getInt("title_keys_count", 0);
+    // KAKs: Application/Ocean/System
+    public void setKAKAppCount(int number){
+        if (this.kakAppCount > number){
+            for (int i = number; i < this.kakAppCount; i++) {
+                preferences.remove(String.format("key_area_key_application_%02d", number));
+            }
+        }
+        preferences.putInt("key_area_key_application_count", number);
+        this.kakAppCount = number;
     }
+    public void setKAKOceanCount(int number){
+        if (this.kakOceanCount > number){
+            for (int i = number; i < this.kakOceanCount; i++) {
+                preferences.remove(String.format("key_area_key_ocean_%02d", number));
+            }
+        }
+        preferences.putInt("key_area_key_ocean_count", number);
+        this.kakOceanCount = number;
+    }
+    public void setKAKSysCount(int number){
+        if (this.kakSysCount > number){
+            for (int i = number; i < this.kakSysCount; i++) {
+                preferences.remove(String.format("key_area_key_system_%02d", number));
+            }
+        }
+        preferences.putInt("key_area_key_system_count", number);
+        this.kakSysCount = number;
+    }
+
+    public void setTitleKeksCount(int number){
+        if (this.titleKeksCount > number){
+            for (int i = number; i < this.titleKeksCount; i++) {
+                preferences.remove(String.format("titlekek_%02d", number));
+            }
+        }
+        preferences.putInt("titlekek_count", number);
+        this.titleKeksCount = number;
+    }
+
+    public int getKAKAppCount(){ return preferences.getInt("key_area_key_application_count", 0); }
+    public int getKAKOceanCount(){ return preferences.getInt("key_area_key_ocean_count", 0); }
+    public int getKAKSysCount(){ return preferences.getInt("key_area_key_system_count", 0); }
+    public int getTitleKeksCount(){ return preferences.getInt("titlekek_count", 0); }
+
+    public String getApplicationKey(int number){ return preferences.get(String.format("key_area_key_application_%02d", number), "");}
+    public void setApplicationKey(int number, String key){ preferences.put(String.format("key_area_key_application_%02d", number), key); }
+
+    public String getOceanKey(int number){ return preferences.get(String.format("key_area_key_ocean_%02d", number), "");}
+    public void setOceanKey(int number, String key){ preferences.put(String.format("key_area_key_ocean_%02d", number), key); }
+
+    public String getSystemKey(int number){ return preferences.get(String.format("key_area_key_system_%02d", number), "");}
+    public void setSystemKey(int number, String key){ preferences.put(String.format("key_area_key_system_%02d", number), key); }
+
+    public String getTitleKek(int number){ return preferences.get(String.format("titlekek_%02d", number), "");}
+    public void setTitleKek(int number, String key){ preferences.put(String.format("titlekek_%02d", number), key); }
+
+
+    // Title keys
+    public int getTitleKeysCount(){ return preferences.getInt("title_keys_count", 0); }
     // Since we don't want to store title keys that are no longer in use, we have to (try to) remove them.
     // This part of code works as a charm. Don't touch.
     public void setTitleKeysCount(int number){

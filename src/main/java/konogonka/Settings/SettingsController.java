@@ -42,40 +42,31 @@ public class SettingsController implements Initializable {
         ListSelectorTitleKeysController.initSelector(32, null);  // 32 required
 
         LinkedHashMap<String, String> preparedPairsMapInit = new LinkedHashMap<>();
-        String kaekApp;
-        int cnt = 0;
 
-        while (!(kaekApp = AppPreferences.getInstance().getApplicationKey(cnt)).isEmpty()){
-            preparedPairsMapInit.put("key_area_key_application_"+String.format("%02d", cnt), kaekApp);
-            cnt++;
+        for (int i = 0; i < AppPreferences.getInstance().getKAKAppCount(); i++){
+            preparedPairsMapInit.put(String.format("key_area_key_application_%02d", i), AppPreferences.getInstance().getApplicationKey(i));
         }
         ListSelectorKAEKAppController.setList(preparedPairsMapInit);
-
         preparedPairsMapInit.clear();
-        cnt = 0;
-        while (!(kaekApp = AppPreferences.getInstance().getOceanKey(cnt)).isEmpty()){
-            preparedPairsMapInit.put("key_area_key_ocean_"+String.format("%02d", cnt), kaekApp);
-            cnt++;
+
+        for (int i = 0; i < AppPreferences.getInstance().getKAKOceanCount(); i++){
+            preparedPairsMapInit.put(String.format("key_area_key_ocean_%02d", i), AppPreferences.getInstance().getOceanKey(i));
         }
         ListSelectorKAEKOceanController.setList(preparedPairsMapInit);
-
         preparedPairsMapInit.clear();
-        cnt = 0;
-        while (!(kaekApp = AppPreferences.getInstance().getTitleKek(cnt)).isEmpty()){
-            preparedPairsMapInit.put("titlekek_"+String.format("%02d", cnt), kaekApp);
-            cnt++;
-        }
-        ListSelectorTitleKeksController.setList(preparedPairsMapInit);
 
-        preparedPairsMapInit.clear();
-        cnt = 0;
-        while (!(kaekApp = AppPreferences.getInstance().getSystemKey(cnt)).isEmpty()){
-            preparedPairsMapInit.put("key_area_key_system_"+String.format("%02d", cnt), kaekApp);
-            cnt++;
+        for (int i = 0; i < AppPreferences.getInstance().getKAKSysCount(); i++){
+            preparedPairsMapInit.put(String.format("key_area_key_system_%02d", i), AppPreferences.getInstance().getSystemKey(i));
         }
         ListSelectorKAEKSysController.setList(preparedPairsMapInit);
-
         preparedPairsMapInit.clear();
+
+        for (int i = 0; i < AppPreferences.getInstance().getTitleKeksCount(); i++){
+            preparedPairsMapInit.put(String.format("titlekek_%02d", i), AppPreferences.getInstance().getTitleKek(i));
+        }
+        ListSelectorTitleKeksController.setList(preparedPairsMapInit);
+        preparedPairsMapInit.clear();
+
         for (int i = 0; i < AppPreferences.getInstance().getTitleKeysCount(); i++){
             preparedPairsMapInit.put(
                     AppPreferences.getInstance().getTitleKeyPair(i)[0],
@@ -118,32 +109,32 @@ public class SettingsController implements Initializable {
 
                     String keyParsed;
                     int counter = 0;
-                    while ((keyParsed = fileMap.get("key_area_key_application_"+String.format("%02d", counter))) != null){
-                        kaekSingle.put("key_area_key_application_"+String.format("%02d", counter), keyParsed);
+                    while ((keyParsed = fileMap.get(String.format("key_area_key_application_%02d", counter))) != null){
+                        kaekSingle.put(String.format("key_area_key_application_%02d", counter), keyParsed);
                         counter++;
                     }
                     ListSelectorKAEKAppController.setList(kaekSingle);
 
                     kaekSingle.clear();
                     counter = 0;
-                    while ((keyParsed = fileMap.get("key_area_key_ocean_"+String.format("%02d", counter))) != null){
-                        kaekSingle.put("key_area_key_ocean_"+String.format("%02d", counter), keyParsed);
+                    while ((keyParsed = fileMap.get(String.format("key_area_key_ocean_%02d", counter))) != null){
+                        kaekSingle.put(String.format("key_area_key_ocean_%02d", counter), keyParsed);
                         counter++;
                     }
                     ListSelectorKAEKOceanController.setList(kaekSingle);
 
                     kaekSingle.clear();
                     counter = 0;
-                    while ((keyParsed = fileMap.get("key_area_key_system_"+String.format("%02d", counter))) != null){
-                        kaekSingle.put("key_area_key_system_"+String.format("%02d", counter), keyParsed);
+                    while ((keyParsed = fileMap.get(String.format("key_area_key_system_%02d", counter))) != null){
+                        kaekSingle.put(String.format("key_area_key_system_%02d", counter), keyParsed);
                         counter++;
                     }
                     ListSelectorKAEKSysController.setList(kaekSingle);
 
                     kaekSingle.clear();
                     counter = 0;
-                    while ((keyParsed = fileMap.get("titlekek_"+String.format("%02d", counter))) != null){
-                        kaekSingle.put("titlekek_"+String.format("%02d", counter), keyParsed);
+                    while ((keyParsed = fileMap.get(String.format("titlekek_%02d", counter))) != null){
+                        kaekSingle.put(String.format("titlekek_%02d", counter), keyParsed);
                         counter++;
                     }
                     ListSelectorTitleKeksController.setList(kaekSingle);
@@ -203,24 +194,32 @@ public class SettingsController implements Initializable {
                 for (int i = 0; i < kaekAppKeySet.length; i++)
                     AppPreferences.getInstance().setApplicationKey(i, kaekAppKeySet[i].split("\\s=\\s", 2)[1]);
             }
+            if (kaekAppKeySet != null)
+                AppPreferences.getInstance().setKAKAppCount(kaekAppKeySet.length);
 
             String[] kaekOceanKeySet = ListSelectorKAEKOceanController.getList();
             if (kaekOceanKeySet != null){
                 for (int i = 0; i < kaekOceanKeySet.length; i++)
                     AppPreferences.getInstance().setOceanKey(i, kaekOceanKeySet[i].split("\\s=\\s", 2)[1]);
             }
+            if (kaekOceanKeySet != null)
+                AppPreferences.getInstance().setKAKOceanCount(kaekOceanKeySet.length);
 
             String[] kaekSysKeySet = ListSelectorKAEKSysController.getList();
             if (kaekSysKeySet != null){
                 for (int i = 0; i < kaekSysKeySet.length; i++)
                     AppPreferences.getInstance().setSystemKey(i, kaekSysKeySet[i].split("\\s=\\s", 2)[1]);
             }
+            if (kaekSysKeySet != null)
+                AppPreferences.getInstance().setKAKSysCount(kaekSysKeySet.length);
 
             String[] titleKekSet = ListSelectorTitleKeksController.getList();
             if (titleKekSet != null){
                 for (int i = 0; i < titleKekSet.length; i++)
                     AppPreferences.getInstance().setTitleKek(i, titleKekSet[i].split("\\s=\\s", 2)[1]);
             }
+            if (titleKekSet != null)
+                AppPreferences.getInstance().setTitleKeksCount(titleKekSet.length);
 
             String[] titleKeysSet = ListSelectorTitleKeysController.getList();
             if (titleKeysSet != null){
