@@ -12,10 +12,10 @@ Deep WIP multi-tool to work with XCI/NSP/NCA/NRO(?) files
 * [OpenJFX](https://wiki.openjdk.java.net/display/OpenJFX/Main)
 * Few icons taken from: [materialdesignicons.com](http://materialdesignicons.com/)
 
+### Information taken from
+* Switch brew wiki
+* roothorick, shchmue, He and others advices and notes. Thanks!
+
 ### System requirements
 
 JRE/JDK 8u60 or higher.
-
-### Thanks
-
-TBD
