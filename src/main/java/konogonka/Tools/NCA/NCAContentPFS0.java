@@ -1,12 +1,10 @@
 package konogonka.Tools.NCA;
 
-import konogonka.LoperConverter;
-import konogonka.RainbowHexDump;
 import konogonka.Tools.NCA.NCASectionTableBlock.NCASectionBlock;
 import konogonka.Tools.PFS0.IPFS0Provider;
 import konogonka.Tools.PFS0.PFS0EncryptedProvider;
 import konogonka.Tools.PFS0.PFS0Provider;
-import konogonka.ctraes.AesCtr;
+import konogonka.ctraes.AesCtrDecryptSimple;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -94,7 +92,7 @@ public class NCAContentPFS0 {
             long abosluteOffsetPosition = offsetPosition + (mediaStartOffset * 0x200);
             raf.seek(abosluteOffsetPosition);
 
-            AesCtrDecryptor decryptor = new AesCtrDecryptor(decryptedKey, ncaSectionBlock.getSectionCTR(), mediaStartOffset * 0x200);
+            AesCtrDecryptSimple decryptor = new AesCtrDecryptSimple(decryptedKey, ncaSectionBlock.getSectionCTR(), mediaStartOffset * 0x200);
 
             byte[] encryptedBlock;
             byte[] dectyptedBlock;
@@ -106,7 +104,6 @@ public class NCAContentPFS0 {
             Thread pThread = new Thread(new ParseThread(
                     streamInp,
                     ncaSectionBlock.getSuperBlockPFS0().getPfs0offset(),
-                    ncaSectionBlock.getSuperBlockPFS0().getPfs0size(),
                     ncaSectionBlock.getSuperBlockPFS0().getHashTableOffset(),
                     ncaSectionBlock.getSuperBlockPFS0().getHashTableSize()
             ));
@@ -129,39 +126,46 @@ public class NCAContentPFS0 {
             pThread.join();
             streamOut.close();
             raf.close();
-        }
-        /*
-        * Simplify decryption of the CTR
-        * */
-        private class AesCtrDecryptor{
-
-            private long realMediaOffset;
-            byte[] IVarray;
-            private AesCtr aesCtr;
-
-            AesCtrDecryptor(byte[] decryptedKey, byte[] sectionCTR, long realMediaOffset) throws Exception{
-                this.realMediaOffset = realMediaOffset;
-                aesCtr = new AesCtr(decryptedKey);
-                // IV for CTR == 16 bytes
-                IVarray = new byte[0x10];
-                // Populate first 8 bytes taken from Header's section Block CTR
-                System.arraycopy(LoperConverter.flip(sectionCTR), 0x0, IVarray, 0x0, 0x8);
+            // TODO: re-write
+            if (pfs0 != null){
+                PFS0EncryptedProvider pfs0enc = (PFS0EncryptedProvider)pfs0;
+                pfs0enc.setMeta(
+                        offsetPosition,
+                        file,
+                        decryptedKey,
+                        ncaSectionBlock.getSectionCTR(),
+                        mediaStartOffset,
+                        mediaEndOffset
+                );
             }
+            //****************************************___DEBUG___*******************************************************
+            //*
+            File contentFile = new File("/tmp/decryptedNCA0block.pfs0");
+            BufferedOutputStream extractedFileOS = new BufferedOutputStream(new FileOutputStream(contentFile));
 
-            public byte[] dectyptNext(byte[] enctyptedBlock) throws Exception{
-                updateIV(realMediaOffset);
-                byte[] decryptedBlock = aesCtr.decrypt(enctyptedBlock, IVarray);
-                realMediaOffset += 0x200;
-                return decryptedBlock;
-            }
-            // Populate last 8 bytes calculated. Thanks hactool project!
-            private void updateIV(long offset){
-                offset >>= 4;
-                for (int i = 0; i < 0x8; i++){
-                    IVarray[0x10-i-1] = (byte)(offset & 0xff);                                            // Note: issues could be here
-                    offset >>= 8;
+            raf = new RandomAccessFile(file, "r");
+            raf.seek(abosluteOffsetPosition);
+            decryptor = new AesCtrDecryptSimple(decryptedKey, ncaSectionBlock.getSectionCTR(), mediaStartOffset * 0x200);
+
+            for (int i = 0; i < mediaBlockSize; i++){
+                encryptedBlock = new byte[0x200];
+                if (raf.read(encryptedBlock) != -1){
+                    //dectyptedBlock = aesCtr.decrypt(encryptedBlock);
+                    dectyptedBlock = decryptor.dectyptNext(encryptedBlock);
+                    // Writing decrypted data to pipe
+                    try {
+                        extractedFileOS.write(dectyptedBlock);
+                    }
+                    catch (IOException e){
+                        System.out.println("Exception @extract");
+                        break;
+                    }
                 }
             }
+            extractedFileOS.close();
+            raf.close();
+            System.out.println("@extract done");
+            //*//******************************************************************************************************/
         }
         /*
         * Since we representing decrypted data as stream (it's easier to look on it this way),
@@ -175,15 +179,14 @@ public class NCAContentPFS0 {
             long hashTableSize;
             long hashTableRecordsCount;
             long pfs0offset;
-            long pfs0size;
 
-            ParseThread(PipedInputStream pipedInputStream, long pfs0offset, long pfs0size, long hashTableOffset, long hashTableSize){
+
+            ParseThread(PipedInputStream pipedInputStream, long pfs0offset, long hashTableOffset, long hashTableSize){
                 this.pipedInputStream = pipedInputStream;
                 this.hashTableOffset = hashTableOffset;
                 this.hashTableSize = hashTableSize;
                 this.hashTableRecordsCount = hashTableSize / 0x20;
                 this.pfs0offset = pfs0offset;
-                this.pfs0size = pfs0size;
             }
 
             @Override
@@ -220,7 +223,7 @@ public class NCAContentPFS0 {
                         counter += toSkip;
                     }
                     //---------------------------------------------------------
-                    pfs0 = new PFS0EncryptedProvider(pipedInputStream);
+                    pfs0 = new PFS0EncryptedProvider(pipedInputStream, counter);
                     pipedInputStream.close();
                 }
                 catch (Exception e){

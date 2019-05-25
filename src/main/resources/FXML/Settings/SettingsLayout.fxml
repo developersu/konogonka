@@ -112,7 +112,7 @@
       <ButtonBar>
         <buttons>
             <Button fx:id="okBtn" mnemonicParsing="false" text="Ok" />
-          <Button fx:id="cancelBtn" mnemonicParsing="false" text="Cancel" />
+          <Button fx:id="cancelBtn" mnemonicParsing="false" styleClass="buttonRed" text="Cancel" />
         </buttons>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

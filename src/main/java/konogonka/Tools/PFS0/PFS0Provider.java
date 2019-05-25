@@ -93,11 +93,18 @@ public class PFS0Provider implements IPFS0Provider{
         raf.close();
     }
 
+    @Override
+    public boolean isEncrypted() { return false; }
+    @Override
     public String getMagic() { return magic; }
+    @Override
     public int getFilesCount() { return filesCount; }
+    @Override
     public int getStringTableSize() { return stringTableSize; }
+    @Override
     public byte[] getPadding() { return padding; }
-
+    @Override
     public long getRawFileDataStart() { return rawFileDataStart; }
+    @Override
     public PFS0subFile[] getPfs0subFiles() { return pfs0subFiles; }
 }

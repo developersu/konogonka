@@ -407,7 +407,7 @@
                            </AnchorPane>
                            <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="12">
                               <children>
-                              <Label text="Rights ID (Ticket)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Label text="Rights ID (title.keys key-name to decrypt)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
                                     <Insets left="5.0" right="5.0" />
                                  </padding>
