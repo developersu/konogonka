@@ -92,8 +92,7 @@ public class NCASectionHeaderBlockController {
             BKTRu32Section2Lbl,
             BKTRs32Section2Lbl,
             BKTRunknownSection2Lbl,
-            sectionCTRlowLbl,
-            sectionCTRhighLbl;
+            sectionCTRLbl;
 
     public void resetTab() {
         versionLbl.setText("-");
@@ -167,8 +166,7 @@ public class NCASectionHeaderBlockController {
         BKTRu32Section2Lbl.setText("-");
         BKTRs32Section2Lbl.setText("-");
         BKTRunknownSection2Lbl.setText("-");
-        sectionCTRlowLbl.setText("-");
-        sectionCTRhighLbl.setText("-");
+        sectionCTRLbl.setText("-");
         unknwnEndPaddingTF.setText("-");
     }
 
@@ -258,8 +256,7 @@ public class NCASectionHeaderBlockController {
         BKTRu32Section2Lbl.setText(Integer.toString(ncaSectionBlock.getBKTRu32Section2()));
         BKTRs32Section2Lbl.setText(Integer.toString(ncaSectionBlock.getBKTRs32Section2()));
         BKTRunknownSection2Lbl.setText(byteArrToHexString(ncaSectionBlock.getBKTRunknownSection2()));
-        sectionCTRlowLbl.setText(byteArrToHexString(ncaSectionBlock.getSectionCTRlow()));
-        sectionCTRhighLbl.setText(byteArrToHexString(ncaSectionBlock.getSectionCTRhigh()));
+        sectionCTRLbl.setText(byteArrToHexString(ncaSectionBlock.getSectionCTR()));
         unknwnEndPaddingTF.setText(byteArrToHexString(ncaSectionBlock.getUnknownEndPadding()));
     }
 }

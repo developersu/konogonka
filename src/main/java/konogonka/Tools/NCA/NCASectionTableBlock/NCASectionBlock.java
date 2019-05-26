@@ -91,10 +91,6 @@ public class NCASectionBlock {
     public int getBKTRs32Section2() { return BKTRs32Section2; }
     public byte[] getBKTRunknownSection2() { return BKTRunknownSection2; }
     public byte[] getSectionCTR() { return sectionCTR; }
-    // Sugar
-    public byte[] getSectionCTRlow() { return Arrays.copyOfRange(sectionCTR, 0, 0x4); }
-    public byte[] getSectionCTRhigh() { return Arrays.copyOfRange(sectionCTR, 0x4, 0x8); }
-
     public byte[] getUnknownEndPadding() { return unknownEndPadding; }
 }
 
