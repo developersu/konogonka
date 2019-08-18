@@ -28,7 +28,7 @@ public class NspXciExtractor extends Task<Void> {
     }
 
     @Override
-    protected Void call() {                                                                         // TODO: add cute progress bar
+    protected Void call() {
         for (IRowModel model : models) {
             logPrinter.print("\tStart extracting: "+model.getFileName(), EMsgType.INFO);
             File contentFile = new File(filesDestPath + model.getFileName());
@@ -38,9 +38,21 @@ public class NspXciExtractor extends Task<Void> {
 
                 byte[] readBuf = new byte[0x800000]; // 8mb NOTE: consider switching to 1mb 1048576
                 int readSize;
+                //*** PROGRESS BAR VARS START
+                long progressHandleFSize = model.getFileSize();
+                int progressHandleFRead = 0;
+                //*** PROGRESS BAR VARS END
                 while ((readSize = pis.read(readBuf)) > -1) {
                     extractedFileBOS.write(readBuf, 0, readSize);
                     readBuf = new byte[0x800000];
+                    //*** PROGRESS BAR DECORCATIONS START
+                    progressHandleFRead += readSize;
+                    try {
+                        logPrinter.updateProgress((progressHandleFRead)/(progressHandleFSize/100.0) / 100.0);
+                    }catch (InterruptedException ie){
+                        getException().printStackTrace();               // TODO: Do something with this
+                    }
+                    //*** PROGRESS BAR DECORCATIONS END
                 }
                 extractedFileBOS.close();
             } catch (IOException ioe) {
