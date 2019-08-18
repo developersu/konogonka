@@ -45,7 +45,7 @@ class XTSTweak {
     static byte[] nintTweakFunction(long tweakValue) {
         byte[] bs = new byte[BLOCK_SIZE];
         byte[] twk = Pack.longToBigEndian(tweakValue);
-        int j = BLOCK_SIZE-twk.length;
+        int j = BLOCK_SIZE - twk.length;
         for (byte b: twk){
             bs[j++] = b;
         }

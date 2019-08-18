@@ -22,6 +22,7 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
     private long rawBlockDataStart;
 
     private PFS0DecryptedStreamProvider pfs0DecryptedStreamProvider;
+
     // Let's do some fuck
     private class PFS0DecryptedStreamProvider{
         private long mediaStartOffset;  // * 0x200
@@ -38,7 +39,7 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
 
         public void getStarted(PFS0subFile subFile) throws Exception{
 
-            System.out.println("rawBlockDataStart: "+rawBlockDataStart);
+            System.out.println("rawBlockDataStart (PFS0 Start): "+rawBlockDataStart);
             System.out.println("Skip blocks:       "+rawBlockDataStart/0x200);                                  // aesCtrDecryptSimple.skip(THIS)
             System.out.println("Skip bytes:        "+ (rawBlockDataStart-(rawBlockDataStart/0x200)*0x200));     // write to stream after skiping THIS
 
@@ -255,4 +256,16 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
     public long getRawFileDataStart() { return rawFileDataStart; }
     @Override
     public PFS0subFile[] getPfs0subFiles() { return pfs0subFiles; }
+
+    @Override
+    public PipedInputStream getProviderSubFilePipedInpStream(String subFileName) {
+        //TODO
+        return null;
+    }
+
+    @Override
+    public PipedInputStream getProviderSubFilePipedInpStream(int subFileNumber) {
+        //TODO
+        return null;
+    }
 }

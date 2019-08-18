@@ -187,7 +187,8 @@ public class NCAController implements TabController {
             NCASectionHeaderFourthController.populateTab(ncaProvider.getSectionBlock3());
             // Section content blocks
             // TODO: FIX: This code executes getNCAContentPFS0() method twice
-            NCAContentPFS0 ncaContentPFS0 = ncaProvider.getNCAContentPFS0(0);
+            NCAContentPFS0 ncaContentPFS0;
+            ncaContentPFS0 = ncaProvider.getNCAContentPFS0(0);
             NCASectionContentFirstController.populateFields(ncaContentPFS0.getPfs0(), selectedFile, ncaContentPFS0.getSHA256hashes());
             ncaContentPFS0 = ncaProvider.getNCAContentPFS0(1);
             NCASectionContentSecondController.populateFields(ncaContentPFS0.getPfs0(), selectedFile, ncaContentPFS0.getSHA256hashes());

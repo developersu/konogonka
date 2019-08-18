@@ -252,7 +252,7 @@ public class NCAProvider {
 
         // If empty Rights ID
         if (Arrays.equals(rightsId, new byte[0x10])) {
-            key = decryptedKey2;                                       // TODO: Just remember this dumb hach
+            key = decryptedKey2;                                       // TODO: Just remember this dumb hack
         }
         else {
             byte[] rightsIDkey = hexStrToByteArray(keys.get(byteArrToHexString(rightsId)));

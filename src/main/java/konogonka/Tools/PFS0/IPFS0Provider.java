@@ -1,6 +1,8 @@
 package konogonka.Tools.PFS0;
 
-public interface IPFS0Provider {
+import konogonka.Tools.ISuperProvider;
+
+public interface IPFS0Provider extends ISuperProvider {
     boolean isEncrypted();
     String getMagic();
     int getFilesCount();

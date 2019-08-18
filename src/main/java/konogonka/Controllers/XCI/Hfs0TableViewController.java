@@ -17,12 +17,16 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import konogonka.Controllers.IRowModel;
+import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.XCI.HFS0Provider;
 
 
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.nio.IntBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -30,6 +34,8 @@ public class Hfs0TableViewController implements Initializable {
     @FXML
     private TableView<Hfs0RowModel> table;
     private ObservableList<Hfs0RowModel> rowsObsLst;
+
+    private ISuperProvider provider;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -168,12 +174,14 @@ public class Hfs0TableViewController implements Initializable {
      * Add files when user selected them
      * */
     public void setContentToTable(HFS0Provider hfs0){
+        this.provider = hfs0;
         rowsObsLst.clear();
         Hfs0RowModel.resetNumCnt();
         if (hfs0 == null) {
             table.refresh();
             return;
         }
+        // Note: 'i' in here is extra important to be stored in sequence items added.
         for (int i = 0; i < hfs0.getFilesCnt(); i++){
             rowsObsLst.add(new Hfs0RowModel(
                     hfs0.getHfs0Files()[i].getName(),
@@ -188,7 +196,7 @@ public class Hfs0TableViewController implements Initializable {
         table.refresh();
     }
     /**
-     * Return files ready for upload. Requested from NSLMainController only -> uploadBtnAction()                            //TODO: set undefined
+     * Return list of models selected. Requested from NSLMainController only -> uploadBtnAction()                            //TODO: set undefined
      * @return null if no files marked for upload
      *         List<File> if there are files
      * */
@@ -203,4 +211,6 @@ public class Hfs0TableViewController implements Initializable {
         }
         return models;
     }
+
+    public ISuperProvider getProvider(){ return provider; }
 }

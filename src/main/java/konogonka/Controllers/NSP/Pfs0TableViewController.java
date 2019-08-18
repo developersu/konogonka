@@ -17,12 +17,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import konogonka.Controllers.IRowModel;
+import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.PFS0.IPFS0Provider;
-import konogonka.Tools.PFS0.PFS0Provider;
 
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -30,6 +30,8 @@ public class Pfs0TableViewController implements Initializable {
     @FXML
     private TableView<Pfs0RowModel> table;
     private ObservableList<Pfs0RowModel> rowsObsLst;
+
+    private ISuperProvider provider;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -146,6 +148,7 @@ public class Pfs0TableViewController implements Initializable {
      * Add files when user selected them
      * */
     public void setNSPToTable(IPFS0Provider pfs){
+        this.provider = pfs;
         rowsObsLst.clear();
         Pfs0RowModel.resetNumCnt();
         if (pfs == null) {
@@ -163,7 +166,7 @@ public class Pfs0TableViewController implements Initializable {
         table.refresh();
     }
     /**
-     * Return files ready for upload. Requested from NSLMainController only -> uploadBtnAction()                            //TODO: set undefined
+     * Return list of models checked. Requested from NSLMainController only -> uploadBtnAction()                            //TODO: set undefined
      * @return null if no files marked for upload
      *         List<File> if there are files
      * */
@@ -178,4 +181,5 @@ public class Pfs0TableViewController implements Initializable {
         }
         return models;
     }
+    public ISuperProvider getProvider(){ return provider; }
 }

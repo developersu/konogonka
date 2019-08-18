@@ -1,9 +1,9 @@
 package konogonka.Tools.PFS0;
 
+import konogonka.ModelControllers.EMsgType;
 import konogonka.RainbowHexDump;
 
-import java.io.File;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -18,10 +18,12 @@ public class PFS0Provider implements IPFS0Provider{
     private byte[] padding;
     private PFS0subFile[] pfs0subFiles;
 
+    private File file;
+
     public PFS0Provider(File fileWithPfs0) throws Exception{ this(fileWithPfs0, 0); }
 
     public PFS0Provider(File fileWithPfs0, long pfs0offsetPosition) throws Exception{
-
+        file = fileWithPfs0;
         RandomAccessFile raf = new RandomAccessFile(fileWithPfs0, "r");         // TODO: replace to bufferedInputStream
 
         raf.seek(pfs0offsetPosition);
@@ -107,4 +109,73 @@ public class PFS0Provider implements IPFS0Provider{
     public long getRawFileDataStart() { return rawFileDataStart; }
     @Override
     public PFS0subFile[] getPfs0subFiles() { return pfs0subFiles; }
+    @Override
+    public PipedInputStream getProviderSubFilePipedInpStream(int subFileNumber){        // TODO: Throw exceptions?
+        if (subFileNumber >= pfs0subFiles.length) {
+            System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Requested sub file doesn't exists");
+            return null;
+        }
+        PipedOutputStream streamOut = new PipedOutputStream();
+        Thread workerThread;
+        try{
+            PipedInputStream streamIn = new PipedInputStream(streamOut);
+
+            workerThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Executing thread");
+                    try {
+                        long subFileRealPosition = rawFileDataStart + pfs0subFiles[subFileNumber].getOffset();
+                        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                        if (bis.skip(subFileRealPosition) != subFileRealPosition) {
+                            System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Unable to skip requested offset");
+                            return;
+                        }
+
+                        int readPice = 8388608; // 8mb NOTE: consider switching to 1mb 1048576
+
+                        long readFrom = 0;
+                        long realFileSize = pfs0subFiles[subFileNumber].getSize();
+
+                        byte[] readBuf;
+
+                        while (readFrom < realFileSize) {
+                            if (realFileSize - readFrom < readPice)
+                                readPice = Math.toIntExact(realFileSize - readFrom);    // it's safe, I guarantee
+                            readBuf = new byte[readPice];
+                            if (bis.read(readBuf) != readPice) {
+                                System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Unable to read requested size from file.");
+                                return;
+                            }
+                            streamOut.write(readBuf);
+                            readFrom += readPice;
+                        }
+                        bis.close();
+                        streamOut.close();
+                    } catch (IOException ioe) {
+                        System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Unable to provide stream");
+                        ioe.printStackTrace();
+                    }
+                    System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Thread died");
+                }
+            });
+            workerThread.start();
+            return streamIn;
+        }
+        catch (IOException ioe){
+            System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Unable to provide stream");
+            return null;
+        }
+    }
+    /**
+     * Some sugar
+     * */
+    @Override
+    public PipedInputStream getProviderSubFilePipedInpStream(String subFileName){
+        for (int i = 0; i < pfs0subFiles.length; i++){
+            if (pfs0subFiles[i].getName().equals(subFileName))
+                return getProviderSubFilePipedInpStream(i);
+        }
+        return null;
+    }
 }

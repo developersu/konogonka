@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import konogonka.Controllers.IRowModel;
 import konogonka.Controllers.TabController;
 import konogonka.MediatorControl;
+import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.PFS0.IPFS0Provider;
 import konogonka.Tools.PFS0.PFS0Provider;
 import konogonka.Workers.AnalyzerNSP;
@@ -47,7 +48,8 @@ public class NSPController implements TabController {
 
     private void extractFiles(){
         List<IRowModel> models = tableFilesListController.getFilesForDump();
-        if (models != null && !models.isEmpty()){
+        ISuperProvider provider = tableFilesListController.getProvider();
+        if (models != null && !models.isEmpty() && (provider != null)){
 
             File dir = new File(System.getProperty("user.dir")+File.separator+selectedFile.getName()+" extracted");
             try {
@@ -61,7 +63,8 @@ public class NSPController implements TabController {
 
             extractBtn.setDisable(true);
 
-            NspXciExtractor extractor = new NspXciExtractor(rawFileDataStart, models, dir.getAbsolutePath()+File.separator, selectedFile);
+            //NspXciExtractor extractor = new NspXciExtractor(rawFileDataStart, models, dir.getAbsolutePath()+File.separator, selectedFile); //TODO: REMOVE
+            NspXciExtractor extractor = new NspXciExtractor(provider, models, dir.getAbsolutePath()+File.separator);
             extractor.setOnSucceeded(e->{
                 extractBtn.setDisable(false);
             });

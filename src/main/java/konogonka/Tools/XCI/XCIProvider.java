@@ -55,7 +55,7 @@ public class XCIProvider{
             }
             xciGamecardCert = new XCIGamecardCert(gamecardCertBytes);
 
-            hfs0ProviderMain = new HFS0Provider(0xf000, raf);
+            hfs0ProviderMain = new HFS0Provider(0xf000, raf, file);
             if (hfs0ProviderMain.getFilesCnt() < 3){
                 raf.close();
                 throw new Exception("XCI Can't read Gamecard certificate bytes.");
@@ -65,19 +65,19 @@ public class XCIProvider{
             for (HFS0File hfs0File: hfs0ProviderMain.getHfs0Files()){
                 partition = hfs0File.getName();
                 if (partition.equals("update")) {
-                    hfs0ProviderUpdate = new HFS0Provider(hfs0ProviderMain.getRawFileDataStart() + hfs0File.getOffset(), raf);
+                    hfs0ProviderUpdate = new HFS0Provider(hfs0ProviderMain.getRawFileDataStart() + hfs0File.getOffset(), raf, file);
                     continue;
                 }
                 if (partition.equals("normal")) {
-                    hfs0ProviderNormal = new HFS0Provider(hfs0ProviderMain.getRawFileDataStart() + hfs0File.getOffset(), raf);
+                    hfs0ProviderNormal = new HFS0Provider(hfs0ProviderMain.getRawFileDataStart() + hfs0File.getOffset(), raf, file);
                     continue;
                 }
                 if (partition.equals("secure")) {
-                    hfs0ProviderSecure = new HFS0Provider(hfs0ProviderMain.getRawFileDataStart() + hfs0File.getOffset(), raf);
+                    hfs0ProviderSecure = new HFS0Provider(hfs0ProviderMain.getRawFileDataStart() + hfs0File.getOffset(), raf, file);
                     continue;
                 }
                 if (partition.equals("logo")) {
-                    hfs0ProviderLogo = new HFS0Provider(hfs0ProviderMain.getRawFileDataStart() + hfs0File.getOffset(), raf);
+                    hfs0ProviderLogo = new HFS0Provider(hfs0ProviderMain.getRawFileDataStart() + hfs0File.getOffset(), raf, file);
                 }
             }
             raf.close();

@@ -45,7 +45,7 @@ public class NCAContentPFS0 {
                         pfs0 = new PFS0Provider(file, pfs0Location);
                     }
                     // If encrypted (regular)
-                    else if (ncaSectionBlock.getCryptoType() == 0x3){
+                    else if (ncaSectionBlock.getCryptoType() == 0x03){
                         new CryptoSection03(file,
                                 offsetPosition,
                                 decryptedKey,
@@ -139,8 +139,8 @@ public class NCAContentPFS0 {
                 );
             }
             //****************************************___DEBUG___*******************************************************
-            //*
-            File contentFile = new File("/tmp/decryptedNCA0block.pfs0");
+            /*
+            File contentFile = new File("/tmp/decryptedNCA0block_"+offsetPosition+".pfs0");
             BufferedOutputStream extractedFileOS = new BufferedOutputStream(new FileOutputStream(contentFile));
 
             raf = new RandomAccessFile(file, "r");

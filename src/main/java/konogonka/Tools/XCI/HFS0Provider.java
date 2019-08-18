@@ -1,19 +1,18 @@
 package konogonka.Tools.XCI;
 
 import konogonka.RainbowHexDump;
+import konogonka.Tools.ISuperProvider;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.LinkedList;
 
 import static konogonka.LoperConverter.*;
 
 /**
  * HFS0
  * */
-public class HFS0Provider {
+public class HFS0Provider implements ISuperProvider {
 
     private boolean magicHFS0;
     private int filesCnt;
@@ -23,7 +22,10 @@ public class HFS0Provider {
 
     private HFS0File[] hfs0Files;
 
-    HFS0Provider(long hfsOffsetPosition, RandomAccessFile raf) throws Exception{
+    private File file;
+
+    HFS0Provider(long hfsOffsetPosition, RandomAccessFile raf, File file) throws Exception{
+        this.file = file;    // Will be used @ getHfs0FilePipedInpStream. It's a bad implementation.
         byte[] hfs0bytes = new byte[16];
         try{
             raf.seek(hfsOffsetPosition);
@@ -106,4 +108,72 @@ public class HFS0Provider {
 
     public long getRawFileDataStart() { return rawFileDataStart; }
     public HFS0File[] getHfs0Files() { return hfs0Files; }
+
+    @Override
+    public PipedInputStream getProviderSubFilePipedInpStream(int subFileNumber){
+        PipedOutputStream streamOut = new PipedOutputStream();
+        Thread workerThread;
+        if (subFileNumber >= hfs0Files.length) {
+            System.out.println("HFS0Provider -> getHfs0FilePipedInpStream(): Requested sub file doesn't exists");
+            return null;
+        }
+        try{
+            PipedInputStream streamIn = new PipedInputStream(streamOut);
+
+            workerThread = new Thread(() -> {
+                System.out.println("HFS0Provider -> getHfs0FilePipedInpStream(): Executing thread");
+                try{
+                    long subFileRealPosition = rawFileDataStart + hfs0Files[subFileNumber].getOffset();
+                    BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                    if (bis.skip(subFileRealPosition) != subFileRealPosition) {
+                        System.out.println("HFS0Provider -> getHfs0FilePipedInpStream(): Unable to skip requested offset");
+                        return;
+                    }
+
+                    int readPice = 8388608; // 8mb NOTE: consider switching to 1mb 1048576
+
+                    long readFrom = 0;
+                    long realFileSize = hfs0Files[subFileNumber].getSize();
+
+                    byte[] readBuf;
+
+                    while (readFrom < realFileSize){
+                        if (realFileSize - readFrom < readPice)
+                            readPice = Math.toIntExact(realFileSize - readFrom);    // it's safe, I guarantee
+                        readBuf = new byte[readPice];
+                        if (bis.read(readBuf) != readPice) {
+                            System.out.println("HFS0Provider -> getHfs0FilePipedInpStream(): Unable to read requested size from file.");
+                            return;
+                        }
+                        streamOut.write(readBuf, 0, readPice);
+                        readFrom += readPice;
+                    }
+                    bis.close();
+                    streamOut.close();
+                }
+                catch (IOException ioe){
+                    System.out.println("HFS0Provider -> getHfs0FilePipedInpStream(): Unable to provide stream");
+                    ioe.printStackTrace();
+                }
+                System.out.println("HFS0Provider -> getHfs0FilePipedInpStream(): Thread died");
+            });
+            workerThread.start();
+            return streamIn;
+        }
+        catch (IOException ioe){
+            System.out.println("HFS0Provider -> getHfs0FilePipedInpStream(): Unable to provide stream");
+            return null;
+        }
+    }
+    /**
+     * Sugar
+     * */
+    @Override
+    public PipedInputStream getProviderSubFilePipedInpStream(String subFileName){
+        for (int i = 0; i < hfs0Files.length; i++){
+            if (hfs0Files[i].getName().equals(subFileName))
+                return getProviderSubFilePipedInpStream(i);
+        }
+        return null;
+    }
 }

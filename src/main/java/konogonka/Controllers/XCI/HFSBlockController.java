@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import konogonka.Controllers.IRowModel;
 import konogonka.MediatorControl;
+import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.XCI.HFS0Provider;
 import konogonka.Workers.NspXciExtractor;
 
@@ -90,8 +91,9 @@ public class HFSBlockController implements Initializable {
         List<IRowModel> models;
 
         models = hfs0tableFilesListMainController.getFilesForDump();
+        ISuperProvider provider = hfs0tableFilesListMainController.getProvider();
 
-        if (models != null && !models.isEmpty()){
+        if (models != null && !models.isEmpty() && (provider != null)){
             File dir = new File(System.getProperty("user.dir")+File.separator+selectedFile.getName()+" "+type+" extracted");
             try {
                 dir.mkdir();
@@ -104,7 +106,8 @@ public class HFSBlockController implements Initializable {
 
             extractMainBtn.setDisable(true);
             System.out.println(dir.getAbsolutePath()+File.separator);
-            NspXciExtractor extractor = new NspXciExtractor(bodySize, models, dir.getAbsolutePath()+File.separator, selectedFile);
+            //NspXciExtractor extractor = new NspXciExtractor(bodySize, models, dir.getAbsolutePath()+File.separator, selectedFile);    // TODO: REMOVE
+            NspXciExtractor extractor = new NspXciExtractor(provider, models, dir.getAbsolutePath()+File.separator);
             extractor.setOnSucceeded(e->{
                 extractMainBtn.setDisable(false);
             });
