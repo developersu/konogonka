@@ -9,7 +9,7 @@ import java.util.Arrays;
 import static konogonka.LoperConverter.*;
 
 public class PFS0EncryptedProvider implements IPFS0Provider{
-    private long rawFileDataStart;      // For this class is pointing to data start position relative to media block start
+    private long rawFileDataStart;      // Always -1 @ PFS0EncryptedProvider
 
     private String magic;
     private int filesCount;
@@ -21,138 +21,28 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
 
     private long rawBlockDataStart;
 
-    private PFS0DecryptedStreamProvider pfs0DecryptedStreamProvider;
+    private long offsetPositionInFile;
+    private File file;
+    private byte[] key;
+    private byte[] sectionCTR;
+    private long mediaStartOffset;
+    private long mediaEndOffset;
 
-    // Let's do some fuck
-    private class PFS0DecryptedStreamProvider{
-        private long mediaStartOffset;  // * 0x200
-        private long mediaEndOffset;
-
-
-        private RandomAccessFile raf;
-        private PipedOutputStream streamOut;
-        private PipedInputStream streamInp;
-        private AesCtrDecryptSimple aesCtrDecryptSimple;        // if null, then exception happened.
-
-        public PipedInputStream getPipedInputStream(){ return streamInp; }
-
-
-        public void getStarted(PFS0subFile subFile) throws Exception{
-
-            System.out.println("rawBlockDataStart (PFS0 Start): "+rawBlockDataStart);
-            System.out.println("Skip blocks:       "+rawBlockDataStart/0x200);                                  // aesCtrDecryptSimple.skip(THIS)
-            System.out.println("Skip bytes:        "+ (rawBlockDataStart-(rawBlockDataStart/0x200)*0x200));     // write to stream after skiping THIS
-
-            // DBG START
-            File contentFile = new File("/tmp/pfs0-NCA0block.pfs0");
-            BufferedOutputStream extractedFileOS = new BufferedOutputStream(new FileOutputStream(contentFile));
-            // DBG END
-            long mediaBlockSize = mediaEndOffset - mediaStartOffset;
-            byte[] encryptedBlock;
-            byte[] dectyptedBlock;
-
-            // Skip full-size blocks of 512 bytes that we don't need and start decryption from required one
-            long startFromBlock = rawBlockDataStart/0x200;
-            if (startFromBlock > 0) {
-                aesCtrDecryptSimple.skipNext(startFromBlock);
-                raf.seek(raf.getFilePointer() + (startFromBlock*0x200));
-            }
-            // Since our data could be located in position with some offset from the decrypted block, let's skip bytes left
-            int skipBytes = (int)(rawBlockDataStart-(rawBlockDataStart/0x200)*0x200);
-            if (skipBytes > 0){
-                encryptedBlock = new byte[0x200];
-                if (raf.read(encryptedBlock) != -1){
-                    dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
-                    try {
-                        // DBG START
-                        extractedFileOS.write(dectyptedBlock, skipBytes, 0x200-skipBytes);
-                        // DBG END
-                        //streamOut.write(dectyptedBlock, skipBytes, 0x200);
-                    }
-                    catch (IOException e){
-                        System.out.println("Exception @extract 1st bock");
-                    }
-                }
-                startFromBlock++;
-            }
-
-            for (long i = startFromBlock; i < mediaBlockSize; i++){
-                encryptedBlock = new byte[0x200];
-                if (raf.read(encryptedBlock) != -1){
-                    //dectyptedBlock = aesCtr.decrypt(encryptedBlock);
-                    dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
-                    // Writing decrypted data to pipe
-                    try {
-                        // DBG START
-                        extractedFileOS.write(dectyptedBlock);
-                        // DBG END
-                        //streamOut.write(dectyptedBlock);
-                    }
-                    catch (IOException e){
-                        System.out.println("Exception @extract");
-                        break;
-                    }
-                }
-            }
-
-            // DBG START
-            extractedFileOS.close();
-            // DBG END
-        }
-
-        PFS0DecryptedStreamProvider(File file,
-                                    long rawBlockDataStart,
-                                    long offsetPositionInFile,
-                                    byte[] key,
-                                    byte[] sectionCTR,
-                                    long mediaStartOffset,
-                                    long mediaEndOffset
-        ){
-            this.mediaStartOffset = mediaStartOffset;
-            this.mediaEndOffset = mediaEndOffset;
-
-            try {
-                this.raf = new RandomAccessFile(file, "r");
-                this.raf.seek(offsetPositionInFile + (mediaStartOffset * 0x200));
-                this.aesCtrDecryptSimple = new AesCtrDecryptSimple(key, sectionCTR, mediaStartOffset * 0x200);
-
-                this.streamOut = new PipedOutputStream();
-                this.streamInp = new PipedInputStream(streamOut);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    // TODO: simplify
-    public void setMeta(
-            long offsetPositionInFile,
-            File fileWithEncPFS0,
-            byte[] key,
-            byte[] sectionCTR,
-            long mediaStartOffset,
-            long mediaEndOffset
-    ){
-        this.pfs0DecryptedStreamProvider = new PFS0DecryptedStreamProvider(
-                fileWithEncPFS0,
-                rawBlockDataStart,
-                offsetPositionInFile,
-                key,
-                sectionCTR,
-                mediaStartOffset,
-                mediaEndOffset
-        );
-        try{
-            pfs0DecryptedStreamProvider.getStarted(pfs0subFiles[0]);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-    //---------------------------------------
-    public PFS0EncryptedProvider(PipedInputStream pipedInputStream,
-                                 long pfs0offsetPosition
+    public PFS0EncryptedProvider(PipedInputStream pipedInputStream, long pfs0offsetPosition,
+                                 long offsetPositionInFile,
+                                 File fileWithEncPFS0,
+                                 byte[] key,
+                                 byte[] sectionCTR,
+                                 long mediaStartOffset,
+                                 long mediaEndOffset
     ) throws Exception{
+        // Populate 'meta' data that is needed for getProviderSubFilePipedInpStream()
+        this.offsetPositionInFile = offsetPositionInFile;
+        this.file = fileWithEncPFS0;
+        this.key = key;
+        this.sectionCTR = sectionCTR;
+        this.mediaStartOffset = mediaStartOffset;
+        this.mediaEndOffset = mediaEndOffset;
         // pfs0offsetPosition is a position relative to Media block. Lets add pfs0 'header's' bytes count and get raw data start position in media block
         rawFileDataStart = -1;      // Set -1 for PFS0EncryptedProvider
         // Detect raw data start position using next var
@@ -164,7 +54,7 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
         for (int i = 0; i < 0x10; i++){
             int currentByte = pipedInputStream.read();
             if (currentByte == -1) {
-                throw new Exception("PFS0: Reading stream suddenly ended while trying to read starting 0x10 bytes");
+                throw new Exception("PFS0EncryptedProvider: Reading stream suddenly ended while trying to read starting 0x10 bytes");
             }
             fileStartingBytes[i] = (byte)currentByte;
         }
@@ -173,17 +63,17 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
         // Check PFS0Provider
         magic = new String(fileStartingBytes, 0x0, 0x4, StandardCharsets.US_ASCII);
         if (! magic.equals("PFS0")){
-            throw new Exception("PFS0Provider: Bad magic");
+            throw new Exception("PFS0EncryptedProvider: Bad magic");
         }
         // Get files count
         filesCount = getLEint(fileStartingBytes, 0x4);
         if (filesCount <= 0 ) {
-            throw new Exception("PFS0Provider: Files count is too small");
+            throw new Exception("PFS0EncryptedProvider: Files count is too small");
         }
         // Get string table
         stringTableSize = getLEint(fileStartingBytes, 0x8);
         if (stringTableSize <= 0 ){
-            throw new Exception("PFS0Provider: String table is too small");
+            throw new Exception("PFS0EncryptedProvider: String table is too small");
         }
         padding = Arrays.copyOfRange(fileStartingBytes, 0xc, 0x10);
         //---------------------------------------------------------------------------------------------------------
@@ -199,7 +89,7 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
             for (int j = 0; j < 0x18; j++){
                 int currentByte = pipedInputStream.read();
                 if (currentByte == -1) {
-                    throw new Exception("PFS0: Reading stream suddenly ended while trying to read File Entry Table #"+i);
+                    throw new Exception("PFS0EncryptedProvider: Reading stream suddenly ended while trying to read File Entry Table #"+i);
                 }
                 fileEntryTable[j] = (byte)currentByte;
             }
@@ -218,7 +108,7 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
         for (int i = 0; i < stringTableSize; i++){
             int currentByte = pipedInputStream.read();
             if (currentByte == -1) {
-                throw new Exception("PFS0: Reading stream suddenly ended while trying to read string table");
+                throw new Exception("PFS0EncryptedProvider: Reading stream suddenly ended while trying to read string table");
             }
             stringTbl[i] = (byte)currentByte;
         }
@@ -239,7 +129,6 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
                     zeroBytes[i]
             );
         }
-
     }
 
     @Override
@@ -258,14 +147,147 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
     public PFS0subFile[] getPfs0subFiles() { return pfs0subFiles; }
 
     @Override
-    public PipedInputStream getProviderSubFilePipedInpStream(String subFileName) {
-        //TODO
-        return null;
-    }
-
-    @Override
     public PipedInputStream getProviderSubFilePipedInpStream(int subFileNumber) {
-        //TODO
+        if (subFileNumber >= pfs0subFiles.length) {
+            System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Requested sub file doesn't exists");
+            return null;
+        }
+        /*/------------------------------------------------------------------
+        System.out.println("Raw Block Data Start (PFS0 Start): " + rawBlockDataStart);
+        System.out.println("Skipped blocks:                    " + rawBlockDataStart/0x200);                                  // aesCtrDecryptSimple.skip(THIS)
+        System.out.println("Skip bytes:                        " + (rawBlockDataStart-(rawBlockDataStart/0x200)*0x200));     // write to stream after skiping THIS
+        *///-----------------------------------------------------------------
+        Thread workerThread;
+        PipedOutputStream streamOut = new PipedOutputStream();
+
+        try{
+            PipedInputStream streamIn = new PipedInputStream(streamOut);
+            workerThread = new Thread(() -> {
+                System.out.println("PFS0EncryptedProvider -> getPfs0subFilePipedInpStream(): Executing thread");
+                try {
+                    BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                    // Let's store what we're about to skip
+                    int skipBytes = (int) (offsetPositionInFile + (mediaStartOffset * 0x200));
+                    // Check if skip was successful
+                    if (bis.skip(skipBytes) != skipBytes) {
+                        System.out.println("PFS0EncryptedProvider -> getPfs0subFilePipedInpStream(): Failed to skip range "+skipBytes);
+                        return;
+                    }
+
+                    AesCtrDecryptSimple aesCtrDecryptSimple = new AesCtrDecryptSimple(key, sectionCTR, mediaStartOffset * 0x200);
+
+                    byte[] encryptedBlock;
+                    byte[] dectyptedBlock;
+
+                    //----------------------------- Pre-set: skip non-necessary data --------------------------------
+
+                    long startBlock = (rawBlockDataStart + pfs0subFiles[subFileNumber].getOffset()) / 0x200;            // <- pointing to place where actual data starts
+
+                    if (startBlock > 0) {
+                        aesCtrDecryptSimple.skipNext(startBlock);
+                        skipBytes = (int)(startBlock * 0x200);
+                        if (bis.skip(skipBytes) != skipBytes) {
+                            System.out.println("PFS0EncryptedProvider -> getPfs0subFilePipedInpStream(): Failed to skip range "+skipBytes);
+                            return;
+                        }
+                    }
+
+                    //----------------------------- Step 1: get starting bytes from the end of the junk block --------------------------------
+
+                    // Since our data could be located in position with some offset from the decrypted block, let's skip bytes left. Considering the case when data is not aligned to block
+                    skipBytes = (int) ( (rawBlockDataStart + pfs0subFiles[subFileNumber].getOffset()) - startBlock * 0x200); // <- How much bytes shall we skip to reach requested data start of sub-file
+
+                    if (skipBytes > 0) {
+                        encryptedBlock = new byte[0x200];
+                        if (bis.read(encryptedBlock) == 0x200) {
+                            dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
+                            // If we have extra-small file that is less then a block and even more
+                            if ((0x200 - skipBytes) > pfs0subFiles[subFileNumber].getSize()){
+                                streamOut.write(dectyptedBlock, skipBytes, (int) pfs0subFiles[subFileNumber].getSize());    // safe cast
+                                return;
+                            }
+                            else
+                                streamOut.write(dectyptedBlock, skipBytes, 0x200 - skipBytes);
+                        }
+                        else {
+                            System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from 1st bock");
+                            return;
+                        }
+                        startBlock++;
+                    }
+
+                    long endBlock = pfs0subFiles[subFileNumber].getSize() / 0x200 + startBlock;  // <- pointing to place where any data related to this media-block ends
+
+                    //----------------------------- Step 2: Detect if we have junk data on the end of the final block --------------------------------
+                    int extraData = (int)(rawBlockDataStart+pfs0subFiles[subFileNumber].getOffset()+pfs0subFiles[subFileNumber].getSize() - (endBlock*0x200));  // safe cast
+                    if (extraData < 0){
+                        endBlock--;
+                    }
+                    //----------------------------- Step 3: Read main part of data --------------------------------
+                    // Here we're reading main amount of bytes. We can read only less bytes.
+                    while ( startBlock < endBlock) {
+                        encryptedBlock = new byte[0x200];
+                        if (bis.read(encryptedBlock) == 0x200) {
+                            //dectyptedBlock = aesCtr.decrypt(encryptedBlock);
+                            dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
+                            // Writing decrypted data to pipe
+                            streamOut.write(dectyptedBlock);
+                        }
+                        else {
+                            System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from bock");
+                            return;
+                        }
+                        startBlock++;
+                    }
+                    //----------------------------- Step 4: Read what's left --------------------------------
+                    // Now we have to find out if data overlaps to one more extra block
+                    if (extraData > 0){                 // In case we didn't get what we want
+                        encryptedBlock = new byte[0x200];
+                        if (bis.read(encryptedBlock) == 0x200) {
+                            dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
+                            streamOut.write(dectyptedBlock, 0, extraData);
+                        }
+                        else {
+                            System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from 1st bock");
+                            return;
+                        }
+                    }
+                    else if (extraData < 0){                // In case we can get more than we need
+                        encryptedBlock = new byte[0x200];
+                        if (bis.read(encryptedBlock) == 0x200) {
+                            dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
+                            streamOut.write(dectyptedBlock, 0, 0x200 + extraData);
+                        }
+                        else {
+                            System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from 1st bock");
+                            return;
+                        }
+                    }
+                    bis.close();
+                    streamOut.close();
+                }
+                catch (Exception e){
+                    System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): "+e.getMessage());
+                    e.printStackTrace();
+                }
+                System.out.println("PFS0EncryptedProvider -> getPfs0subFilePipedInpStream(): Thread died");
+
+
+            });
+            workerThread.start();
+            return streamIn;
+        }
+        catch (IOException ioe){
+            System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Unable to provide stream");
+            return null;
+        }
+    }
+    @Override
+    public PipedInputStream getProviderSubFilePipedInpStream(String subFileName) {
+        for (int i = 0; i < pfs0subFiles.length; i++){
+            if (pfs0subFiles[i].getName().equals(subFileName))
+                return getProviderSubFilePipedInpStream(i);
+        }
         return null;
     }
 }

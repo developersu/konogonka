@@ -36,7 +36,7 @@ import java.util.Objects;
  * XTS core functions.
  *
  * @author Ahseya
- * @author Dmitry Isaenko (updates for special usage)
+ *              (updates for special usage by Dmitry Isaenko)
  */
 @NotThreadSafe
 class XTSCore {

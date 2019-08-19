@@ -38,7 +38,7 @@ import java.util.function.LongFunction;
  * XTS tweak with pluggable tweak function.
  *
  * @author Ahseya
- * @author Dmitry Isaenko (updates for special usage)
+ *         (updates for special usage by Dmitry Isaenko)
  */
 @NotThreadSafe
 class XTSTweak {

@@ -10,7 +10,7 @@ import java.util.Arrays;
 import static konogonka.LoperConverter.*;
 
 public class PFS0Provider implements IPFS0Provider{
-    private long rawFileDataStart;          // If -1 then this PFS0 located @ encrypted region
+    private long rawFileDataStart;          // Where data starts, excluding header, string table etc.
 
     private String magic;
     private int filesCount;

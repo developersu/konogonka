@@ -44,7 +44,7 @@ public class NCAContentPFS0 {
                         // Get pfs0
                         pfs0 = new PFS0Provider(file, pfs0Location);
                     }
-                    // If encrypted (regular)
+                    // If encrypted regular [ 0x03 ]
                     else if (ncaSectionBlock.getCryptoType() == 0x03){
                         new CryptoSection03(file,
                                 offsetPosition,
@@ -59,7 +59,7 @@ public class NCAContentPFS0 {
                 }
             }
             else if (ncaSectionBlock.getSuperBlockIVFC() != null){
-                // TODO
+                    // TODO
             }
             else {
                 return;         // TODO: FIX THIS STUFF
@@ -105,7 +105,13 @@ public class NCAContentPFS0 {
                     streamInp,
                     ncaSectionBlock.getSuperBlockPFS0().getPfs0offset(),
                     ncaSectionBlock.getSuperBlockPFS0().getHashTableOffset(),
-                    ncaSectionBlock.getSuperBlockPFS0().getHashTableSize()
+                    ncaSectionBlock.getSuperBlockPFS0().getHashTableSize(),
+                    offsetPosition,
+                    file,
+                    decryptedKey,
+                    ncaSectionBlock.getSectionCTR(),
+                    mediaStartOffset,
+                    mediaEndOffset
             ));
             pThread.start();
             // Decrypt data
@@ -126,18 +132,6 @@ public class NCAContentPFS0 {
             pThread.join();
             streamOut.close();
             raf.close();
-            // TODO: re-write
-            if (pfs0 != null){
-                PFS0EncryptedProvider pfs0enc = (PFS0EncryptedProvider)pfs0;
-                pfs0enc.setMeta(
-                        offsetPosition,
-                        file,
-                        decryptedKey,
-                        ncaSectionBlock.getSectionCTR(),
-                        mediaStartOffset,
-                        mediaEndOffset
-                );
-            }
             //****************************************___DEBUG___*******************************************************
             /*
             File contentFile = new File("/tmp/decryptedNCA0block_"+offsetPosition+".pfs0");
@@ -180,13 +174,39 @@ public class NCAContentPFS0 {
             long hashTableRecordsCount;
             long pfs0offset;
 
+            private long MetaOffsetPositionInFile;
+            private File MetaFileWithEncPFS0;
+            private byte[] MetaKey;
+            private byte[] MetaSectionCTR;
+            private long MetaMediaStartOffset;
+            private long MetaMediaEndOffset;
 
-            ParseThread(PipedInputStream pipedInputStream, long pfs0offset, long hashTableOffset, long hashTableSize){
+
+            ParseThread(PipedInputStream pipedInputStream,
+                        long pfs0offset,
+                        long hashTableOffset,
+                        long hashTableSize,
+
+                        long MetaOffsetPositionInFile,
+                        File MetaFileWithEncPFS0,
+                        byte[] MetaKey,
+                        byte[] MetaSectionCTR,
+                        long MetaMediaStartOffset,
+                        long MetaMediaEndOffset
+            ){
                 this.pipedInputStream = pipedInputStream;
                 this.hashTableOffset = hashTableOffset;
                 this.hashTableSize = hashTableSize;
                 this.hashTableRecordsCount = hashTableSize / 0x20;
                 this.pfs0offset = pfs0offset;
+
+                this.MetaOffsetPositionInFile = MetaOffsetPositionInFile;
+                this.MetaFileWithEncPFS0 = MetaFileWithEncPFS0;
+                this.MetaKey = MetaKey;
+                this.MetaSectionCTR = MetaSectionCTR;
+                this.MetaMediaStartOffset = MetaMediaStartOffset;
+                this.MetaMediaEndOffset = MetaMediaEndOffset;
+
             }
 
             @Override
@@ -223,7 +243,13 @@ public class NCAContentPFS0 {
                         counter += toSkip;
                     }
                     //---------------------------------------------------------
-                    pfs0 = new PFS0EncryptedProvider(pipedInputStream, counter);
+                    pfs0 = new PFS0EncryptedProvider(pipedInputStream, counter,
+                            MetaOffsetPositionInFile,
+                            MetaFileWithEncPFS0,
+                            MetaKey,
+                            MetaSectionCTR,
+                            MetaMediaStartOffset,
+                            MetaMediaEndOffset);
                     pipedInputStream.close();
                 }
                 catch (Exception e){

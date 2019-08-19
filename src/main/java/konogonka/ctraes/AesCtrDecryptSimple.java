@@ -38,7 +38,7 @@ public class AesCtrDecryptSimple {
     private void updateIV(long offset){
         offset >>= 4;
         for (int i = 0; i < 0x8; i++){
-            IVarray[0x10-i-1] = (byte)(offset & 0xff);                                            // Note: issues could be here
+            IVarray[0x10-i-1] = (byte)(offset & 0xff);         // Note: issues could be here
             offset >>= 8;
         }
     }

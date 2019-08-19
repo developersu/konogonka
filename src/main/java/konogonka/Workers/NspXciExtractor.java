@@ -54,6 +54,11 @@ public class NspXciExtractor extends Task<Void> {
                     }
                     //*** PROGRESS BAR DECORCATIONS END
                 }
+                try {
+                    logPrinter.updateProgress(1.0);
+                }catch (InterruptedException ie){
+                    getException().printStackTrace();               // TODO: Do something with this
+                }
                 extractedFileBOS.close();
             } catch (IOException ioe) {
                 logPrinter.print("\tRead/Write error\n\t" + ioe.getMessage(), EMsgType.INFO);
