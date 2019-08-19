@@ -4,7 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import konogonka.AppPreferences;
-import konogonka.Controllers.TabController;
+import konogonka.Controllers.ITabController;
+import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.NCA.NCAContentPFS0;
 import konogonka.Tools.NCA.NCAProvider;
 import konogonka.Workers.AnalyzerNCA;
@@ -16,7 +17,7 @@ import java.util.ResourceBundle;
 
 import static konogonka.LoperConverter.byteArrToHexString;
 
-public class NCAController implements TabController {
+public class NCAController implements ITabController {
 
     private File selectedFile;
     @FXML
@@ -46,6 +47,7 @@ public class NCAController implements TabController {
             keyIndexLbl,
             ncaSizeLbl,
             titleIdLbl,
+            contentIndexLbl,
             sdkVersionLbl,
             cryptoType2Lbl,
             ticketLbl;
@@ -70,9 +72,12 @@ public class NCAController implements TabController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
-
     @Override
-    public void analyze(File file) {
+    public void analyze(ISuperProvider provider, int subFileNumber){
+       // TODO
+    }
+
+    public void analyze(File file, long offset) {
         this.selectedFile = file;
         HashMap<String, String> keysMap = new HashMap<>();
         keysMap.put("header_key", AppPreferences.getInstance().getHeaderKey());
@@ -90,14 +95,19 @@ public class NCAController implements TabController {
             if ( ! pair[0].equals("0") && ! pair[1].equals("0"))
                 keysMap.put(pair[0], pair[1]);
         }
-        
-        AnalyzerNCA analyzerNCA = new AnalyzerNCA(file, keysMap);
+
+        AnalyzerNCA analyzerNCA = new AnalyzerNCA(file, keysMap, offset);
         analyzerNCA.setOnSucceeded(e->{
             populateFields(analyzerNCA.getValue());
         });
         Thread workThread = new Thread(analyzerNCA);
         workThread.setDaemon(true);
         workThread.start();
+    }
+
+    @Override
+    public void analyze(File file) {
+        analyze(file, 0);
     }
 
     @Override
@@ -115,6 +125,7 @@ public class NCAController implements TabController {
         sdkVersionLbl.setText("-");
         cryptoType2Lbl.setText("-");
         ticketLbl.setText("-");
+        contentIndexLbl.setText("-");
         sha256section1TF.setText("-");
         sha256section2TF.setText("-");
         sha256section3TF.setText("-");
@@ -156,6 +167,7 @@ public class NCAController implements TabController {
             keyIndexLbl.setText(Byte.toString(ncaProvider.getKeyIndex()));
             ncaSizeLbl.setText(Long.toString(ncaProvider.getNcaSize()));
             titleIdLbl.setText(byteArrToHexString(ncaProvider.getTitleId()));
+            contentIndexLbl.setText(byteArrToHexString(ncaProvider.getContentIndx()));   //
             sdkVersionLbl.setText(ncaProvider.getSdkVersion()[3]
                     +"."+ncaProvider.getSdkVersion()[2]
                     +"."+ncaProvider.getSdkVersion()[1]

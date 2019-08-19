@@ -110,68 +110,61 @@ public class PFS0Provider implements IPFS0Provider{
     @Override
     public PFS0subFile[] getPfs0subFiles() { return pfs0subFiles; }
     @Override
-    public PipedInputStream getProviderSubFilePipedInpStream(int subFileNumber){        // TODO: Throw exceptions?
+    public File getFile(){ return file; }
+    @Override
+    public PipedInputStream getProviderSubFilePipedInpStream(int subFileNumber) throws Exception{        // TODO: Throw exceptions?
         if (subFileNumber >= pfs0subFiles.length) {
-            System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Requested sub file doesn't exists");
-            return null;
+            throw new Exception("PFS0Provider -> getPfs0subFilePipedInpStream(): Requested sub file doesn't exists");
         }
         PipedOutputStream streamOut = new PipedOutputStream();
         Thread workerThread;
-        try{
-            PipedInputStream streamIn = new PipedInputStream(streamOut);
 
-            workerThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Executing thread");
-                    try {
-                        long subFileRealPosition = rawFileDataStart + pfs0subFiles[subFileNumber].getOffset();
-                        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-                        if (bis.skip(subFileRealPosition) != subFileRealPosition) {
-                            System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Unable to skip requested offset");
-                            return;
-                        }
+        PipedInputStream streamIn = new PipedInputStream(streamOut);
 
-                        int readPice = 8388608; // 8mb NOTE: consider switching to 1mb 1048576
-
-                        long readFrom = 0;
-                        long realFileSize = pfs0subFiles[subFileNumber].getSize();
-
-                        byte[] readBuf;
-
-                        while (readFrom < realFileSize) {
-                            if (realFileSize - readFrom < readPice)
-                                readPice = Math.toIntExact(realFileSize - readFrom);    // it's safe, I guarantee
-                            readBuf = new byte[readPice];
-                            if (bis.read(readBuf) != readPice) {
-                                System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Unable to read requested size from file.");
-                                return;
-                            }
-                            streamOut.write(readBuf);
-                            readFrom += readPice;
-                        }
-                        bis.close();
-                        streamOut.close();
-                    } catch (IOException ioe) {
-                        System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Unable to provide stream");
-                        ioe.printStackTrace();
-                    }
-                    System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Thread died");
+        workerThread = new Thread(() -> {
+            System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Executing thread");
+            try {
+                long subFileRealPosition = rawFileDataStart + pfs0subFiles[subFileNumber].getOffset();
+                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                if (bis.skip(subFileRealPosition) != subFileRealPosition) {
+                    System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Unable to skip requested offset");
+                    return;
                 }
-            });
-            workerThread.start();
-            return streamIn;
-        }
-        catch (IOException ioe){
-            System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Unable to provide stream");
-            return null;
-        }
+
+                int readPice = 8388608; // 8mb NOTE: consider switching to 1mb 1048576
+
+                long readFrom = 0;
+                long realFileSize = pfs0subFiles[subFileNumber].getSize();
+
+                byte[] readBuf;
+
+                while (readFrom < realFileSize) {
+                    if (realFileSize - readFrom < readPice)
+                        readPice = Math.toIntExact(realFileSize - readFrom);    // it's safe, I guarantee
+                    readBuf = new byte[readPice];
+                    if (bis.read(readBuf) != readPice) {
+                        System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Unable to read requested size from file.");
+                        return;
+                    }
+                    streamOut.write(readBuf);
+                    readFrom += readPice;
+                }
+                bis.close();
+                streamOut.close();
+            } catch (IOException ioe) {
+                System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Unable to provide stream");
+                ioe.printStackTrace();
+            }
+            System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Thread died");
+        });
+        workerThread.start();
+        return streamIn;
     }
     /**
      * Some sugar
      * */
     @Override
-    public PipedInputStream getProviderSubFilePipedInpStream(String subFileName){
+    public PipedInputStream getProviderSubFilePipedInpStream(String subFileName) throws Exception {
         for (int i = 0; i < pfs0subFiles.length; i++){
             if (pfs0subFiles[i].getName().equals(subFileName))
                 return getProviderSubFilePipedInpStream(i);

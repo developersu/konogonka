@@ -25,8 +25,8 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
     private File file;
     private byte[] key;
     private byte[] sectionCTR;
-    private long mediaStartOffset;
-    private long mediaEndOffset;
+    private long mediaStartOffset;  // In 512-blocks
+    private long mediaEndOffset;    // In 512-blocks
 
     public PFS0EncryptedProvider(PipedInputStream pipedInputStream, long pfs0offsetPosition,
                                  long offsetPositionInFile,
@@ -44,7 +44,7 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
         this.mediaStartOffset = mediaStartOffset;
         this.mediaEndOffset = mediaEndOffset;
         // pfs0offsetPosition is a position relative to Media block. Lets add pfs0 'header's' bytes count and get raw data start position in media block
-        rawFileDataStart = -1;      // Set -1 for PFS0EncryptedProvider
+        rawFileDataStart = -1;                  // Set -1 for PFS0EncryptedProvider
         // Detect raw data start position using next var
         rawBlockDataStart = pfs0offsetPosition;
 
@@ -145,145 +145,137 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
     public long getRawFileDataStart() { return rawFileDataStart; }
     @Override
     public PFS0subFile[] getPfs0subFiles() { return pfs0subFiles; }
-
     @Override
-    public PipedInputStream getProviderSubFilePipedInpStream(int subFileNumber) {
+    public File getFile(){ return file; }
+    @Override
+    public PipedInputStream getProviderSubFilePipedInpStream(int subFileNumber) throws Exception {
         if (subFileNumber >= pfs0subFiles.length) {
-            System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Requested sub file doesn't exists");
-            return null;
+            throw new Exception("PFS0Provider -> getPfs0subFilePipedInpStream(): Requested sub file doesn't exists");
         }
-        /*/------------------------------------------------------------------
-        System.out.println("Raw Block Data Start (PFS0 Start): " + rawBlockDataStart);
-        System.out.println("Skipped blocks:                    " + rawBlockDataStart/0x200);                                  // aesCtrDecryptSimple.skip(THIS)
-        System.out.println("Skip bytes:                        " + (rawBlockDataStart-(rawBlockDataStart/0x200)*0x200));     // write to stream after skiping THIS
-        *///-----------------------------------------------------------------
+
         Thread workerThread;
         PipedOutputStream streamOut = new PipedOutputStream();
 
-        try{
-            PipedInputStream streamIn = new PipedInputStream(streamOut);
-            workerThread = new Thread(() -> {
-                System.out.println("PFS0EncryptedProvider -> getPfs0subFilePipedInpStream(): Executing thread");
-                try {
-                    BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-                    // Let's store what we're about to skip
-                    int skipBytes = (int) (offsetPositionInFile + (mediaStartOffset * 0x200));
-                    // Check if skip was successful
+
+        PipedInputStream streamIn = new PipedInputStream(streamOut);
+        workerThread = new Thread(() -> {
+            System.out.println("PFS0EncryptedProvider -> getPfs0subFilePipedInpStream(): Executing thread");
+            try {
+                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                // Let's store what we're about to skip
+                int skipBytes = (int) (offsetPositionInFile + (mediaStartOffset * 0x200));
+                // Check if skip was successful
+                if (bis.skip(skipBytes) != skipBytes) {
+                    System.out.println("PFS0EncryptedProvider -> getPfs0subFilePipedInpStream(): Failed to skip range "+skipBytes);
+                    return;
+                }
+
+                AesCtrDecryptSimple aesCtrDecryptSimple = new AesCtrDecryptSimple(key, sectionCTR, mediaStartOffset * 0x200);
+
+                byte[] encryptedBlock;
+                byte[] dectyptedBlock;
+
+                //----------------------------- Pre-set: skip non-necessary data --------------------------------
+
+                long startBlock = (rawBlockDataStart + pfs0subFiles[subFileNumber].getOffset()) / 0x200;            // <- pointing to place where actual data starts
+
+                if (startBlock > 0) {
+                    aesCtrDecryptSimple.skipNext(startBlock);
+                    skipBytes = (int)(startBlock * 0x200);
                     if (bis.skip(skipBytes) != skipBytes) {
                         System.out.println("PFS0EncryptedProvider -> getPfs0subFilePipedInpStream(): Failed to skip range "+skipBytes);
                         return;
                     }
-
-                    AesCtrDecryptSimple aesCtrDecryptSimple = new AesCtrDecryptSimple(key, sectionCTR, mediaStartOffset * 0x200);
-
-                    byte[] encryptedBlock;
-                    byte[] dectyptedBlock;
-
-                    //----------------------------- Pre-set: skip non-necessary data --------------------------------
-
-                    long startBlock = (rawBlockDataStart + pfs0subFiles[subFileNumber].getOffset()) / 0x200;            // <- pointing to place where actual data starts
-
-                    if (startBlock > 0) {
-                        aesCtrDecryptSimple.skipNext(startBlock);
-                        skipBytes = (int)(startBlock * 0x200);
-                        if (bis.skip(skipBytes) != skipBytes) {
-                            System.out.println("PFS0EncryptedProvider -> getPfs0subFilePipedInpStream(): Failed to skip range "+skipBytes);
-                            return;
-                        }
-                    }
-
-                    //----------------------------- Step 1: get starting bytes from the end of the junk block --------------------------------
-
-                    // Since our data could be located in position with some offset from the decrypted block, let's skip bytes left. Considering the case when data is not aligned to block
-                    skipBytes = (int) ( (rawBlockDataStart + pfs0subFiles[subFileNumber].getOffset()) - startBlock * 0x200); // <- How much bytes shall we skip to reach requested data start of sub-file
-
-                    if (skipBytes > 0) {
-                        encryptedBlock = new byte[0x200];
-                        if (bis.read(encryptedBlock) == 0x200) {
-                            dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
-                            // If we have extra-small file that is less then a block and even more
-                            if ((0x200 - skipBytes) > pfs0subFiles[subFileNumber].getSize()){
-                                streamOut.write(dectyptedBlock, skipBytes, (int) pfs0subFiles[subFileNumber].getSize());    // safe cast
-                                return;
-                            }
-                            else
-                                streamOut.write(dectyptedBlock, skipBytes, 0x200 - skipBytes);
-                        }
-                        else {
-                            System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from 1st bock");
-                            return;
-                        }
-                        startBlock++;
-                    }
-
-                    long endBlock = pfs0subFiles[subFileNumber].getSize() / 0x200 + startBlock;  // <- pointing to place where any data related to this media-block ends
-
-                    //----------------------------- Step 2: Detect if we have junk data on the end of the final block --------------------------------
-                    int extraData = (int)(rawBlockDataStart+pfs0subFiles[subFileNumber].getOffset()+pfs0subFiles[subFileNumber].getSize() - (endBlock*0x200));  // safe cast
-                    if (extraData < 0){
-                        endBlock--;
-                    }
-                    //----------------------------- Step 3: Read main part of data --------------------------------
-                    // Here we're reading main amount of bytes. We can read only less bytes.
-                    while ( startBlock < endBlock) {
-                        encryptedBlock = new byte[0x200];
-                        if (bis.read(encryptedBlock) == 0x200) {
-                            //dectyptedBlock = aesCtr.decrypt(encryptedBlock);
-                            dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
-                            // Writing decrypted data to pipe
-                            streamOut.write(dectyptedBlock);
-                        }
-                        else {
-                            System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from bock");
-                            return;
-                        }
-                        startBlock++;
-                    }
-                    //----------------------------- Step 4: Read what's left --------------------------------
-                    // Now we have to find out if data overlaps to one more extra block
-                    if (extraData > 0){                 // In case we didn't get what we want
-                        encryptedBlock = new byte[0x200];
-                        if (bis.read(encryptedBlock) == 0x200) {
-                            dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
-                            streamOut.write(dectyptedBlock, 0, extraData);
-                        }
-                        else {
-                            System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from 1st bock");
-                            return;
-                        }
-                    }
-                    else if (extraData < 0){                // In case we can get more than we need
-                        encryptedBlock = new byte[0x200];
-                        if (bis.read(encryptedBlock) == 0x200) {
-                            dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
-                            streamOut.write(dectyptedBlock, 0, 0x200 + extraData);
-                        }
-                        else {
-                            System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from 1st bock");
-                            return;
-                        }
-                    }
-                    bis.close();
-                    streamOut.close();
                 }
-                catch (Exception e){
-                    System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): "+e.getMessage());
-                    e.printStackTrace();
+
+                //----------------------------- Step 1: get starting bytes from the end of the junk block --------------------------------
+
+                // Since our data could be located in position with some offset from the decrypted block, let's skip bytes left. Considering the case when data is not aligned to block
+                skipBytes = (int) ( (rawBlockDataStart + pfs0subFiles[subFileNumber].getOffset()) - startBlock * 0x200); // <- How much bytes shall we skip to reach requested data start of sub-file
+
+                if (skipBytes > 0) {
+                    encryptedBlock = new byte[0x200];
+                    if (bis.read(encryptedBlock) == 0x200) {
+                        dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
+                        // If we have extra-small file that is less then a block and even more
+                        if ((0x200 - skipBytes) > pfs0subFiles[subFileNumber].getSize()){
+                            streamOut.write(dectyptedBlock, skipBytes, (int) pfs0subFiles[subFileNumber].getSize());    // safe cast
+                            return;
+                        }
+                        else
+                            streamOut.write(dectyptedBlock, skipBytes, 0x200 - skipBytes);
+                    }
+                    else {
+                        System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from 1st bock");
+                        return;
+                    }
+                    startBlock++;
                 }
-                System.out.println("PFS0EncryptedProvider -> getPfs0subFilePipedInpStream(): Thread died");
+
+                long endBlock = pfs0subFiles[subFileNumber].getSize() / 0x200 + startBlock;  // <- pointing to place where any data related to this media-block ends
+
+                //----------------------------- Step 2: Detect if we have junk data on the end of the final block --------------------------------
+                int extraData = (int)(rawBlockDataStart+pfs0subFiles[subFileNumber].getOffset()+pfs0subFiles[subFileNumber].getSize() - (endBlock*0x200));  // safe cast
+                if (extraData < 0){
+                    endBlock--;
+                }
+                //----------------------------- Step 3: Read main part of data --------------------------------
+                // Here we're reading main amount of bytes. We can read only less bytes.
+                while ( startBlock < endBlock) {
+                    encryptedBlock = new byte[0x200];
+                    if (bis.read(encryptedBlock) == 0x200) {
+                        //dectyptedBlock = aesCtr.decrypt(encryptedBlock);
+                        dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
+                        // Writing decrypted data to pipe
+                        streamOut.write(dectyptedBlock);
+                    }
+                    else {
+                        System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from bock");
+                        return;
+                    }
+                    startBlock++;
+                }
+                //----------------------------- Step 4: Read what's left --------------------------------
+                // Now we have to find out if data overlaps to one more extra block
+                if (extraData > 0){                 // In case we didn't get what we want
+                    encryptedBlock = new byte[0x200];
+                    if (bis.read(encryptedBlock) == 0x200) {
+                        dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
+                        streamOut.write(dectyptedBlock, 0, extraData);
+                    }
+                    else {
+                        System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from 1st bock");
+                        return;
+                    }
+                }
+                else if (extraData < 0){                // In case we can get more than we need
+                    encryptedBlock = new byte[0x200];
+                    if (bis.read(encryptedBlock) == 0x200) {
+                        dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
+                        streamOut.write(dectyptedBlock, 0, 0x200 + extraData);
+                    }
+                    else {
+                        System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from 1st bock");
+                        return;
+                    }
+                }
+                bis.close();
+                streamOut.close();
+            }
+            catch (Exception e){
+                System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): "+e.getMessage());
+                e.printStackTrace();
+            }
+            System.out.println("PFS0EncryptedProvider -> getPfs0subFilePipedInpStream(): Thread died");
 
 
-            });
-            workerThread.start();
-            return streamIn;
-        }
-        catch (IOException ioe){
-            System.out.println("PFS0Provider -> getPfs0subFilePipedInpStream(): Unable to provide stream");
-            return null;
-        }
+        });
+        workerThread.start();
+        return streamIn;
     }
+
     @Override
-    public PipedInputStream getProviderSubFilePipedInpStream(String subFileName) {
+    public PipedInputStream getProviderSubFilePipedInpStream(String subFileName) throws Exception{
         for (int i = 0; i < pfs0subFiles.length; i++){
             if (pfs0subFiles[i].getName().equals(subFileName))
                 return getProviderSubFilePipedInpStream(i);

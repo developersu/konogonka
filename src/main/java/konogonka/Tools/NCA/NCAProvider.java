@@ -1,6 +1,5 @@
 package konogonka.Tools.NCA;
 
-import konogonka.LoperConverter;
 import konogonka.Tools.NCA.NCASectionTableBlock.NCASectionBlock;
 import konogonka.xtsaes.XTSAESCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
@@ -30,6 +29,7 @@ public class NCAProvider {
     private byte keyIndex;                      // application/ocean/system (kaek index?)
     private long ncaSize;                       // Size of this NCA (bytes)
     private byte[] titleId;
+    private byte[] contentIndx;
     private byte[] sdkVersion;                  // version ver_revision.ver_micro.vev_minor.ver_major
     private byte cryptoType2;                   // keyblob index. Considering as number within application/ocean/system
     private byte[] rightsId;
@@ -139,7 +139,8 @@ public class NCAProvider {
         cryptoType1 = decryptedData[0x206];
         keyIndex = decryptedData[0x207];
         ncaSize = getLElong(decryptedData, 0x208);
-        titleId = Arrays.copyOfRange(decryptedData, 0x210, 0x21C);   // 0x218 ?
+        titleId = Arrays.copyOfRange(decryptedData, 0x210, 0x218);
+        contentIndx = Arrays.copyOfRange(decryptedData, 0x218, 0x21C);
         sdkVersion = Arrays.copyOfRange(decryptedData, 0x21c, 0x220);
         cryptoType2 = decryptedData[0x220];
         rightsId = Arrays.copyOfRange(decryptedData, 0x230, 0x240);
@@ -214,6 +215,7 @@ public class NCAProvider {
     public byte getKeyIndex() { return keyIndex; }
     public long getNcaSize() { return ncaSize; }
     public byte[] getTitleId() { return titleId; }
+    public byte[] getContentIndx() { return contentIndx; }
     public byte[] getSdkVersion() { return sdkVersion; }
     public byte getCryptoType2() { return cryptoType2; }
     public byte[] getRightsId() { return rightsId; }
@@ -273,7 +275,7 @@ public class NCAProvider {
         }
         switch (sectionNumber) {
             case 0:
-                return new NCAContentPFS0(file, offset, sectionBlock0, tableEntry0, key);     // TODO: remove decryptedKey2
+                return new NCAContentPFS0(file, offset, sectionBlock0, tableEntry0, key);     // TODO: remove decryptedKey2 ?
             case 1:
                 return new NCAContentPFS0(file, offset, sectionBlock1, tableEntry1, key);
             case 2:

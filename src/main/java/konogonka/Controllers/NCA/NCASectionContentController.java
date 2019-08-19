@@ -8,7 +8,6 @@ import javafx.scene.layout.VBox;
 import konogonka.Controllers.NSP.NSPController;
 import konogonka.LoperConverter;
 import konogonka.Tools.PFS0.IPFS0Provider;
-import konogonka.Tools.PFS0.PFS0Provider;
 
 import java.io.File;
 import java.util.LinkedList;

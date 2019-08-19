@@ -1,10 +1,12 @@
 package konogonka.Controllers.NSP;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,6 +19,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import konogonka.Controllers.IRowModel;
+import konogonka.MediatorControl;
 import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.PFS0.IPFS0Provider;
 
@@ -117,15 +120,30 @@ public class Pfs0TableViewController implements Initializable {
         uploadColumn.setCellFactory(new Callback<TableColumn<Pfs0RowModel, Boolean>, TableCell<Pfs0RowModel, Boolean>>() {
             @Override
             public TableCell<Pfs0RowModel, Boolean> call(TableColumn<Pfs0RowModel, Boolean> paramFeatures) {
-                CheckBoxTableCell<Pfs0RowModel, Boolean> cell = new CheckBoxTableCell<>();
-                return cell;
+                return new CheckBoxTableCell<>();
             }
         });
         table.setRowFactory(        // this shit is made to implement context menu. It's such a pain..
                 new Callback<TableView<Pfs0RowModel>, TableRow<Pfs0RowModel>>() {
                     @Override
-                    public TableRow<Pfs0RowModel> call(TableView<Pfs0RowModel> nslRowModelTableView) {
+                    public TableRow<Pfs0RowModel> call(TableView<Pfs0RowModel> Pfs0RowModelTableView) {
                         final TableRow<Pfs0RowModel> row = new TableRow<>();
+                        ContextMenu contextMenu = new ContextMenu();
+
+                        MenuItem openMenuItem = new MenuItem("Open");
+                        openMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+                                MediatorControl.getInstance().getContoller().showContentWindow(provider, row.getItem());    // TODO: change to something better
+                            }
+                        });
+
+                        contextMenu.getItems().addAll(openMenuItem);
+
+                        row.setContextMenu(contextMenu);
+                        row.contextMenuProperty().bind(
+                                Bindings.when(Bindings.isNotNull(row.itemProperty())).then(contextMenu).otherwise((ContextMenu)null)
+                        );
                         row.setOnMouseClicked(new EventHandler<MouseEvent>() {      // Just.. don't ask..
                             @Override
                             public void handle(MouseEvent mouseEvent) {

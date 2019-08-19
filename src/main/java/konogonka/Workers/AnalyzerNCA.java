@@ -3,6 +3,7 @@ package konogonka.Workers;
 import javafx.concurrent.Task;
 import konogonka.ModelControllers.EMsgType;
 import konogonka.ModelControllers.LogPrinter;
+import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.NCA.NCAProvider;
 
 import java.io.File;
@@ -11,11 +12,18 @@ import java.util.HashMap;
 public class AnalyzerNCA extends Task<NCAProvider> {
 
     private File file;
+    private long offset;
     private LogPrinter logPrinter;
     private HashMap<String, String> keysMap;
 
+
     public AnalyzerNCA(File file, HashMap<String, String> keysMap){
+        this(file, keysMap, 0);
+    }
+
+    public AnalyzerNCA(File file, HashMap<String, String> keysMap, long offset){
         this.file = file;
+        this.offset = offset;
         this.logPrinter = new LogPrinter();
         this.keysMap = keysMap;
     }
@@ -27,7 +35,7 @@ public class AnalyzerNCA extends Task<NCAProvider> {
         NCAProvider ncaProvider;
 
         try {
-            ncaProvider = new NCAProvider(file, keysMap);
+            ncaProvider = new NCAProvider(file, keysMap, offset);
         }catch (Exception e){
             logPrinter.print(e.getMessage(), EMsgType.FAIL);
             ncaProvider = null;

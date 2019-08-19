@@ -1,11 +1,11 @@
 package konogonka.Controllers.XCI;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import konogonka.AppPreferences;
-import konogonka.Controllers.TabController;
+import konogonka.Controllers.ITabController;
+import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.XCI.XCIProvider;
 import konogonka.Workers.AnalyzerXCI;
 
@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 import static konogonka.LoperConverter.byteArrToHexString;
 
-public class XCIController implements TabController {
+public class XCIController implements ITabController {
 
     /* Header */
     @FXML
@@ -89,6 +89,11 @@ public class XCIController implements TabController {
     /**
      * Start analyze XCI
      * */
+    @Override
+    public void analyze(ISuperProvider provider, int subFileNumber){
+        // TODO: IMPLEMENT
+        return;
+    }
     @Override
     public void analyze(File selectedFile){
         HFSBlockController.setSelectedFile(selectedFile);

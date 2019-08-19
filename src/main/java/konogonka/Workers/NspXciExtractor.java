@@ -22,9 +22,6 @@ public class NspXciExtractor extends Task<Void> {
         this.models = models;
         this.filesDestPath = filesDestPath;
         this.logPrinter = new LogPrinter();
-        for (IRowModel model : models) {
-            System.out.println(model.getFileName());
-        }
     }
 
     @Override
@@ -60,8 +57,8 @@ public class NspXciExtractor extends Task<Void> {
                     getException().printStackTrace();               // TODO: Do something with this
                 }
                 extractedFileBOS.close();
-            } catch (IOException ioe) {
-                logPrinter.print("\tRead/Write error\n\t" + ioe.getMessage(), EMsgType.INFO);
+            } catch (Exception ioe) {
+                logPrinter.print("\tExtracting issue\n\t" + ioe.getMessage(), EMsgType.INFO);
                 return null;
             } finally {
                 logPrinter.print("\tEnd extracting", EMsgType.INFO);

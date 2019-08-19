@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import konogonka.Controllers.IRowModel;
-import konogonka.Controllers.TabController;
+import konogonka.Controllers.ITabController;
 import konogonka.MediatorControl;
 import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.PFS0.IPFS0Provider;
@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 
 import static konogonka.LoperConverter.byteArrToHexString;
 
-public class NSPController implements TabController {
+public class NSPController implements ITabController {
 
     @FXML
     private Button extractBtn;
@@ -91,6 +91,11 @@ public class NSPController implements TabController {
     /**
      * Start analyze NSP
      * */
+    @Override
+    public void analyze(ISuperProvider provider, int subFileNumber){
+        // TODO: IMPLEMENT
+        return;
+    }
     @Override
     public void analyze(File selectedFile){
         this.selectedFile = selectedFile;

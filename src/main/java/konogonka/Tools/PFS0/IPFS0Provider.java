@@ -9,6 +9,5 @@ public interface IPFS0Provider extends ISuperProvider {
     int getStringTableSize();
     byte[] getPadding();
 
-    long getRawFileDataStart();
     PFS0subFile[] getPfs0subFiles();
 }

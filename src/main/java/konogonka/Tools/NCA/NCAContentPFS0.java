@@ -71,12 +71,12 @@ public class NCAContentPFS0 {
 
     private class CryptoSection03{
         
-        CryptoSection03(File file, long offsetPosition, byte[] decryptedKey, NCASectionBlock ncaSectionBlock, long mediaStartOffset, long mediaEndOffset) throws Exception{
+        CryptoSection03(File file, long offsetPosition, byte[] decryptedKey, NCASectionBlock ncaSectionBlock, long mediaStartBlocksOffset, long mediaEndBlocksOffset) throws Exception{
             /*//--------------------------------------------------------------------------------------------------
-            System.out.println("Media start location: " + mediaStartOffset);
-            System.out.println("Media end location:   " + mediaEndOffset);
-            System.out.println("Media size          : " + (mediaEndOffset-mediaStartOffset));
-            System.out.println("Media act. location:  " + (offsetPosition + (mediaStartOffset * 0x200)));
+            System.out.println("Media start location: " + mediaStartBlocksOffset);
+            System.out.println("Media end location:   " + mediaEndBlocksOffset);
+            System.out.println("Media size          : " + (mediaEndBlocksOffset-mediaStartBlocksOffset));
+            System.out.println("Media act. location:  " + (offsetPosition + (mediaStartBlocksOffset * 0x200)));
             System.out.println("SHA256 hash tbl size: " + ncaSectionBlock.getSuperBlockPFS0().getHashTableSize());
             System.out.println("SHA256 hash tbl offs: " + ncaSectionBlock.getSuperBlockPFS0().getHashTableOffset());
             System.out.println("PFS0 Offs:            " + ncaSectionBlock.getSuperBlockPFS0().getPfs0offset());
@@ -89,14 +89,14 @@ public class NCAContentPFS0 {
                 throw new Exception("CryptoSection03: unable to proceed. No decrypted key provided.");
 
             RandomAccessFile raf = new RandomAccessFile(file, "r");
-            long abosluteOffsetPosition = offsetPosition + (mediaStartOffset * 0x200);
+            long abosluteOffsetPosition = offsetPosition + (mediaStartBlocksOffset * 0x200);
             raf.seek(abosluteOffsetPosition);
 
-            AesCtrDecryptSimple decryptor = new AesCtrDecryptSimple(decryptedKey, ncaSectionBlock.getSectionCTR(), mediaStartOffset * 0x200);
+            AesCtrDecryptSimple decryptor = new AesCtrDecryptSimple(decryptedKey, ncaSectionBlock.getSectionCTR(), mediaStartBlocksOffset * 0x200);
 
             byte[] encryptedBlock;
             byte[] dectyptedBlock;
-            long mediaBlockSize = mediaEndOffset - mediaStartOffset;
+            long mediaBlocksSize = mediaEndBlocksOffset - mediaStartBlocksOffset;
             // Prepare thread to parse encrypted data
             PipedOutputStream streamOut = new PipedOutputStream();
             PipedInputStream streamInp = new PipedInputStream(streamOut);
@@ -110,12 +110,12 @@ public class NCAContentPFS0 {
                     file,
                     decryptedKey,
                     ncaSectionBlock.getSectionCTR(),
-                    mediaStartOffset,
-                    mediaEndOffset
+                    mediaStartBlocksOffset,
+                    mediaEndBlocksOffset
             ));
             pThread.start();
             // Decrypt data
-            for (int i = 0; i < mediaBlockSize; i++){
+            for (int i = 0; i < mediaBlocksSize; i++){
                 encryptedBlock = new byte[0x200];
                 if (raf.read(encryptedBlock) != -1){
                     //dectyptedBlock = aesCtr.decrypt(encryptedBlock);
@@ -139,9 +139,9 @@ public class NCAContentPFS0 {
 
             raf = new RandomAccessFile(file, "r");
             raf.seek(abosluteOffsetPosition);
-            decryptor = new AesCtrDecryptSimple(decryptedKey, ncaSectionBlock.getSectionCTR(), mediaStartOffset * 0x200);
+            decryptor = new AesCtrDecryptSimple(decryptedKey, ncaSectionBlock.getSectionCTR(), mediaStartBlocksOffset * 0x200);
 
-            for (int i = 0; i < mediaBlockSize; i++){
+            for (int i = 0; i < mediaBlocksSize; i++){
                 encryptedBlock = new byte[0x200];
                 if (raf.read(encryptedBlock) != -1){
                     //dectyptedBlock = aesCtr.decrypt(encryptedBlock);

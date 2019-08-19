@@ -6,11 +6,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import konogonka.AppPreferences;
+import konogonka.Child.ChildWindow;
 import konogonka.Controllers.NCA.NCAController;
 import konogonka.Controllers.NSP.NSPController;
 import konogonka.Controllers.XCI.XCIController;
 import konogonka.MediatorControl;
 import konogonka.Settings.SettingsWindow;
+import konogonka.Tools.ISuperProvider;
 
 import java.io.*;
 import java.net.URL;
@@ -115,6 +117,14 @@ public class MainController implements Initializable {
         else
             splitPane.getItems().add(logPane);
     }
+    public void showContentWindow(ISuperProvider provider, IRowModel model){
+        try{
+            new ChildWindow(provider, model);
+        }
+        catch (IOException e){
+            logArea.appendText("\nUnable to create windows for "+model.getFileName()+"\n"+e.getMessage());
+        }
 
+    };
     public void exit(){ AppPreferences.getInstance().setRecentPath(previouslyOpenedPath); }
 }

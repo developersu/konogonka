@@ -14,7 +14,8 @@ Deep WIP multi-tool to work with XCI/NSP/NCA/NRO(?) files
 
 ### Information taken from
 * Switch brew wiki
-* roothorick, shchmue, He and others advices and notes. Thanks!
+* Original ScriesM software
+* Thanks to roothorick, shchmue, He and others for their advices, notes and examples
 
 ### System requirements
 
