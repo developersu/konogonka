@@ -163,8 +163,8 @@ public class SettingsController implements Initializable {
                     String[] keyValue;
                     LinkedHashMap<String, String> preparedPairsMap = new LinkedHashMap<>();
                     while ((fileLine = br.readLine()) != null){
-                        keyValue = fileLine.trim().split("\\s+?=\\s+?", 2);
-                        if (keyValue.length == 2 && keyValue[0].length() == 32 && keyValue[1].length() == 32){
+                        keyValue = fileLine.trim().split("\\s*=\\s*", 2);
+                        if (keyValue.length == 2 && keyValue[0].length() > 16 && ! (keyValue[0].length() > 32) && keyValue[1].length() == 32){
                             preparedPairsMap.put(keyValue[0], keyValue[1]);
                         }
                     }

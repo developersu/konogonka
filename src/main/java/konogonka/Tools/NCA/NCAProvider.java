@@ -257,9 +257,9 @@ public class NCAProvider {
             key = decryptedKey2;                                       // TODO: Just remember this dumb hack
         }
         else {
-            byte[] rightsIDkey = hexStrToByteArray(keys.get(byteArrToHexString(rightsId)));
-
             try {
+                byte[] rightsIDkey = hexStrToByteArray(keys.get(byteArrToHexString(rightsId))); // throws NullPointerException
+
                 SecretKeySpec skSpec = new SecretKeySpec(
                         hexStrToByteArray(keys.get(String.format("titlekek_%02d", cryptoTypeReal))
                         ), "AES");

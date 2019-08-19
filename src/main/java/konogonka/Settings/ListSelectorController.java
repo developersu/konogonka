@@ -107,8 +107,7 @@ public class ListSelectorController implements Initializable {
     }
 
     private void validateAndAdd(String addingItem){
-        if (!observableList.contains(addingItem)) {
+        if (!observableList.contains(addingItem))
             observableList.add(addingItem);
-        }
     }
 }
