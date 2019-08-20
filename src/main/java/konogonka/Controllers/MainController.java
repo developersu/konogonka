@@ -9,10 +9,12 @@ import konogonka.AppPreferences;
 import konogonka.Child.ChildWindow;
 import konogonka.Controllers.NCA.NCAController;
 import konogonka.Controllers.NSP.NSPController;
+import konogonka.Controllers.TIK.TIKController;
 import konogonka.Controllers.XCI.XCIController;
 import konogonka.MediatorControl;
 import konogonka.Settings.SettingsWindow;
 import konogonka.Tools.ISuperProvider;
+import konogonka.Tools.TIK.TIKProvider;
 
 import java.io.*;
 import java.net.URL;
@@ -43,6 +45,8 @@ public class MainController implements Initializable {
     private XCIController XCITabController;
     @FXML
     private NCAController NCATabController;
+    @FXML
+    private TIKController TIKTabController;
 
     private File selectedFile;
 
@@ -76,7 +80,7 @@ public class MainController implements Initializable {
         else
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NS ROM", "*.nsp", "*.xci", "*.nca"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NS files", "*.nsp", "*.xci", "*.nca", "*.tik"));
 
         this.selectedFile = fileChooser.showOpenDialog(analyzeBtn.getScene().getWindow());
 
@@ -84,6 +88,7 @@ public class MainController implements Initializable {
         NSPTabController.resetTab();
         XCITabController.resetTab();
         NCATabController.resetTab();
+        TIKTabController.resetTab();
 
         if (this.selectedFile != null && this.selectedFile.exists()) {
             filenameSelected.setText(this.selectedFile.getAbsolutePath());
@@ -95,6 +100,8 @@ public class MainController implements Initializable {
                 tabPane.getSelectionModel().select(1);
             else if (this.selectedFile.getName().toLowerCase().endsWith(".nca"))
                 tabPane.getSelectionModel().select(2);
+            else if (this.selectedFile.getName().toLowerCase().endsWith(".tik"))
+                tabPane.getSelectionModel().select(3);
         }
 
         logArea.clear();
@@ -109,6 +116,8 @@ public class MainController implements Initializable {
             XCITabController.analyze(selectedFile);
         else if (selectedFile.getName().toLowerCase().endsWith("nca"))
             NCATabController.analyze(selectedFile);
+        else if (selectedFile.getName().toLowerCase().endsWith("tik"))
+            TIKTabController.analyze(selectedFile);
     }
     @FXML
     private void showHideLogs(){

@@ -90,7 +90,7 @@ public class XCIController implements ITabController {
      * Start analyze XCI
      * */
     @Override
-    public void analyze(ISuperProvider provider, int subFileNumber){
+    public void analyze(File selectedFile, long offset){
         // TODO: IMPLEMENT
         return;
     }

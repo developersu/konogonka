@@ -7,6 +7,6 @@ import java.io.File;
 
 public interface ITabController extends Initializable {
     void analyze(File file);
-    void analyze(ISuperProvider provider, int subFileNumber);
+    void analyze(File file, long offset);
     void resetTab();
 }

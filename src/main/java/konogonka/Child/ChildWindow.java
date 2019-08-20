@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import konogonka.Controllers.IRowModel;
 import konogonka.Controllers.NCA.NCAController;
+import konogonka.Controllers.TIK.TIKController;
 import konogonka.Tools.ISuperProvider;
 
 import java.io.IOException;
@@ -24,6 +25,9 @@ public class ChildWindow {
 
         if (model.getFileName().endsWith(".nca")){
             loaderSettings = new FXMLLoader(getClass().getResource("/FXML/NCA/NCATab.fxml"));
+        }
+        else if(model.getFileName().endsWith(".tik")){
+            loaderSettings = new FXMLLoader(getClass().getResource("/FXML/TIK/TIKTab.fxml"));
         }
         else if(model.getFileName().endsWith(".cert")){
             // TODO: IMPLEMENT
@@ -50,6 +54,10 @@ public class ChildWindow {
         if (model.getFileName().endsWith(".nca")){
             NCAController ncaController = loaderSettings.<NCAController>getController();
             ncaController.analyze(provider.getFile(), provider.getRawFileDataStart()+model.getFileOffset());
+        }
+        else if(model.getFileName().endsWith(".tik")){
+            TIKController tikController = loaderSettings.<TIKController>getController();
+            tikController.analyze(provider.getFile(), provider.getRawFileDataStart()+model.getFileOffset());
         }
 
 

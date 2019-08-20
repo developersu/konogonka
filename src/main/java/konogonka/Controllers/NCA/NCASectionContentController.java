@@ -9,7 +9,6 @@ import konogonka.Controllers.NSP.NSPController;
 import konogonka.LoperConverter;
 import konogonka.Tools.PFS0.IPFS0Provider;
 
-import java.io.File;
 import java.util.LinkedList;
 
 public class NCASectionContentController{
@@ -23,9 +22,9 @@ public class NCASectionContentController{
         sha256pane.getChildren().clear();
     }
 
-    public void populateFields(IPFS0Provider pfs0, File file, LinkedList<byte[]> sha256hashList) {
+    public void populateFields(IPFS0Provider pfs0, LinkedList<byte[]> sha256hashList) {
         resetTab();
-        SectionPFS0Controller.setData(pfs0, file);
+        SectionPFS0Controller.setData(pfs0, null);
         if (sha256hashList != null){
             for (int i = 0; i < sha256hashList.size(); i++){
                 Label numberLblTmp = new Label(String.format("%10d", i));

@@ -244,7 +244,12 @@ public class NCAProvider {
     public NCASectionBlock getSectionBlock1() { return sectionBlock1; }
     public NCASectionBlock getSectionBlock2() { return sectionBlock2; }
     public NCASectionBlock getSectionBlock3() { return sectionBlock3; }
-
+    public boolean isKeyAvailable(){                                            // TODO: USE
+        if (Arrays.equals(rightsId, new byte[0x10]))
+            return true;
+        else
+            return keys.containsKey(byteArrToHexString(rightsId));
+    }
     /**
      * Get content for the selected section
      * @param sectionNumber should be 1-4

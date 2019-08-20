@@ -51,7 +51,7 @@ public class NSPController implements ITabController {
         ISuperProvider provider = tableFilesListController.getProvider();
         if (models != null && !models.isEmpty() && (provider != null)){
 
-            File dir = new File(System.getProperty("user.dir")+File.separator+selectedFile.getName()+" extracted");
+            File dir = new File(System.getProperty("user.dir")+File.separator+selectedFile.getName()+" extracted");     // todo: move option to settings
             try {
                 dir.mkdir();
             }
@@ -92,17 +92,16 @@ public class NSPController implements ITabController {
      * Start analyze NSP
      * */
     @Override
-    public void analyze(ISuperProvider provider, int subFileNumber){
+    public void analyze(File selectedFile, long offset){
         // TODO: IMPLEMENT
         return;
     }
     @Override
     public void analyze(File selectedFile){
-        this.selectedFile = selectedFile;
         AnalyzerNSP analyzerNSP = new AnalyzerNSP(selectedFile);
         analyzerNSP.setOnSucceeded(e->{
             PFS0Provider pfs0 = analyzerNSP.getValue();
-            this.setData(pfs0, null);
+            this.setData(pfs0, selectedFile);
         });
         Thread workThread = new Thread(analyzerNSP);
         workThread.setDaemon(true);
@@ -112,27 +111,27 @@ public class NSPController implements ITabController {
      * Just populate fields by already analyzed PFS0
      * */
     public void setData(IPFS0Provider pfs0, File fileWithNca){
-        if (pfs0 != null){
-            if (fileWithNca != null)
-                this.selectedFile = fileWithNca;
-            filesCountLbl.setText(Integer.toString(pfs0.getFilesCount()));
-            RawDataStartLbl.setText(Long.toString(pfs0.getRawFileDataStart()));
-            rawFileDataStart = pfs0.getRawFileDataStart();
-            tableFilesListController.setNSPToTable(pfs0);
-            if (fileWithNca != null)
-                NSPSizeLbl.setText("skipping calculation for in-file PFS0");
-            else
-                NSPSizeLbl.setText(Long.toString(selectedFile.length()));
+        if (pfs0 == null)
+            return;
+        this.selectedFile = fileWithNca;
 
-            extractBtn.setDisable(false);
-            magicLbl.setText(pfs0.getMagic());
-            stringTableSizeLbl.setText(Integer.toString(pfs0.getStringTableSize()));
-            paddingLbl.setText(byteArrToHexString(pfs0.getPadding()));
+        filesCountLbl.setText(Integer.toString(pfs0.getFilesCount()));
+        RawDataStartLbl.setText(Long.toString(pfs0.getRawFileDataStart()));
+        rawFileDataStart = pfs0.getRawFileDataStart();
+        tableFilesListController.setNSPToTable(pfs0);
+        if (fileWithNca == null)
+            NSPSizeLbl.setText("skipping calculation for in-file PFS0");
+        else
+            NSPSizeLbl.setText(Long.toString(selectedFile.length()));
 
-            fileEntryTableSizeLbl.setText(String.format("0x%02x", 0x18* pfs0.getFilesCount()));
-            stringsTableSizeLbl.setText(String.format("0x%02x", pfs0.getStringTableSize()));
-            stringsTableOffsetLbl.setText(String.format("0x%02x", 0x18* pfs0.getFilesCount()+0x10));
-            rawFileDataOffsetLbl.setText(String.format("0x%02x", 0x18* pfs0.getFilesCount()+0x10+ pfs0.getStringTableSize()));  // same to RawFileDataStart for NSP ONLY
-        }
+        extractBtn.setDisable(false);
+        magicLbl.setText(pfs0.getMagic());
+        stringTableSizeLbl.setText(Integer.toString(pfs0.getStringTableSize()));
+        paddingLbl.setText(byteArrToHexString(pfs0.getPadding()));
+
+        fileEntryTableSizeLbl.setText(String.format("0x%02x", 0x18* pfs0.getFilesCount()));
+        stringsTableSizeLbl.setText(String.format("0x%02x", pfs0.getStringTableSize()));
+        stringsTableOffsetLbl.setText(String.format("0x%02x", 0x18* pfs0.getFilesCount()+0x10));
+        rawFileDataOffsetLbl.setText(String.format("0x%02x", 0x18* pfs0.getFilesCount()+0x10+ pfs0.getStringTableSize()));  // same to RawFileDataStart for NSP ONLY
     }
 }

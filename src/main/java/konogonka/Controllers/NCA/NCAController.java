@@ -5,7 +5,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import konogonka.AppPreferences;
 import konogonka.Controllers.ITabController;
-import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.NCA.NCAContentPFS0;
 import konogonka.Tools.NCA.NCAProvider;
 import konogonka.Workers.AnalyzerNCA;
@@ -72,11 +71,8 @@ public class NCAController implements ITabController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
-    @Override
-    public void analyze(ISuperProvider provider, int subFileNumber){
-       // TODO
-    }
 
+    @Override
     public void analyze(File file, long offset) {
         this.selectedFile = file;
         HashMap<String, String> keysMap = new HashMap<>();
@@ -201,13 +197,13 @@ public class NCAController implements ITabController {
             // TODO: FIX: This code executes getNCAContentPFS0() method twice
             NCAContentPFS0 ncaContentPFS0;
             ncaContentPFS0 = ncaProvider.getNCAContentPFS0(0);
-            NCASectionContentFirstController.populateFields(ncaContentPFS0.getPfs0(), selectedFile, ncaContentPFS0.getSHA256hashes());
+            NCASectionContentFirstController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
             ncaContentPFS0 = ncaProvider.getNCAContentPFS0(1);
-            NCASectionContentSecondController.populateFields(ncaContentPFS0.getPfs0(), selectedFile, ncaContentPFS0.getSHA256hashes());
+            NCASectionContentSecondController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
             ncaContentPFS0 = ncaProvider.getNCAContentPFS0(2);
-            NCASectionContentThirdController.populateFields(ncaContentPFS0.getPfs0(), selectedFile, ncaContentPFS0.getSHA256hashes());
+            NCASectionContentThirdController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
             ncaContentPFS0 = ncaProvider.getNCAContentPFS0(3);
-            NCASectionContentFourthController.populateFields(ncaContentPFS0.getPfs0(), selectedFile, ncaContentPFS0.getSHA256hashes());
+            NCASectionContentFourthController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
         }
     }
 }

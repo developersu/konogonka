@@ -27,7 +27,7 @@ public class NspXciExtractor extends Task<Void> {
     @Override
     protected Void call() {
         for (IRowModel model : models) {
-            logPrinter.print("\tStart extracting: "+model.getFileName(), EMsgType.INFO);
+            logPrinter.print("\tStart extracting: \n"+filesDestPath+model.getFileName(), EMsgType.INFO);
             File contentFile = new File(filesDestPath + model.getFileName());
             try {
                 BufferedOutputStream extractedFileBOS = new BufferedOutputStream(new FileOutputStream(contentFile));

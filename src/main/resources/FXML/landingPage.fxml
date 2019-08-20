@@ -71,6 +71,14 @@
                                 <Label text="NCA" />
                             </graphic>
                         </Tab>
+                        <Tab closable="false">
+                            <content>
+                                <fx:include fx:id="TIKTab" source="TIK/TIKTab.fxml" />
+                            </content>
+                            <graphic>
+                                <Label text="TIK" />
+                            </graphic>
+                        </Tab>
                     </tabs>
                   </TabPane>
                   <AnchorPane fx:id="logPane" prefHeight="200.0" prefWidth="200.0">
