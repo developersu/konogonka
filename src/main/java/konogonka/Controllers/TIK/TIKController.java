@@ -1,9 +1,12 @@
 package konogonka.Controllers.TIK;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import konogonka.AppPreferences;
 import konogonka.Controllers.ITabController;
+import konogonka.MediatorControl;
 import konogonka.Tools.TIK.TIKProvider;
 import konogonka.Workers.AnalyzerTIK;
 
@@ -14,7 +17,8 @@ import java.util.ResourceBundle;
 import static konogonka.LoperConverter.byteArrToHexString;
 
 public class TIKController implements ITabController {
-
+    @FXML
+    private Button btnImport;
     @FXML
     private Label sigTypeLbl,
                     sigTypeStrLbl,
@@ -35,11 +39,28 @@ public class TIKController implements ITabController {
     @FXML
     private TextField signatureTF,
                     issuerTf,
-                    titleKeyBlockTf,
+                    titleKeyBlockStartTf,
+                    titleKeyBlockEndTf,
                     rightsIdTf;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) { }
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        btnImport.setOnAction(e -> {
+            String key = rightsIdTf.getText();
+            String value = titleKeyBlockStartTf.getText();
+            int titleKeysCnt = AppPreferences.getInstance().getTitleKeysCount();
+            System.out.println(key+" "+value+" "+titleKeysCnt);
+            if (key.length() > 16 && ! (key.length() > 32) && value.length() == 32){
+                System.out.println("OK");
+                for (int i = 0; i < titleKeysCnt; i++){
+                    if (AppPreferences.getInstance().getTitleKeyPair(i)[0].equals(key))
+                        return;
+                }
+                AppPreferences.getInstance().setTitleKey(titleKeysCnt, key+" = "+value);
+                AppPreferences.getInstance().setTitleKeysCount(titleKeysCnt+1);
+            }
+        });
+    }
 
     @Override
     public void analyze(File file) { analyze(file, 0); }
@@ -115,8 +136,9 @@ public class TIKController implements ITabController {
         }
         signatureTF.setText(byteArrToHexString(tikProvider.getSignature()));
 
-        issuerTf.setText(byteArrToHexString(tikProvider.getIssuer()));
-        titleKeyBlockTf.setText(byteArrToHexString(tikProvider.getTitleKeyBlock()));
+        issuerTf.setText(tikProvider.getIssuer());
+        titleKeyBlockStartTf.setText(byteArrToHexString(tikProvider.getTitleKeyBlockStartingBytes()));
+        titleKeyBlockEndTf.setText(byteArrToHexString(tikProvider.getTitleKeyBlockEndingBytes()));
         unknown1Lbl.setText(String.format("0x%02x", tikProvider.getUnknown1()));
         titleKeyTypeLbl.setText(String.format("0x%02x", tikProvider.getTitleKeyType()));
         unknown2Lbl.setText(byteArrToHexString(tikProvider.getUnknown2()));
@@ -127,9 +149,11 @@ public class TIKController implements ITabController {
         rightsIdTf.setText(byteArrToHexString(tikProvider.getRightsId()));
         accountIdLbl.setText(byteArrToHexString(tikProvider.getAccountId()));
         unknown4Lbl.setText(byteArrToHexString(tikProvider.getUnknown4()));
+        btnImport.setDisable(false);
     }
     @Override
     public void resetTab() {
+        btnImport.setDisable(true);
         sigTypeLbl.setText("-");
         sigTypeStrLbl.setText("-");
         tikSizeLbl.setText("-");
@@ -139,7 +163,8 @@ public class TIKController implements ITabController {
         signatureTF.setText("-");
 
         issuerTf.setText("-");
-        titleKeyBlockTf.setText("-");
+        titleKeyBlockStartTf.setText("-");
+        titleKeyBlockEndTf.setText("-");
         unknown1Lbl.setText("-");
         titleKeyTypeLbl.setText("-");
         unknown2Lbl.setText("-");

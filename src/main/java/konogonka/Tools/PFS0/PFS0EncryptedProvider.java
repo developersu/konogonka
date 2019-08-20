@@ -163,10 +163,10 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
             try {
                 BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
                 // Let's store what we're about to skip
-                int skipBytes = (int) (offsetPositionInFile + (mediaStartOffset * 0x200));
+                long skipInitL = offsetPositionInFile + (mediaStartOffset * 0x200); // NOTE: NEVER cast to int.
                 // Check if skip was successful
-                if (bis.skip(skipBytes) != skipBytes) {
-                    System.out.println("PFS0EncryptedProvider -> getPfs0subFilePipedInpStream(): Failed to skip range "+skipBytes);
+                if (bis.skip(skipInitL) != skipInitL) {
+                    System.out.println("PFS0EncryptedProvider -> getPfs0subFilePipedInpStream(): Failed to skip range "+skipInitL);
                     return;
                 }
 
@@ -178,6 +178,7 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
                 //----------------------------- Pre-set: skip non-necessary data --------------------------------
 
                 long startBlock = (rawBlockDataStart + pfs0subFiles[subFileNumber].getOffset()) / 0x200;            // <- pointing to place where actual data starts
+                int skipBytes;
 
                 if (startBlock > 0) {
                     aesCtrDecryptSimple.skipNext(startBlock);

@@ -1,11 +1,9 @@
 package konogonka.Tools.TIK;
 
-import konogonka.RainbowHexDump;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.lang.reflect.Array;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import static konogonka.LoperConverter.*;
@@ -54,8 +52,9 @@ public class TIKProvider  {
     private byte[] sigType;
     private byte[] signature;
     // Ticket
-    private byte[] Issuer;
-    private byte[] TitleKeyBlock;   // Actually 32 bytes. Check against WIKI
+    private String Issuer;
+    private byte[] TitleKeyBlockStartingBytes;   // Actually 32 bytes.
+    private byte[] TitleKeyBlockEndingBytes;   // Anything else
     private byte   Unknown1;
     private byte   TitleKeyType;
     private byte[] Unknown2;
@@ -64,6 +63,7 @@ public class TIKProvider  {
     private byte[] TicketId;
     private byte[] DeviceId;
     private byte[] RightsId;
+    private byte[] RightsIdEndingBytes;
     private byte[] AccountId;
     private byte[] Unknown4;
 
@@ -129,8 +129,9 @@ public class TIKProvider  {
         }
         bis.close();
 
-        Issuer = Arrays.copyOfRange(readChunk, 0, 0x40);
-        TitleKeyBlock = Arrays.copyOfRange(readChunk, 0x40, 0x140);
+        Issuer = new String(readChunk, 0, 0x40, StandardCharsets.UTF_8);
+        TitleKeyBlockStartingBytes = Arrays.copyOfRange(readChunk, 0x40, 0x50);
+        TitleKeyBlockEndingBytes = Arrays.copyOfRange(readChunk, 0x50, 0x140);
         Unknown1 = readChunk[0x140];
         TitleKeyType = readChunk[0x141];
         Unknown2 = Arrays.copyOfRange(readChunk, 0x142, 0x145);
@@ -146,8 +147,9 @@ public class TIKProvider  {
     public byte[] getSigType() { return sigType; }
     public byte[] getSignature() { return signature; }
 
-    public byte[] getIssuer() { return Issuer; }
-    public byte[] getTitleKeyBlock() { return TitleKeyBlock; }
+    public String getIssuer() { return Issuer; }
+    public byte[] getTitleKeyBlockStartingBytes() { return TitleKeyBlockStartingBytes; }
+    public byte[] getTitleKeyBlockEndingBytes() { return TitleKeyBlockEndingBytes; }
     public byte getUnknown1() { return Unknown1; }
     public byte getTitleKeyType() { return TitleKeyType; }
     public byte[] getUnknown2() { return Unknown2; }

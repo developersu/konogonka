@@ -51,7 +51,8 @@ public class NSPController implements ITabController {
         ISuperProvider provider = tableFilesListController.getProvider();
         if (models != null && !models.isEmpty() && (provider != null)){
 
-            File dir = new File(System.getProperty("user.dir")+File.separator+selectedFile.getName()+" extracted");     // todo: move option to settings
+            //File dir = new File(System.getProperty("user.dir")+File.separator+selectedFile.getName()+" extracted");     // todo: move option to settings
+            File dir = new File(System.getProperty("user.dir")+File.separator+provider.getFile().getName()+" extracted");     // todo: move option to settings
             try {
                 dir.mkdir();
             }

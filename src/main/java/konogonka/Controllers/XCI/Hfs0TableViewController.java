@@ -1,10 +1,12 @@
 package konogonka.Controllers.XCI;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,6 +19,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import konogonka.Controllers.IRowModel;
+import konogonka.MediatorControl;
 import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.XCI.HFS0Provider;
 
@@ -152,6 +155,22 @@ public class Hfs0TableViewController implements Initializable {
                     @Override
                     public TableRow<Hfs0RowModel> call(TableView<Hfs0RowModel> nslHfs0RowModelTableView) {
                         final TableRow<Hfs0RowModel> row = new TableRow<>();
+                        ContextMenu contextMenu = new ContextMenu();
+
+                        MenuItem openMenuItem = new MenuItem("Open");
+                        openMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+                                MediatorControl.getInstance().getContoller().showContentWindow(provider, row.getItem());    // TODO: change to something better
+                            }
+                        });
+
+                        contextMenu.getItems().addAll(openMenuItem);
+
+                        row.setContextMenu(contextMenu);
+                        row.contextMenuProperty().bind(
+                                Bindings.when(Bindings.isNotNull(row.itemProperty())).then(contextMenu).otherwise((ContextMenu)null)
+                        );
                         row.setOnMouseClicked(new EventHandler<MouseEvent>() {      // Just.. don't ask..
                             @Override
                             public void handle(MouseEvent mouseEvent) {
