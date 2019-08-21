@@ -79,6 +79,14 @@
                                 <Label text="TIK" />
                             </graphic>
                         </Tab>
+                        <Tab closable="false">
+                            <content>
+                                <fx:include fx:id="XMLTab" source="XML/XMLTab.fxml" />
+                            </content>
+                            <graphic>
+                                <Label text="XML" />
+                            </graphic>
+                        </Tab>
                     </tabs>
                   </TabPane>
                   <AnchorPane fx:id="logPane" prefHeight="200.0" prefWidth="200.0">

@@ -94,7 +94,7 @@ public class NSPController implements ITabController {
      * */
     @Override
     public void analyze(File selectedFile, long offset){
-        // TODO: IMPLEMENT
+        // TODO: IMPLEMENT?
         return;
     }
     @Override

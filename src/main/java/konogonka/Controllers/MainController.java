@@ -11,6 +11,7 @@ import konogonka.Controllers.NCA.NCAController;
 import konogonka.Controllers.NSP.NSPController;
 import konogonka.Controllers.TIK.TIKController;
 import konogonka.Controllers.XCI.XCIController;
+import konogonka.Controllers.XML.XMLController;
 import konogonka.MediatorControl;
 import konogonka.Settings.SettingsWindow;
 import konogonka.Tools.ISuperProvider;
@@ -47,6 +48,8 @@ public class MainController implements Initializable {
     private NCAController NCATabController;
     @FXML
     private TIKController TIKTabController;
+    @FXML
+    private XMLController XMLTabController;
 
     private File selectedFile;
 
@@ -80,7 +83,7 @@ public class MainController implements Initializable {
         else
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NS files", "*.nsp", "*.xci", "*.nca", "*.tik"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NS files", "*.nsp", "*.xci", "*.nca", "*.tik", "*.xml"));
 
         this.selectedFile = fileChooser.showOpenDialog(analyzeBtn.getScene().getWindow());
 
@@ -89,6 +92,7 @@ public class MainController implements Initializable {
         XCITabController.resetTab();
         NCATabController.resetTab();
         TIKTabController.resetTab();
+        XMLTabController.resetTab();
 
         if (this.selectedFile != null && this.selectedFile.exists()) {
             filenameSelected.setText(this.selectedFile.getAbsolutePath());
@@ -102,6 +106,8 @@ public class MainController implements Initializable {
                 tabPane.getSelectionModel().select(2);
             else if (this.selectedFile.getName().toLowerCase().endsWith(".tik"))
                 tabPane.getSelectionModel().select(3);
+            else if (this.selectedFile.getName().toLowerCase().endsWith(".xml"))
+                tabPane.getSelectionModel().select(4);
         }
 
         logArea.clear();
@@ -118,6 +124,8 @@ public class MainController implements Initializable {
             NCATabController.analyze(selectedFile);
         else if (selectedFile.getName().toLowerCase().endsWith("tik"))
             TIKTabController.analyze(selectedFile);
+        else if (selectedFile.getName().toLowerCase().endsWith("xml"))
+            XMLTabController.analyze(selectedFile);
     }
     @FXML
     private void showHideLogs(){

@@ -6,7 +6,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import konogonka.AppPreferences;
 import konogonka.Controllers.ITabController;
-import konogonka.MediatorControl;
 import konogonka.Tools.TIK.TIKProvider;
 import konogonka.Workers.AnalyzerTIK;
 

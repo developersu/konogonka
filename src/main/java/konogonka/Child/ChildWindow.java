@@ -6,8 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import konogonka.Controllers.IRowModel;
-import konogonka.Controllers.NCA.NCAController;
-import konogonka.Controllers.TIK.TIKController;
+import konogonka.Controllers.ITabController;
+import konogonka.Controllers.XML.XMLController;
 import konogonka.Tools.ISuperProvider;
 
 import java.io.IOException;
@@ -29,19 +29,18 @@ public class ChildWindow {
         else if(model.getFileName().endsWith(".tik")){
             loaderSettings = new FXMLLoader(getClass().getResource("/FXML/TIK/TIKTab.fxml"));
         }
+        else if(model.getFileName().endsWith(".xml")){
+            loaderSettings = new FXMLLoader(getClass().getResource("/FXML/XML/XMLTab.fxml"));
+        }
         else if(model.getFileName().endsWith(".cert")){
             // TODO: IMPLEMENT
             return;
         }
-        else if(model.getFileName().endsWith(".tik")){
+        else if(model.getFileName().endsWith(".cnmt")){
             // TODO: IMPLEMENT
             return;
         }
-        else if(model.getFileName().endsWith(".xml")){
-            // TODO: IMPLEMENT
-            return;
-        }
-        else
+        else        // TODO: Dynamic detection function
             return;
 
         Locale userLocale = new Locale(Locale.getDefault().getISO3Language());
@@ -49,15 +48,14 @@ public class ChildWindow {
         loaderSettings.setResources(resourceBundle);
         Parent parentAbout = loaderSettings.load();
 
-
-        // TODO: REFACTOR
-        if (model.getFileName().endsWith(".nca")){
-            NCAController ncaController = loaderSettings.<NCAController>getController();
-            ncaController.analyze(provider.getFile(), provider.getRawFileDataStart()+model.getFileOffset());
+        // TODO: fix?
+        if(model.getFileName().endsWith(".xml")){
+            XMLController myController = loaderSettings.<XMLController>getController();
+            myController.analyze(provider.getFile(), provider.getRawFileDataStart()+model.getFileOffset(), model.getFileSize());
         }
-        else if(model.getFileName().endsWith(".tik")){
-            TIKController tikController = loaderSettings.<TIKController>getController();
-            tikController.analyze(provider.getFile(), provider.getRawFileDataStart()+model.getFileOffset());
+        else {
+            ITabController myController = loaderSettings.<ITabController>getController();
+            myController.analyze(provider.getFile(), provider.getRawFileDataStart()+model.getFileOffset());
         }
 
 

@@ -20,3 +20,9 @@ Deep WIP multi-tool to work with XCI/NSP/NCA/NRO(?) files
 ### System requirements
 
 JRE/JDK 8u60 or higher.
+
+### Checklist
+
+* [ ] LogPrinter to singleton implementation
+* [ ] CNMT support
+* [ ]  support
