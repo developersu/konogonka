@@ -48,9 +48,7 @@ public class TIKController implements ITabController {
             String key = rightsIdTf.getText();
             String value = titleKeyBlockStartTf.getText();
             int titleKeysCnt = AppPreferences.getInstance().getTitleKeysCount();
-            System.out.println(key+" "+value+" "+titleKeysCnt);
             if (key.length() > 16 && ! (key.length() > 32) && value.length() == 32){
-                System.out.println("OK");
                 for (int i = 0; i < titleKeysCnt; i++){
                     if (AppPreferences.getInstance().getTitleKeyPair(i)[0].equals(key))
                         return;

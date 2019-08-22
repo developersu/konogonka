@@ -51,7 +51,6 @@ public class XMLController implements ITabController {
      * Read from offset to length
      * */
     public void analyze(File file, long offset, long fileSize) {
-        System.out.println(file.length()+" "+offset+" "+fileSize);
         try {
             if (fileSize > 10485760)  // 10mB
                 throw new Exception("XMLController -> analyze(): File is too big. It must be something wrong with it. Usually they're smaller");

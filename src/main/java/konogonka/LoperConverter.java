@@ -11,6 +11,17 @@ public class LoperConverter {
     public static long getLElong(byte[] bytes, int fromOffset){
         return ByteBuffer.wrap(bytes, fromOffset, 0x8).order(ByteOrder.LITTLE_ENDIAN).getLong();
     }
+    /**
+     * Convert int to long. Workaround to store unsigned int
+     * @param bytes original array
+     * @param fromOffset start position of the 4-bytes value
+     * */
+    public static long getLElongOfInt(byte[] bytes, int fromOffset){
+        final byte[] holder = new byte[8];
+        System.arraycopy(bytes, fromOffset, holder, 0, 4);
+        return ByteBuffer.wrap(holder).order(ByteOrder.LITTLE_ENDIAN).getLong();
+    }
+
     public static String byteArrToHexString(byte[] bArr){
         if (bArr == null)
             return "";

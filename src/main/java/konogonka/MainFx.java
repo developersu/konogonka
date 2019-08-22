@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainFx extends Application {
-    public static final String appVersion = "v0.1-DEV";
+    public static final String appVersion = "v0.0-SNAPSHOT";
 
     @Override
     public void start(Stage primaryStage) throws Exception{

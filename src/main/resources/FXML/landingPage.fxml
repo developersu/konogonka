@@ -87,6 +87,14 @@
                                 <Label text="XML" />
                             </graphic>
                         </Tab>
+                        <Tab closable="false">
+                            <content>
+                                <fx:include fx:id="NPDMTab" source="NPDM/NPDMTab.fxml" />
+                            </content>
+                            <graphic>
+                                <Label text="NPDM" />
+                            </graphic>
+                        </Tab>
                     </tabs>
                   </TabPane>
                   <AnchorPane fx:id="logPane" prefHeight="200.0" prefWidth="200.0">

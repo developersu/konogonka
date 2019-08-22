@@ -8,6 +8,7 @@ import javafx.stage.FileChooser;
 import konogonka.AppPreferences;
 import konogonka.Child.ChildWindow;
 import konogonka.Controllers.NCA.NCAController;
+import konogonka.Controllers.NPDM.NPDMController;
 import konogonka.Controllers.NSP.NSPController;
 import konogonka.Controllers.TIK.TIKController;
 import konogonka.Controllers.XCI.XCIController;
@@ -50,6 +51,8 @@ public class MainController implements Initializable {
     private TIKController TIKTabController;
     @FXML
     private XMLController XMLTabController;
+    @FXML
+    private NPDMController NPDMTabController;
 
     private File selectedFile;
 
@@ -83,7 +86,7 @@ public class MainController implements Initializable {
         else
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NS files", "*.nsp", "*.xci", "*.nca", "*.tik", "*.xml"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NS files", "*.nsp", "*.xci", "*.nca", "*.tik", "*.xml", "*.npdm"));
 
         this.selectedFile = fileChooser.showOpenDialog(analyzeBtn.getScene().getWindow());
 
@@ -93,6 +96,7 @@ public class MainController implements Initializable {
         NCATabController.resetTab();
         TIKTabController.resetTab();
         XMLTabController.resetTab();
+        NPDMTabController.resetTab();
 
         if (this.selectedFile != null && this.selectedFile.exists()) {
             filenameSelected.setText(this.selectedFile.getAbsolutePath());
@@ -108,6 +112,8 @@ public class MainController implements Initializable {
                 tabPane.getSelectionModel().select(3);
             else if (this.selectedFile.getName().toLowerCase().endsWith(".xml"))
                 tabPane.getSelectionModel().select(4);
+            else if (this.selectedFile.getName().toLowerCase().endsWith(".npdm"))
+                tabPane.getSelectionModel().select(5);
         }
 
         logArea.clear();
@@ -126,6 +132,8 @@ public class MainController implements Initializable {
             TIKTabController.analyze(selectedFile);
         else if (selectedFile.getName().toLowerCase().endsWith("xml"))
             XMLTabController.analyze(selectedFile);
+        else if (selectedFile.getName().toLowerCase().endsWith("npdm"))
+            NPDMTabController.analyze(selectedFile);
     }
     @FXML
     private void showHideLogs(){

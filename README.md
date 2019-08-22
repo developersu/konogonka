@@ -1,6 +1,6 @@
 # konogonka
 
-Deep WIP multi-tool to work with XCI/NSP/NCA/NRO(?) files
+Deep WIP multi-tool to work with NS-specific files / filesystem images.
 
 ### License
 
@@ -24,5 +24,6 @@ JRE/JDK 8u60 or higher.
 ### Checklist
 
 * [ ] LogPrinter to singleton implementation
+* [ ] NPDM support
 * [ ] CNMT support
-* [ ]  support
+* [ ] NSO support
