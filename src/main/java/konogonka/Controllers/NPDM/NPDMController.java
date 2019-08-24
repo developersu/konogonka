@@ -4,12 +4,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import konogonka.Controllers.ITabController;
+import konogonka.Tools.ISuperProvider;
+import konogonka.Tools.NPDM.ACI0Provider;
+import konogonka.Tools.NPDM.ACIDProvider;
 import konogonka.Tools.NPDM.NPDMProvider;
 import konogonka.Workers.AnalyzerNPDM;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static konogonka.LoperConverter.byteArrToHexString;
@@ -38,21 +40,65 @@ public class NPDMController implements ITabController {
                     productCodeTf,
                     reserved4Tf;
 
+    // ACI0
+    @FXML
+    private Label aci0MagicNumLbl,
+            aci0Reserved1Lbl,
+            aci0TitleIDLbl,
+            aci0Reserved2Lbl,
+            aci0FsAccessHeaderOffsetLbl,
+            aci0FsAccessHeaderSizeLbl,
+            aci0ServiceAccessControlOffsetLbl,
+            aci0ServiceAccessControlSizeLbl,
+            aci0KernelAccessControlOffsetLbl,
+            aci0KernelAccessControlSizeLbl,
+            aci0Reserved3Lbl;
+    // ACID
+    @FXML TextField acidRsa2048signatureTf,
+                acidRsa2048publicKeyTf;
+    @FXML
+    private Label acidMagicNumLbl,
+            acidDataSizeLbl,
+            acidReserved1Lbl,
+            acidFlag1Lbl,
+            acidFlag2Lbl,
+            acidFlag3Lbl,
+            acidFlag4Lbl,
+            acidTitleRangeMinLbl,
+            acidTitleRangeMaxLbl,
+            acidFsAccessControlOffsetLbl,
+            acidFsAccessControlSizeLbl,
+            acidServiceAccessControlOffsetLbl,
+            acidServiceAccessControlSizeLbl,
+            acidKernelAccessControlOffsetLbl,
+            acidKernelAccessControlSizeLbl,
+            acidReserved2Lbl;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { }
 
     @Override
     public void analyze(File file) { analyze(file, 0); }
-
+    @Override
+    public void analyze(ISuperProvider parentProvider, int fileNo) throws Exception {
+        AnalyzerNPDM analyzerNPDM = new AnalyzerNPDM(parentProvider, fileNo);
+        analyzerNPDM.setOnSucceeded(e->{
+            NPDMProvider npdm = analyzerNPDM.getValue();
+            setData(npdm, null);
+        });
+        Thread workThread = new Thread(analyzerNPDM);
+        workThread.setDaemon(true);
+        workThread.start();
+    }
     @Override
     public void analyze(File file, long offset) {
         AnalyzerNPDM analyzerNPDM = new AnalyzerNPDM(file, offset);
         analyzerNPDM.setOnSucceeded(e->{
-            NPDMProvider tik = analyzerNPDM.getValue();
+            NPDMProvider npdm = analyzerNPDM.getValue();
             if (offset == 0)
-                setData(tik, file);
+                setData(npdm, file);
             else
-                setData(tik, null);
+                setData(npdm, null);
         });
         Thread workThread = new Thread(analyzerNPDM);
         workThread.setDaemon(true);
@@ -79,6 +125,38 @@ public class NPDMController implements ITabController {
         productCodeTf.setText("-");
         reserved4Tf.setText("-");
         npdmFileSize.setText("-");
+
+        // ACI0
+        aci0MagicNumLbl.setText("-");
+        aci0Reserved1Lbl.setText("-");
+        aci0TitleIDLbl.setText("-");
+        aci0Reserved2Lbl.setText("-");
+        aci0FsAccessHeaderOffsetLbl.setText("-");
+        aci0FsAccessHeaderSizeLbl.setText("-");
+        aci0ServiceAccessControlOffsetLbl.setText("-");
+        aci0ServiceAccessControlSizeLbl.setText("-");
+        aci0KernelAccessControlOffsetLbl.setText("-");
+        aci0KernelAccessControlSizeLbl.setText("-");
+        aci0Reserved3Lbl.setText("-");
+        // ACID
+        acidRsa2048signatureTf.setText("-");
+        acidRsa2048publicKeyTf.setText("-");
+        acidMagicNumLbl.setText("-");
+        acidDataSizeLbl.setText("-");
+        acidReserved1Lbl.setText("-");
+        acidFlag1Lbl.setText("-");
+        acidFlag2Lbl.setText("-");
+        acidFlag3Lbl.setText("-");
+        acidFlag4Lbl.setText("-");
+        acidTitleRangeMinLbl.setText("-");
+        acidTitleRangeMaxLbl.setText("-");
+        acidFsAccessControlOffsetLbl.setText("-");
+        acidFsAccessControlSizeLbl.setText("-");
+        acidServiceAccessControlOffsetLbl.setText("-");
+        acidServiceAccessControlSizeLbl.setText("-");
+        acidKernelAccessControlOffsetLbl.setText("-");
+        acidKernelAccessControlSizeLbl.setText("-");
+        acidReserved2Lbl.setText("-");
     }
     private void setData(NPDMProvider npdmProvider, File file) {
         if (npdmProvider == null)
@@ -101,10 +179,42 @@ public class NPDMController implements ITabController {
         titleNameTf.setText(npdmProvider.getTitleName());
         productCodeTf.setText(byteArrToHexString(npdmProvider.getProductCode()));
         reserved4Tf.setText(byteArrToHexString(npdmProvider.getReserved4()));
-        aci0offsetLbl.setText(Long.toString(npdmProvider.getAci0offset()));
-        aci0sizeLbl.setText(Long.toString(npdmProvider.getAci0size()));
-        acidOffsetLbl.setText(Long.toString(npdmProvider.getAcidOffset()));
-        acidSizeLbl.setText(Long.toString(npdmProvider.getAcidSize()));
+        aci0offsetLbl.setText(Integer.toString(npdmProvider.getAci0offset()));
+        aci0sizeLbl.setText(Integer.toString(npdmProvider.getAci0size()));
+        acidOffsetLbl.setText(Integer.toString(npdmProvider.getAcidOffset()));
+        acidSizeLbl.setText(Integer.toString(npdmProvider.getAcidSize()));
+        // ACI0
+        ACI0Provider aci0 = npdmProvider.getAci0();
+        aci0MagicNumLbl.setText(aci0.getMagicNum());
+        aci0Reserved1Lbl.setText(byteArrToHexString(aci0.getReserved1()));
+        aci0TitleIDLbl.setText(byteArrToHexString(aci0.getTitleID()));
+        aci0Reserved2Lbl.setText(byteArrToHexString(aci0.getReserved2()));
+        aci0FsAccessHeaderOffsetLbl.setText(Integer.toString(aci0.getFsAccessHeaderOffset()));
+        aci0FsAccessHeaderSizeLbl.setText(Integer.toString(aci0.getFsAccessHeaderSize()));
+        aci0ServiceAccessControlOffsetLbl.setText(Integer.toString(aci0.getServiceAccessControlOffset()));
+        aci0ServiceAccessControlSizeLbl.setText(Integer.toString(aci0.getServiceAccessControlSize()));
+        aci0KernelAccessControlOffsetLbl.setText(Integer.toString(aci0.getKernelAccessControlOffset()));
+        aci0KernelAccessControlSizeLbl.setText(Integer.toString(aci0.getKernelAccessControlSize()));
+        aci0Reserved3Lbl.setText(byteArrToHexString(aci0.getReserved3()));
+        // ACID
+        ACIDProvider acid = npdmProvider.getAcid();
+        acidRsa2048signatureTf.setText(byteArrToHexString(acid.getRsa2048signature()));
+        acidRsa2048publicKeyTf.setText(byteArrToHexString(acid.getRsa2048publicKey()));
+        acidMagicNumLbl.setText(acid.getMagicNum());
+        acidDataSizeLbl.setText(Integer.toString(acid.getDataSize()));
+        acidReserved1Lbl.setText(byteArrToHexString(acid.getReserved1()));
+        acidFlag1Lbl.setText(String.format("0x%02x", acid.getFlag1()));
+        acidFlag2Lbl.setText(String.format("0x%02x", acid.getFlag2()));
+        acidFlag3Lbl.setText(String.format("0x%02x", acid.getFlag3()));
+        acidFlag4Lbl.setText(String.format("0x%02x", acid.getFlag4()));
+        acidTitleRangeMinLbl.setText(Long.toString(acid.getTitleRangeMin()));
+        acidTitleRangeMaxLbl.setText(Long.toString(acid.getTitleRangeMax()));
+        acidFsAccessControlOffsetLbl.setText(Integer.toString(acid.getFsAccessControlOffset()));
+        acidFsAccessControlSizeLbl.setText(Integer.toString(acid.getFsAccessControlSize()));
+        acidServiceAccessControlOffsetLbl.setText(Integer.toString(acid.getServiceAccessControlOffset()));
+        acidServiceAccessControlSizeLbl.setText(Integer.toString(acid.getServiceAccessControlSize()));
+        acidKernelAccessControlOffsetLbl.setText(Integer.toString(acid.getKernelAccessControlOffset()));
+        acidKernelAccessControlSizeLbl.setText(Integer.toString(acid.getKernelAccessControlSize()));
+        acidReserved2Lbl.setText(byteArrToHexString(acid.getReserved2()));
     }
-
 }

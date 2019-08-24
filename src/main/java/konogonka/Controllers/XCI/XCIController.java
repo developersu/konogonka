@@ -107,6 +107,10 @@ public class XCIController implements ITabController {
         workThread.start();
     }
     @Override
+    public void analyze(ISuperProvider parentProvider, int fileNo) throws Exception {
+        throw new Exception("Not supported for XCI");
+    }
+    @Override
     public void resetTab(){
         HFSBlockController.setSelectedFile(null);
         /* Header */

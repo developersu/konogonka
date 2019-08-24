@@ -108,6 +108,10 @@ public class NSPController implements ITabController {
         workThread.setDaemon(true);
         workThread.start();
     }
+    @Override
+    public void analyze(ISuperProvider parentProvider, int fileNo) throws Exception {
+        throw new Exception("Not supported for NSP");
+    }
     /**
      * Just populate fields by already analyzed PFS0
      * */

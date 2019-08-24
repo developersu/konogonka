@@ -15,7 +15,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ChildWindow {
-    public ChildWindow(ISuperProvider provider, IRowModel model) throws IOException{
+    public ChildWindow(ISuperProvider provider, IRowModel model) throws IOException {
         Stage stageSettings = new Stage();
 
         stageSettings.setMinWidth(570);
@@ -23,21 +23,22 @@ public class ChildWindow {
 
         FXMLLoader loaderSettings;
 
-        if (model.getFileName().endsWith(".nca")){
+        if (model.getFileName().endsWith(".nca")) {
             loaderSettings = new FXMLLoader(getClass().getResource("/FXML/NCA/NCATab.fxml"));
-        }
-        else if(model.getFileName().endsWith(".tik")){
+        } else if (model.getFileName().endsWith(".tik")) {
             loaderSettings = new FXMLLoader(getClass().getResource("/FXML/TIK/TIKTab.fxml"));
-        }
-        else if(model.getFileName().endsWith(".xml")){
+        } else if (model.getFileName().endsWith(".xml")) {
             loaderSettings = new FXMLLoader(getClass().getResource("/FXML/XML/XMLTab.fxml"));
+        }
+        else if(model.getFileName().endsWith(".npdm")){
+            loaderSettings = new FXMLLoader(getClass().getResource("/FXML/NPDM/NPDMTab.fxml"));
         }
         else if(model.getFileName().endsWith(".cert")){
             // TODO: IMPLEMENT
             return;
         }
         else if(model.getFileName().endsWith(".cnmt")){
-            // TODO: IMPLEMENT
+            // todo: implement
             return;
         }
         else        // TODO: Dynamic detection function
@@ -52,6 +53,15 @@ public class ChildWindow {
         if(model.getFileName().endsWith(".xml")){
             XMLController myController = loaderSettings.<XMLController>getController();
             myController.analyze(provider.getFile(), provider.getRawFileDataStart()+model.getFileOffset(), model.getFileSize());
+        }
+        else if (model.getFileName().endsWith(".npdm")){
+            ITabController myController = loaderSettings.<ITabController>getController();
+            try {
+                myController.analyze(provider, model.getNumber());
+            }
+            catch (Exception e){
+                System.out.println("ERR"+e.getMessage());
+            }
         }
         else {
             ITabController myController = loaderSettings.<ITabController>getController();

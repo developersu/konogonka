@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import konogonka.AppPreferences;
 import konogonka.Controllers.ITabController;
+import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.TIK.TIKProvider;
 import konogonka.Workers.AnalyzerTIK;
 
@@ -61,7 +62,10 @@ public class TIKController implements ITabController {
 
     @Override
     public void analyze(File file) { analyze(file, 0); }
-
+    @Override
+    public void analyze(ISuperProvider parentProvider, int fileNo) throws Exception {
+        throw new Exception("Not supported for TIK");
+    }
     @Override
     public void analyze(File file, long offset) {
         AnalyzerTIK analyzerTIK = new AnalyzerTIK(file, offset);

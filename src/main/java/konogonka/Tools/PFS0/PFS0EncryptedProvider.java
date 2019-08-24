@@ -245,7 +245,7 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
                         streamOut.write(dectyptedBlock, 0, extraData);
                     }
                     else {
-                        System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from 1st bock");
+                        System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from bock");
                         return;
                     }
                 }
@@ -256,7 +256,7 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
                         streamOut.write(dectyptedBlock, 0, 0x200 + extraData);
                     }
                     else {
-                        System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from 1st bock");
+                        System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from last bock");
                         return;
                     }
                 }

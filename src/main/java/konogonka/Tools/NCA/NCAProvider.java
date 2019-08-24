@@ -163,7 +163,7 @@ public class NCAProvider {
         else
             cryptoTypeReal = cryptoType1;
 
-        if (cryptoTypeReal > 0)     // TODO: CLARIFY WHY THEH FUCK IS IT FAIR????
+        if (cryptoTypeReal > 0)     // TODO: CLARIFY WHY THE FUCK IS IT FAIR????
             cryptoTypeReal -= 1;
 
         //todo: if nca3 proceed
@@ -193,6 +193,8 @@ public class NCAProvider {
                 decryptedKey2 = cipher.doFinal(encryptedKey2);
                 decryptedKey3 = cipher.doFinal(encryptedKey3);
             }
+            else
+                throw new Exception("key_are_key_[UNKNOWN] requested ("+keyIndex+"). Not supported.");
         }
 
         tableEntry0 = new NCAHeaderTableEntry(tableBytes);
@@ -244,6 +246,7 @@ public class NCAProvider {
     public NCASectionBlock getSectionBlock1() { return sectionBlock1; }
     public NCASectionBlock getSectionBlock2() { return sectionBlock2; }
     public NCASectionBlock getSectionBlock3() { return sectionBlock3; }
+
     public boolean isKeyAvailable(){                                            // TODO: USE
         if (Arrays.equals(rightsId, new byte[0x10]))
             return true;

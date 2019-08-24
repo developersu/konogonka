@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import konogonka.Controllers.ITabController;
 import konogonka.MediatorControl;
+import konogonka.Tools.ISuperProvider;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -14,7 +15,6 @@ import java.util.ResourceBundle;
 
 public class XMLController implements ITabController {
     @FXML
-
     private TextArea mainTa;
 
     @Override
@@ -47,6 +47,7 @@ public class XMLController implements ITabController {
             MediatorControl.getInstance().getContoller().logArea.appendText("XMLController -> analyze(): \n"+e.getMessage());
         }
     }
+
     /**
      * Read from offset to length
      * */
@@ -66,6 +67,10 @@ public class XMLController implements ITabController {
         catch (Exception e){
             MediatorControl.getInstance().getContoller().logArea.appendText("XMLController -> analyze(): \n"+e.getMessage());
         }
+    }
+    @Override
+    public void analyze(ISuperProvider parentProvider, int fileNo) throws Exception {
+        throw new Exception("Not supported for XML");
     }
     @Override
     public void resetTab() {

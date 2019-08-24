@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import konogonka.AppPreferences;
 import konogonka.Controllers.ITabController;
+import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.NCA.NCAContentPFS0;
 import konogonka.Tools.NCA.NCAProvider;
 import konogonka.Workers.AnalyzerNCA;
@@ -105,7 +106,10 @@ public class NCAController implements ITabController {
     public void analyze(File file) {
         analyze(file, 0);
     }
-
+    @Override
+    public void analyze(ISuperProvider parentProvider, int fileNo) throws Exception {
+        throw new Exception("Not supported for NCA");
+    }
     @Override
     public void resetTab() {
         // Header
