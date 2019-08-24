@@ -9,7 +9,7 @@ import konogonka.Controllers.IRowModel;
 import konogonka.MediatorControl;
 import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.XCI.HFS0Provider;
-import konogonka.Workers.NspXciExtractor;
+import konogonka.Workers.Extractor;
 
 import java.io.File;
 import java.net.URL;
@@ -106,8 +106,8 @@ public class HFSBlockController implements Initializable {
 
             extractMainBtn.setDisable(true);
             System.out.println(dir.getAbsolutePath()+File.separator);
-            //NspXciExtractor extractor = new NspXciExtractor(bodySize, models, dir.getAbsolutePath()+File.separator, selectedFile);    // TODO: REMOVE
-            NspXciExtractor extractor = new NspXciExtractor(provider, models, dir.getAbsolutePath()+File.separator);
+            //Extractor extractor = new Extractor(bodySize, models, dir.getAbsolutePath()+File.separator, selectedFile);    // TODO: REMOVE
+            Extractor extractor = new Extractor(provider, models, dir.getAbsolutePath()+File.separator);
             extractor.setOnSucceeded(e->{
                 extractMainBtn.setDisable(false);
             });

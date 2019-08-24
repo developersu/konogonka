@@ -1,5 +1,6 @@
 package konogonka.Controllers.XCI;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -7,7 +8,7 @@ import konogonka.AppPreferences;
 import konogonka.Controllers.ITabController;
 import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.XCI.XCIProvider;
-import konogonka.Workers.AnalyzerXCI;
+import konogonka.Workers.Analyzer;
 
 import java.io.File;
 import java.net.URL;
@@ -98,11 +99,11 @@ public class XCIController implements ITabController {
     public void analyze(File selectedFile){
         HFSBlockController.setSelectedFile(selectedFile);
 
-        AnalyzerXCI analyzerXCI = new AnalyzerXCI(selectedFile, AppPreferences.getInstance().getXciHeaderKey());
-        analyzerXCI.setOnSucceeded(e->{
-            populateFields(analyzerXCI.getValue());
+        Task analyzer = Analyzer.analyzeXCI(selectedFile, AppPreferences.getInstance().getXciHeaderKey());
+        analyzer.setOnSucceeded(e->{
+            populateFields((XCIProvider) analyzer.getValue());
         });
-        Thread workThread = new Thread(analyzerXCI);
+        Thread workThread = new Thread(analyzer);
         workThread.setDaemon(true);
         workThread.start();
     }

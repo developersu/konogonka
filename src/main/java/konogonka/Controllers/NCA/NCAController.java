@@ -1,5 +1,6 @@
 package konogonka.Controllers.NCA;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -8,7 +9,7 @@ import konogonka.Controllers.ITabController;
 import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.NCA.NCAContentPFS0;
 import konogonka.Tools.NCA.NCAProvider;
-import konogonka.Workers.AnalyzerNCA;
+import konogonka.Workers.Analyzer;
 
 import java.io.File;
 import java.net.URL;
@@ -93,11 +94,11 @@ public class NCAController implements ITabController {
                 keysMap.put(pair[0], pair[1]);
         }
 
-        AnalyzerNCA analyzerNCA = new AnalyzerNCA(file, keysMap, offset);
-        analyzerNCA.setOnSucceeded(e->{
-            populateFields(analyzerNCA.getValue());
+        Task analyzer = Analyzer.analyzeNCA(file, keysMap, offset);
+        analyzer.setOnSucceeded(e->{
+            populateFields((NCAProvider) analyzer.getValue());
         });
-        Thread workThread = new Thread(analyzerNCA);
+        Thread workThread = new Thread(analyzer);
         workThread.setDaemon(true);
         workThread.start();
     }

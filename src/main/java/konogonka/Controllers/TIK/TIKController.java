@@ -1,5 +1,6 @@
 package konogonka.Controllers.TIK;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,7 +9,7 @@ import konogonka.AppPreferences;
 import konogonka.Controllers.ITabController;
 import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.TIK.TIKProvider;
-import konogonka.Workers.AnalyzerTIK;
+import konogonka.Workers.Analyzer;
 
 import java.io.File;
 import java.net.URL;
@@ -68,15 +69,15 @@ public class TIKController implements ITabController {
     }
     @Override
     public void analyze(File file, long offset) {
-        AnalyzerTIK analyzerTIK = new AnalyzerTIK(file, offset);
-        analyzerTIK.setOnSucceeded(e->{
-            TIKProvider tik = analyzerTIK.getValue();
+        Task analyzer = Analyzer.analyzeTIK(file, offset);
+        analyzer.setOnSucceeded(e->{
+            TIKProvider tik = (TIKProvider) analyzer.getValue();
             if (offset == 0)
                 setData(tik, file);
             else
                 setData(tik, null);
         });
-        Thread workThread = new Thread(analyzerTIK);
+        Thread workThread = new Thread(analyzer);
         workThread.setDaemon(true);
         workThread.start();
     }

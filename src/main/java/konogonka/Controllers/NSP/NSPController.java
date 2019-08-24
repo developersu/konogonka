@@ -1,5 +1,6 @@
 package konogonka.Controllers.NSP;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,8 +10,8 @@ import konogonka.MediatorControl;
 import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.PFS0.IPFS0Provider;
 import konogonka.Tools.PFS0.PFS0Provider;
-import konogonka.Workers.AnalyzerNSP;
-import konogonka.Workers.NspXciExtractor;
+import konogonka.Workers.Analyzer;
+import konogonka.Workers.Extractor;
 
 import java.io.File;
 import java.net.URL;
@@ -64,8 +65,8 @@ public class NSPController implements ITabController {
 
             extractBtn.setDisable(true);
 
-            //NspXciExtractor extractor = new NspXciExtractor(rawFileDataStart, models, dir.getAbsolutePath()+File.separator, selectedFile); //TODO: REMOVE
-            NspXciExtractor extractor = new NspXciExtractor(provider, models, dir.getAbsolutePath()+File.separator);
+            //Extractor extractor = new Extractor(rawFileDataStart, models, dir.getAbsolutePath()+File.separator, selectedFile); //TODO: REMOVE
+            Extractor extractor = new Extractor(provider, models, dir.getAbsolutePath()+File.separator);
             extractor.setOnSucceeded(e->{
                 extractBtn.setDisable(false);
             });
@@ -94,17 +95,17 @@ public class NSPController implements ITabController {
      * */
     @Override
     public void analyze(File selectedFile, long offset){
-        // TODO: IMPLEMENT?
+        // TODO: IMPLEMENT??
         return;
     }
     @Override
     public void analyze(File selectedFile){
-        AnalyzerNSP analyzerNSP = new AnalyzerNSP(selectedFile);
-        analyzerNSP.setOnSucceeded(e->{
-            PFS0Provider pfs0 = analyzerNSP.getValue();
+        Task analyzer = Analyzer.analyzePFS0(selectedFile);
+        analyzer.setOnSucceeded(e->{
+            PFS0Provider pfs0 = (PFS0Provider) analyzer.getValue();
             this.setData(pfs0, selectedFile);
         });
-        Thread workThread = new Thread(analyzerNSP);
+        Thread workThread = new Thread(analyzer);
         workThread.setDaemon(true);
         workThread.start();
     }

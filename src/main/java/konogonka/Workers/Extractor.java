@@ -9,7 +9,7 @@ import konogonka.Tools.ISuperProvider;
 import java.io.*;
 import java.util.List;
 
-public class NspXciExtractor extends Task<Void> {
+public class Extractor extends Task<Void> {
 
     private ISuperProvider provider;
     private List<IRowModel> models;
@@ -17,7 +17,7 @@ public class NspXciExtractor extends Task<Void> {
 
     private String filesDestPath;
 
-    public NspXciExtractor(ISuperProvider provider, List<IRowModel> models, String filesDestPath){
+    public Extractor(ISuperProvider provider, List<IRowModel> models, String filesDestPath){
         this.provider = provider;
         this.models = models;
         this.filesDestPath = filesDestPath;

@@ -1,5 +1,6 @@
 package konogonka.Controllers.NPDM;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -8,7 +9,7 @@ import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.NPDM.ACI0Provider;
 import konogonka.Tools.NPDM.ACIDProvider;
 import konogonka.Tools.NPDM.NPDMProvider;
-import konogonka.Workers.AnalyzerNPDM;
+import konogonka.Workers.Analyzer;
 
 import java.io.File;
 import java.net.URL;
@@ -81,26 +82,26 @@ public class NPDMController implements ITabController {
     public void analyze(File file) { analyze(file, 0); }
     @Override
     public void analyze(ISuperProvider parentProvider, int fileNo) throws Exception {
-        AnalyzerNPDM analyzerNPDM = new AnalyzerNPDM(parentProvider, fileNo);
-        analyzerNPDM.setOnSucceeded(e->{
-            NPDMProvider npdm = analyzerNPDM.getValue();
+        Task analyzer = Analyzer.analyzeNPDM(parentProvider, fileNo);
+        analyzer.setOnSucceeded(e->{
+            NPDMProvider npdm = (NPDMProvider) analyzer.getValue();
             setData(npdm, null);
         });
-        Thread workThread = new Thread(analyzerNPDM);
+        Thread workThread = new Thread(analyzer);
         workThread.setDaemon(true);
         workThread.start();
     }
     @Override
     public void analyze(File file, long offset) {
-        AnalyzerNPDM analyzerNPDM = new AnalyzerNPDM(file, offset);
-        analyzerNPDM.setOnSucceeded(e->{
-            NPDMProvider npdm = analyzerNPDM.getValue();
+        Task analyzer = Analyzer.analyzeNPDM(file, offset);
+        analyzer.setOnSucceeded(e->{
+            NPDMProvider npdm = (NPDMProvider) analyzer.getValue();
             if (offset == 0)
                 setData(npdm, file);
             else
                 setData(npdm, null);
         });
-        Thread workThread = new Thread(analyzerNPDM);
+        Thread workThread = new Thread(analyzer);
         workThread.setDaemon(true);
         workThread.start();
     }
