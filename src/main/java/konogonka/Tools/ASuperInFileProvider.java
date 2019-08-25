@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.io.PipedInputStream;
 
 /**
- * Create prototype of the provider that created and works with pipes only
+ * Any class of this type must be able to accept data from stream (and file as any other).
  * */
+
 public abstract class ASuperInFileProvider {
     protected byte[] readFromStream(PipedInputStream pis, int size) throws IOException {
         byte[] buffer = new byte[size];

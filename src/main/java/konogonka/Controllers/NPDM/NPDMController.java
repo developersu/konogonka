@@ -55,7 +55,8 @@ public class NPDMController implements ITabController {
             aci0KernelAccessControlSizeLbl,
             aci0Reserved3Lbl;
     // ACID
-    @FXML TextField acidRsa2048signatureTf,
+    @FXML
+    TextField acidRsa2048signatureTf,
                 acidRsa2048publicKeyTf;
     @FXML
     private Label acidMagicNumLbl,
@@ -74,6 +75,8 @@ public class NPDMController implements ITabController {
             acidKernelAccessControlOffsetLbl,
             acidKernelAccessControlSizeLbl,
             acidReserved2Lbl;
+    @FXML
+    private FSAccessControlController FSAccessControlTableController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { }
@@ -158,6 +161,8 @@ public class NPDMController implements ITabController {
         acidKernelAccessControlOffsetLbl.setText("-");
         acidKernelAccessControlSizeLbl.setText("-");
         acidReserved2Lbl.setText("-");
+
+        FSAccessControlTableController.resetTab();
     }
     private void setData(NPDMProvider npdmProvider, File file) {
         if (npdmProvider == null)
@@ -217,5 +222,7 @@ public class NPDMController implements ITabController {
         acidKernelAccessControlOffsetLbl.setText(Integer.toString(acid.getKernelAccessControlOffset()));
         acidKernelAccessControlSizeLbl.setText(Integer.toString(acid.getKernelAccessControlSize()));
         acidReserved2Lbl.setText(byteArrToHexString(acid.getReserved2()));
+
+        FSAccessControlTableController.populateFields(acid.getFSAccessControlProvider());
     }
 }

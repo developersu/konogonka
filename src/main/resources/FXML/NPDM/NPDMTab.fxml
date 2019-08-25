@@ -439,447 +439,6 @@
             </VBox>
          </content>
       </TitledPane>
-      <TitledPane text="ACID">
-         <content>
-            <VBox spacing="5.0">
-               <children>
-                    <GridPane gridLinesVisible="true">
-                        <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="430.0" minWidth="300.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
-                        </columnConstraints>
-                        <rowConstraints>
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        </rowConstraints>
-                        <children>
-                            <AnchorPane styleClass="customTitleGrid" GridPane.columnIndex="1">
-                                <children>
-                                    <Label layoutX="38.0" layoutY="6.0" text="Size" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                        <font>
-                                            <Font name="System Bold" size="13.0" />
-                                        </font>
-                                        <padding>
-                                            <Insets left="5.0" right="5.0" />
-                                        </padding>
-                                    </Label>
-                                </children>
-                            </AnchorPane>
-                            <AnchorPane styleClass="customTitleGrid" GridPane.columnIndex="2">
-                                <children>
-                                    <Label layoutX="14.0" layoutY="7.0" text="Description" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                        <font>
-                                            <Font name="System Bold" size="13.0" />
-                                        </font>
-                                        <padding>
-                                            <Insets left="5.0" right="5.0" />
-                                        </padding>
-                                    </Label>
-                                </children>
-                            </AnchorPane>
-                            <AnchorPane styleClass="customTitleGrid" GridPane.columnIndex="3">
-                                <children>
-                                    <Label layoutY="6.0" text="Value" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                        <font>
-                                            <Font name="System Bold" size="13.0" />
-                                        </font>
-                                        <padding>
-                                            <Insets left="5.0" right="5.0" />
-                                        </padding>
-                                    </Label>
-                                </children>
-                            </AnchorPane>
-                            <AnchorPane styleClass="customTitleGrid">
-                                <children>
-                                    <Label layoutX="2.0" layoutY="7.0" text="Offset" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                        <font>
-                                            <Font name="System Bold" size="13.0" />
-                                        </font>
-                                        <padding>
-                                            <Insets left="5.0" right="5.0" />
-                                        </padding>
-                                    </Label>
-                                </children>
-                            </AnchorPane>
-                            <Label text="0x0" GridPane.rowIndex="1">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x100" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0xE" GridPane.rowIndex="5">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0xD" GridPane.rowIndex="4">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0xC" GridPane.rowIndex="3">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x100" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x100" GridPane.rowIndex="2">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x20C" GridPane.rowIndex="6">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x1" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x20D" GridPane.rowIndex="7">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x1" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x20E" GridPane.rowIndex="8">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x1" GridPane.columnIndex="1" GridPane.rowIndex="8">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x20F" GridPane.rowIndex="9">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x1" GridPane.columnIndex="1" GridPane.rowIndex="9">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x210" GridPane.rowIndex="10">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x8" GridPane.columnIndex="1" GridPane.rowIndex="10">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x218" GridPane.rowIndex="11">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x8" GridPane.columnIndex="1" GridPane.rowIndex="11">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="RSA-2048 signature over the data starting at 0x100*" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="RSA-2048 public key for the second NCA signature" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="Magicnum &quot;ACID&quot;" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x220" GridPane.rowIndex="12">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="12">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x224" GridPane.rowIndex="13">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="13">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x228" GridPane.rowIndex="14">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="16">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="15">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x22C" GridPane.rowIndex="15">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x230" GridPane.rowIndex="16">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="Flag 1 (UnqualifiedApproval)" GridPane.columnIndex="2" GridPane.rowIndex="7">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="14">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="Data size" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x234" GridPane.rowIndex="17">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="17">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="Reserved (1)" GridPane.columnIndex="2" GridPane.rowIndex="5">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="Flag 0 (ProductionFlag)" GridPane.columnIndex="2" GridPane.rowIndex="6">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="Flag 2**" GridPane.columnIndex="2" GridPane.rowIndex="8">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="Flag 3**" GridPane.columnIndex="2" GridPane.rowIndex="9">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="TitleIdRange_Min" GridPane.columnIndex="2" GridPane.rowIndex="10">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="TitleIdRange_Max" GridPane.columnIndex="2" GridPane.rowIndex="11">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="FS Access Control offset" GridPane.columnIndex="2" GridPane.rowIndex="12">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="Service Access Control size" GridPane.columnIndex="2" GridPane.rowIndex="15">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="FS Access Control size" GridPane.columnIndex="2" GridPane.rowIndex="13">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="Service Access Control offset" GridPane.columnIndex="2" GridPane.rowIndex="14">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="Kernel Access Control offset" GridPane.columnIndex="2" GridPane.rowIndex="16">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label fx:id="acidMagicNumLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label text="Kernel Access Control size" GridPane.columnIndex="2" GridPane.rowIndex="17">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label fx:id="acidDataSizeLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label fx:id="acidReserved1Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="5">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label fx:id="acidFlag1Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="6">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label fx:id="acidFlag2Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="7">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label fx:id="acidFlag3Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="8">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label fx:id="acidFlag4Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="9">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label fx:id="acidTitleRangeMinLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="10">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label fx:id="acidServiceAccessControlOffsetLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="14">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label fx:id="acidServiceAccessControlSizeLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="15">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label fx:id="acidKernelAccessControlOffsetLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="16">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <Label fx:id="acidKernelAccessControlSizeLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="17">
-                                <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                </padding>
-                            </Label>
-                            <TextField fx:id="acidRsa2048publicKeyTf" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                            <TextField fx:id="acidRsa2048signatureTf" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Label text="0x238" GridPane.rowIndex="18">
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </Label>
-                        <Label text="0x8" GridPane.columnIndex="1" GridPane.rowIndex="18">
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </Label>
-                        <Label text="Reserved (2)" GridPane.columnIndex="2" GridPane.rowIndex="18">
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </Label>
-                        <Label fx:id="acidReserved2Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="18">
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </Label>
-                        <Label fx:id="acidTitleRangeMaxLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="11">
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </Label>
-                        <Label fx:id="acidFsAccessControlOffsetLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="12">
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </Label>
-                        <Label fx:id="acidFsAccessControlSizeLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="13">
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </Label>
-                        </children>
-                    </GridPane>
-                  <Label text="* with the size field from 0x204" />
-                  <Label text="** [5.0.0+] bit2-3: PoolPartition? For applets set to 0b01, for sysmodules set to 0b10. Exceptions: &quot;starter&quot; is set to 0, &quot;nvservices&quot; is set to 3" />
-               </children>
-            </VBox>
-         </content>
-      </TitledPane>
       <TitledPane text="ACI0">
          <content>
               <GridPane gridLinesVisible="true">
@@ -1174,6 +733,449 @@
                   </Label>
                   </children>
               </GridPane>
+         </content>
+      </TitledPane>
+      <TitledPane text="ACID">
+         <content>
+            <VBox spacing="5.0">
+               <children>
+                    <GridPane gridLinesVisible="true">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="430.0" minWidth="300.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                            <AnchorPane styleClass="customTitleGrid" GridPane.columnIndex="1">
+                                <children>
+                                    <Label layoutX="38.0" layoutY="6.0" text="Size" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <font>
+                                            <Font name="System Bold" size="13.0" />
+                                        </font>
+                                        <padding>
+                                            <Insets left="5.0" right="5.0" />
+                                        </padding>
+                                    </Label>
+                                </children>
+                            </AnchorPane>
+                            <AnchorPane styleClass="customTitleGrid" GridPane.columnIndex="2">
+                                <children>
+                                    <Label layoutX="14.0" layoutY="7.0" text="Description" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <font>
+                                            <Font name="System Bold" size="13.0" />
+                                        </font>
+                                        <padding>
+                                            <Insets left="5.0" right="5.0" />
+                                        </padding>
+                                    </Label>
+                                </children>
+                            </AnchorPane>
+                            <AnchorPane styleClass="customTitleGrid" GridPane.columnIndex="3">
+                                <children>
+                                    <Label layoutY="6.0" text="Value" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <font>
+                                            <Font name="System Bold" size="13.0" />
+                                        </font>
+                                        <padding>
+                                            <Insets left="5.0" right="5.0" />
+                                        </padding>
+                                    </Label>
+                                </children>
+                            </AnchorPane>
+                            <AnchorPane styleClass="customTitleGrid">
+                                <children>
+                                    <Label layoutX="2.0" layoutY="7.0" text="Offset" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <font>
+                                            <Font name="System Bold" size="13.0" />
+                                        </font>
+                                        <padding>
+                                            <Insets left="5.0" right="5.0" />
+                                        </padding>
+                                    </Label>
+                                </children>
+                            </AnchorPane>
+                            <Label text="0x0" GridPane.rowIndex="1">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x100" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x208" GridPane.rowIndex="5">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x204" GridPane.rowIndex="4">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x200" GridPane.rowIndex="3">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x100" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x100" GridPane.rowIndex="2">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x20C" GridPane.rowIndex="6">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x1" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x20D" GridPane.rowIndex="7">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x1" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x20E" GridPane.rowIndex="8">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x1" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x20F" GridPane.rowIndex="9">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x1" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x210" GridPane.rowIndex="10">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x8" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x218" GridPane.rowIndex="11">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x8" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="RSA-2048 signature over the data starting at 0x100*" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="RSA-2048 public key for the second NCA signature" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="Magicnum &quot;ACID&quot;" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x220" GridPane.rowIndex="12">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="12">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x224" GridPane.rowIndex="13">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x228" GridPane.rowIndex="14">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="16">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="15">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x22C" GridPane.rowIndex="15">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x230" GridPane.rowIndex="16">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="Flag 1 (UnqualifiedApproval)" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="Data size" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x234" GridPane.rowIndex="17">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="0x4" GridPane.columnIndex="1" GridPane.rowIndex="17">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="Reserved (1)" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="Flag 0 (ProductionFlag)" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="Flag 2**" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="Flag 3**" GridPane.columnIndex="2" GridPane.rowIndex="9">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="TitleIdRange_Min" GridPane.columnIndex="2" GridPane.rowIndex="10">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="TitleIdRange_Max" GridPane.columnIndex="2" GridPane.rowIndex="11">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="FS Access Control offset ***" GridPane.columnIndex="2" GridPane.rowIndex="12">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="Service Access Control size" GridPane.columnIndex="2" GridPane.rowIndex="15">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="FS Access Control size" GridPane.columnIndex="2" GridPane.rowIndex="13">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="Service Access Control offset ***" GridPane.columnIndex="2" GridPane.rowIndex="14">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="Kernel Access Control offset ***" GridPane.columnIndex="2" GridPane.rowIndex="16">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label fx:id="acidMagicNumLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label text="Kernel Access Control size" GridPane.columnIndex="2" GridPane.rowIndex="17">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label fx:id="acidDataSizeLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label fx:id="acidReserved1Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label fx:id="acidFlag1Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label fx:id="acidFlag2Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label fx:id="acidFlag3Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="8">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label fx:id="acidFlag4Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="9">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label fx:id="acidTitleRangeMinLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="10">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label fx:id="acidServiceAccessControlOffsetLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="14">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label fx:id="acidServiceAccessControlSizeLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="15">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label fx:id="acidKernelAccessControlOffsetLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="16">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <Label fx:id="acidKernelAccessControlSizeLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="17">
+                                <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                </padding>
+                            </Label>
+                            <TextField fx:id="acidRsa2048publicKeyTf" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                            <TextField fx:id="acidRsa2048signatureTf" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label text="0x238" GridPane.rowIndex="18">
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                        </Label>
+                        <Label text="0x8" GridPane.columnIndex="1" GridPane.rowIndex="18">
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                        </Label>
+                        <Label text="Reserved (2)" GridPane.columnIndex="2" GridPane.rowIndex="18">
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="acidReserved2Lbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="18">
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="acidTitleRangeMaxLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="11">
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="acidFsAccessControlOffsetLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="12">
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="acidFsAccessControlSizeLbl" text="-" GridPane.columnIndex="3" GridPane.rowIndex="13">
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                        </Label>
+                        </children>
+                    </GridPane>
+                  <Label text="* with the size field from 0x204" />
+                  <Label text="** [5.0.0+] bit2-3: PoolPartition? For applets set to 0b01, for sysmodules set to 0b10. Exceptions: &quot;starter&quot; is set to 0, &quot;nvservices&quot; is set to 3" />
+                  <Label text="*** Inside of ACID block" />
+                   <fx:include fx:id="FSAccessControlTable" source="FSAccessControlTable.fxml" />
+               </children>
+            </VBox>
          </content>
       </TitledPane>
         <padding>

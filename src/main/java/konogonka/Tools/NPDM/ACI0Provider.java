@@ -18,7 +18,7 @@ public class ACI0Provider  {
     private int kernelAccessControlSize;
     private byte[] reserved3;
 
-    public ACI0Provider(byte[] aci0bytes) throws Exception{
+    public ACI0Provider(byte[] aci0bytes) throws Exception {
         if (aci0bytes.length < 0x40)
             throw new Exception("ACI0 size is too short");
         magicNum = new String(aci0bytes, 0, 0x4, StandardCharsets.UTF_8);

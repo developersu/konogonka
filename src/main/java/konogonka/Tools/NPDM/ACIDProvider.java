@@ -26,9 +26,12 @@ public class ACIDProvider {
     private int kernelAccessControlSize;
     private byte[] reserved2;
 
+    private FSAccessControlProvider fsAccessControlProvider;
+
+
     public ACIDProvider(byte[] acidBytes) throws Exception{
         if (acidBytes.length < 0x240)
-            throw new Exception("ACI0 size is too short");
+            throw new Exception("ACIDProvider -> ACI0 size is too short");
         rsa2048signature = Arrays.copyOfRange(acidBytes, 0, 0x100);
         rsa2048publicKey = Arrays.copyOfRange(acidBytes, 0x100, 0x200);
         magicNum = new String(acidBytes, 0x200, 0x4, StandardCharsets.UTF_8);
@@ -47,6 +50,9 @@ public class ACIDProvider {
         kernelAccessControlOffset = getLEint(acidBytes, 0x230);
         kernelAccessControlSize = getLEint(acidBytes, 0x234);
         reserved2 = Arrays.copyOfRange(acidBytes, 0x238, 0x240);
+        if (fsAccessControlOffset > serviceAccessControlOffset || serviceAccessControlOffset > kernelAccessControlOffset )
+            throw new Exception("ACIDProvider -> blocks inside the ACID are not sorted in ascending order. Only ascending order supported.");
+        fsAccessControlProvider = new FSAccessControlProvider(Arrays.copyOfRange(acidBytes, fsAccessControlOffset, fsAccessControlOffset+fsAccessControlSize));
     }
 
     public byte[] getRsa2048signature()  { return rsa2048signature; }
@@ -67,4 +73,7 @@ public class ACIDProvider {
     public int getKernelAccessControlOffset()  { return kernelAccessControlOffset; }
     public int getKernelAccessControlSize()  { return kernelAccessControlSize; }
     public byte[] getReserved2()  { return reserved2; }
+
+    public FSAccessControlProvider getFSAccessControlProvider() { return fsAccessControlProvider; }
+
 }
