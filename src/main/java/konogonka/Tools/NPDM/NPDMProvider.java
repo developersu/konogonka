@@ -1,5 +1,6 @@
 package konogonka.Tools.NPDM;
 
+import konogonka.RainbowHexDump;
 import konogonka.Tools.ASuperInFileProvider;
 
 import java.io.*;
@@ -109,13 +110,13 @@ public class NPDMProvider extends ASuperInFileProvider {
         acidSize = getLEint(metaBuf, 0x7C);
         // Get ACI0
         raf.seek(aci0offset);
-        metaBuf = new byte[aci0size];                                           // TODO: NOTE: we read all size but need only header
+        metaBuf = new byte[aci0size];                                           // TODO: NOTE: we read all size but it's memory consuming
         if (raf.read(metaBuf) != aci0size)
             throw new Exception("NPDMProvider: Failed to read 'ACI0'");
         aci0 = new ACI0Provider(metaBuf);
         // Get ACID
         raf.seek(acidOffset);
-        metaBuf = new byte[acidSize];                                           // TODO: NOTE: we read all size but need only header
+        metaBuf = new byte[acidSize];                                           // TODO: NOTE: we read all size but it's memory consuming
         if (raf.read(metaBuf) != acidSize)
             throw new Exception("NPDMProvider: Failed to read 'ACID'");
         acid = new ACIDProvider(metaBuf);

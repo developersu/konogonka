@@ -1174,6 +1174,7 @@
                   <Label text="** [5.0.0+] bit2-3: PoolPartition? For applets set to 0b01, for sysmodules set to 0b10. Exceptions: &quot;starter&quot; is set to 0, &quot;nvservices&quot; is set to 3" />
                   <Label text="*** Inside of ACID block" />
                    <fx:include fx:id="FSAccessControlTable" source="FSAccessControlTable.fxml" />
+                   <fx:include fx:id="ServiceAccessControlTable" source="ServiceAccessControlTable.fxml" />
                </children>
             </VBox>
          </content>

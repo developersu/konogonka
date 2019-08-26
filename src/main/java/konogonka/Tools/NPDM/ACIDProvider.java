@@ -27,7 +27,7 @@ public class ACIDProvider {
     private byte[] reserved2;
 
     private FSAccessControlProvider fsAccessControlProvider;
-
+    private ServiceAccessControlProvider serviceAccessControlProvider;
 
     public ACIDProvider(byte[] acidBytes) throws Exception{
         if (acidBytes.length < 0x240)
@@ -53,6 +53,7 @@ public class ACIDProvider {
         if (fsAccessControlOffset > serviceAccessControlOffset || serviceAccessControlOffset > kernelAccessControlOffset )
             throw new Exception("ACIDProvider -> blocks inside the ACID are not sorted in ascending order. Only ascending order supported.");
         fsAccessControlProvider = new FSAccessControlProvider(Arrays.copyOfRange(acidBytes, fsAccessControlOffset, fsAccessControlOffset+fsAccessControlSize));
+        serviceAccessControlProvider = new ServiceAccessControlProvider(Arrays.copyOfRange(acidBytes, serviceAccessControlOffset, serviceAccessControlOffset+serviceAccessControlSize));
     }
 
     public byte[] getRsa2048signature()  { return rsa2048signature; }
@@ -74,6 +75,6 @@ public class ACIDProvider {
     public int getKernelAccessControlSize()  { return kernelAccessControlSize; }
     public byte[] getReserved2()  { return reserved2; }
 
-    public FSAccessControlProvider getFSAccessControlProvider() { return fsAccessControlProvider; }
-
+    public FSAccessControlProvider getFsAccessControlProvider() { return fsAccessControlProvider; }
+    public ServiceAccessControlProvider getServiceAccessControlProvider() { return serviceAccessControlProvider; }
 }
