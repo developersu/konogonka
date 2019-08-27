@@ -6,11 +6,10 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import konogonka.LoperConverter;
+import konogonka.Tools.NPDM.LCollectionEntry;
 
 import java.net.URL;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 public class ServiceAccessControlController implements Initializable {
@@ -26,11 +25,10 @@ public class ServiceAccessControlController implements Initializable {
         SACPane.getChildren().clear();
     }
 
-    public void populateFields(LinkedHashMap<Byte, String> collection){
+    public void populateFields(LinkedList<LCollectionEntry> collection){
         resetTab();
 
-        for (Object object : collection.entrySet()) {
-            Map.Entry<Byte, String> entry = (Map.Entry) object;
+        for (LCollectionEntry entry : collection) {
 
             Label control = new Label(String.format("0x%02x", entry.getKey()));
             Label serviceName = new Label(entry.getValue());

@@ -2,6 +2,7 @@ package konogonka.Tools.NPDM;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 import static konogonka.LoperConverter.getLEint;
 

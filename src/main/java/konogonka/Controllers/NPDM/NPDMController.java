@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 import konogonka.Controllers.ITabController;
 import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.NPDM.ACI0Provider;
-import konogonka.Tools.NPDM.ACIDProvider;
+import konogonka.Tools.NPDM.ACID.ACIDProvider;
 import konogonka.Tools.NPDM.NPDMProvider;
 import konogonka.Workers.Analyzer;
 

@@ -1,7 +1,7 @@
 package konogonka.Tools.NPDM;
 
-import konogonka.RainbowHexDump;
 import konogonka.Tools.ASuperInFileProvider;
+import konogonka.Tools.NPDM.ACID.ACIDProvider;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

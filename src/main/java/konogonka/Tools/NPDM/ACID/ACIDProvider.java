@@ -1,4 +1,6 @@
-package konogonka.Tools.NPDM;
+package konogonka.Tools.NPDM.ACID;
+
+import konogonka.Tools.NPDM.ACI0Provider;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -28,6 +30,7 @@ public class ACIDProvider {
 
     private FSAccessControlProvider fsAccessControlProvider;
     private ServiceAccessControlProvider serviceAccessControlProvider;
+    private KernelAccessControlProvider kernelAccessControlProvider;
 
     public ACIDProvider(byte[] acidBytes) throws Exception{
         if (acidBytes.length < 0x240)
@@ -54,6 +57,7 @@ public class ACIDProvider {
             throw new Exception("ACIDProvider -> blocks inside the ACID are not sorted in ascending order. Only ascending order supported.");
         fsAccessControlProvider = new FSAccessControlProvider(Arrays.copyOfRange(acidBytes, fsAccessControlOffset, fsAccessControlOffset+fsAccessControlSize));
         serviceAccessControlProvider = new ServiceAccessControlProvider(Arrays.copyOfRange(acidBytes, serviceAccessControlOffset, serviceAccessControlOffset+serviceAccessControlSize));
+        kernelAccessControlProvider = new KernelAccessControlProvider(Arrays.copyOfRange(acidBytes, kernelAccessControlOffset, kernelAccessControlOffset+kernelAccessControlSize));
     }
 
     public byte[] getRsa2048signature()  { return rsa2048signature; }
@@ -77,4 +81,5 @@ public class ACIDProvider {
 
     public FSAccessControlProvider getFsAccessControlProvider() { return fsAccessControlProvider; }
     public ServiceAccessControlProvider getServiceAccessControlProvider() { return serviceAccessControlProvider; }
+    public KernelAccessControlProvider getKernelAccessControlProvider() { return kernelAccessControlProvider; }
 }

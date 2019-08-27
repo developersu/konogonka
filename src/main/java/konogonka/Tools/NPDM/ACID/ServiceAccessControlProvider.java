@@ -1,14 +1,16 @@
-package konogonka.Tools.NPDM;
+package konogonka.Tools.NPDM.ACID;
+
+import konogonka.Tools.NPDM.LCollectionEntry;
 
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 public class ServiceAccessControlProvider {
 
-    private LinkedHashMap<Byte, String> collection;
+    private LinkedList<LCollectionEntry> collection;
 
     public ServiceAccessControlProvider(byte[] bytes){
-        collection = new LinkedHashMap<>();
+        collection = new LinkedList<>();
         byte key;
         String value;
 
@@ -17,14 +19,14 @@ public class ServiceAccessControlProvider {
         while (i < bytes.length){
             key = bytes[i];
             value = new String(bytes, i+1, getSize(key), StandardCharsets.UTF_8);
-            collection.put(key, value);
+            collection.add(new LCollectionEntry(key, value));
             i += getSize(key)+1;
         }
     }
 
     private int getSize(byte control) {
-        return ((byte) 0x7 & control) + 1;
+        return ((byte) 0x7 & control) + (byte) 0x01;
     }
 
-    public LinkedHashMap<Byte, String> getCollection() { return collection; }
+    public LinkedList<LCollectionEntry> getCollection() { return collection; }
 }

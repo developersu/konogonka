@@ -1,4 +1,4 @@
-package konogonka.Tools.NPDM;
+package konogonka.Tools.NPDM.ACID;
 
 import java.util.Arrays;
 
