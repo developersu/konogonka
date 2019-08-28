@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import konogonka.AppPreferences;
 import konogonka.Controllers.IRowModel;
 import konogonka.MediatorControl;
 import konogonka.Tools.ISuperProvider;
@@ -94,7 +95,7 @@ public class HFSBlockController implements Initializable {
         ISuperProvider provider = hfs0tableFilesListMainController.getProvider();
 
         if (models != null && !models.isEmpty() && (provider != null)){
-            File dir = new File(System.getProperty("user.dir")+File.separator+selectedFile.getName()+" "+type+" extracted");
+            File dir = new File(AppPreferences.getInstance().getExtractFilesDir()+File.separator+selectedFile.getName()+" "+type+" extracted");
             try {
                 dir.mkdir();
             }

@@ -4,6 +4,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import konogonka.AppPreferences;
 import konogonka.Controllers.IRowModel;
 import konogonka.Controllers.ITabController;
 import konogonka.MediatorControl;
@@ -51,9 +52,7 @@ public class NSPController implements ITabController {
         List<IRowModel> models = tableFilesListController.getFilesForDump();
         ISuperProvider provider = tableFilesListController.getProvider();
         if (models != null && !models.isEmpty() && (provider != null)){
-
-            //File dir = new File(System.getProperty("user.dir")+File.separator+selectedFile.getName()+" extracted");     // todo: move option to settings
-            File dir = new File(System.getProperty("user.dir")+File.separator+provider.getFile().getName()+" extracted");     // todo: move option to settings
+            File dir = new File(AppPreferences.getInstance().getExtractFilesDir()+File.separator+provider.getFile().getName()+" extracted");
             try {
                 dir.mkdir();
             }
@@ -65,7 +64,6 @@ public class NSPController implements ITabController {
 
             extractBtn.setDisable(true);
 
-            //Extractor extractor = new Extractor(rawFileDataStart, models, dir.getAbsolutePath()+File.separator, selectedFile); //TODO: REMOVE
             Extractor extractor = new Extractor(provider, models, dir.getAbsolutePath()+File.separator);
             extractor.setOnSucceeded(e->{
                 extractBtn.setDisable(false);

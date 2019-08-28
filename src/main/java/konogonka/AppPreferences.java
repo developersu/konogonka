@@ -1,5 +1,6 @@
 package konogonka;
 
+import java.io.File;
 import java.util.prefs.Preferences;
 
 public class AppPreferences {
@@ -24,6 +25,9 @@ public class AppPreferences {
         titleKeksCount = getTitleKeksCount();
         titleKeysCount = getTitleKeysCount();
     }
+
+    public void setExtractFilesDir(String path){preferences.put("extract_path", path);}
+    public String getExtractFilesDir(){return preferences.get("extract_path", System.getProperty("user.dir"));}
 
     public void setAll(
             String xciHeaderKey,

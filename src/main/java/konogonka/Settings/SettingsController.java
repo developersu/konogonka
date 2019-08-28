@@ -3,8 +3,10 @@ package konogonka.Settings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import konogonka.AppPreferences;
@@ -33,8 +35,22 @@ public class SettingsController implements Initializable {
             xciHdrKeyTF,
             hdrKeyTF;
 
+    @FXML
+    private Button extractFilesToBtn;
+    @FXML
+    private Label extractFilesPathLbl;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        extractFilesPathLbl.setText(AppPreferences.getInstance().getExtractFilesDir());
+        extractFilesToBtn.setOnAction(e -> {
+            DirectoryChooser dirChooser = new DirectoryChooser();
+            dirChooser.setTitle("Extract files to...");
+            dirChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            File dir = dirChooser.showDialog(extractFilesToBtn.getScene().getWindow());
+            if (dir != null && dir.exists())
+                extractFilesPathLbl.setText(dir.getAbsolutePath());
+        });
+
         ListSelectorKAEKAppController.initSelector(32, "key_area_key_application_");
         ListSelectorKAEKOceanController.initSelector(32, "key_area_key_ocean_");
         ListSelectorKAEKSysController.initSelector(32, "key_area_key_system_");
@@ -227,6 +243,7 @@ public class SettingsController implements Initializable {
                 for (int i = 0; i < titleKeysSet.length; i++)
                     AppPreferences.getInstance().setTitleKey(i, titleKeysSet[i]);
             }
+            AppPreferences.getInstance().setExtractFilesDir(extractFilesPathLbl.getText());
             thisStage.close();
         });
     }

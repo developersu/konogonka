@@ -89,7 +89,7 @@ public class MainController implements Initializable {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NS files", "*.nsp", "*.xci", "*.nca", "*.tik", "*.xml", "*.npdm"));
 
         this.selectedFile = fileChooser.showOpenDialog(analyzeBtn.getScene().getWindow());
-
+        // todo: fix
         analyzeBtn.setDisable(true);
         NSPTabController.resetTab();
         XCITabController.resetTab();
