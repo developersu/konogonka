@@ -29,4 +29,8 @@ public class RainbowHexDump {
         System.out.println();
         System.out.print(new String(byteArray, StandardCharsets.UTF_8)+"\n");
     }
+
+    public static void octDumpInt(int value){
+        System.out.println(String.format("%32s", Integer.toBinaryString( value )).replace(' ', '0')+" | "+value);
+    }
 }

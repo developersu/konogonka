@@ -27,8 +27,8 @@ JRE/JDK 8u60 or higher.
 * [X] XCI (+HFS0)
 * [X] TIK
 * [X] XML 
-
-* [ ] LogPrinter to singleton implementation
+* [X] NRO
+* [ ] LogPrinter to singleton implementation.
 * [ ] NPDM support
 * [ ] CNMT support
 * [ ] NSO support
