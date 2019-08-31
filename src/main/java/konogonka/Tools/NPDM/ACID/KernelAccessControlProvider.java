@@ -3,6 +3,7 @@ package konogonka.Tools.NPDM.ACID;
 import konogonka.LoperConverter;
 import konogonka.RainbowHexDump;
 
+import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -65,13 +66,24 @@ public class KernelAccessControlProvider {
     private static final int KERNELRELEASEVERSION = 14;
     private static final int HANDLETABLESIZE = 15;
     private static final int DEBUGFLAGS = 16;
-
+    // Kernel flags
     private boolean kernelFlagsAvailable;
     private int kernelFlagCpuIdHi;
     private int kernelFlagCpuIdLo;
     private int kernelFlagThreadPrioHi;
     private int kernelFlagThreadPrioLo;
+    // System Call Mask
+    private int maskTableIndex;
+    private int mask;
 
+    // Handle Table Size
+    private int handleTableSize;
+    // Application type
+    private int applicationType;
+    // Debug flags
+    private  boolean debugFlagsAvailable;
+    private byte canBeDebugged;
+    private byte canDebugOthers;
 
     KernelAccessControlProvider(byte[] bytes) throws Exception{
         if (bytes.length < 4)
@@ -81,72 +93,72 @@ public class KernelAccessControlProvider {
         // Collect all blocks
         for (int i = 0; i < bytes.length / 4; i++) {
             int block = LoperConverter.getLEint(bytes, position);
+            byte[] blockBytes = Arrays.copyOfRange(bytes, position, position+4);
             position += 4;
 
             int type = getMinBitCnt(block);
 
             switch (type){
                 case KERNELFLAGS:
-                    System.out.println("KERNELFLAGS\t\t"+block+" "+type);
                     kernelFlagsAvailable = true;
-                    
+                    kernelFlagCpuIdHi = block >> 24;
+                    kernelFlagCpuIdLo = block >> 16 & 0b11111111;
+                    kernelFlagThreadPrioHi = block >> 10 & 0b111111;
+                    kernelFlagThreadPrioLo = block >> 4 & 0b111111;
+                    System.out.println("KERNELFLAGS "+
+                            kernelFlagCpuIdHi+" "+
+                            kernelFlagCpuIdLo+" "+
+                            kernelFlagThreadPrioHi+" "+
+                            kernelFlagThreadPrioLo+"\n"
+                    );
                     break;
                 case SYSCALLMASK:
+                    /*
                     System.out.println("SYSCALLMASK\t\t"+block+" "+type);
-                    
+                    maskTableIndex = block >> 29;
+                    mask = block >> 5 & 0b11111111111111111111111;
+                     */
                     break;
                 case MAPIOORNORMALRANGE:
-                    System.out.println("MAPIOORNORMALRANGE\t\t"+block+" "+type);
+                    //System.out.println("MAPIOORNORMALRANGE\t\t"+block+" "+type);
                     
                     break;
                 case MAPNORMALPAGE_RW:
-                    System.out.println("MAPNORMALPAGE_RW\t\t"+block+" "+type);
+                    //System.out.println("MAPNORMALPAGE_RW\t\t"+block+" "+type);
                     
                     break;
                 case INTERRUPTPAIR:
-                    System.out.println("INTERRUPTPAIR\t\t"+block+" "+type);
+                    //System.out.println("INTERRUPTPAIR\t\t"+block+" "+type);
                     
                     break;
                 case APPLICATIONTYPE:
-                    System.out.println("APPLICATIONTYPE\t\t"+block+" "+type);
-                    
+                    applicationType = block >> 14 & 0b111;
+                    System.out.println("APPLICATIONTYPE "+applicationType);
                     break;
                 case KERNELRELEASEVERSION:
-                    System.out.println("KERNELRELEASEVERSION\t"+block+" "+type);
+                    //System.out.println("KERNELRELEASEVERSION\t"+block+" "+type);
                     
                     break;
                 case HANDLETABLESIZE:
-                    System.out.println("HANDLETABLESIZE\t\t"+block+" "+type);
-                    
+                    handleTableSize = block >> 16 & 0b1111111111;
+                    System.out.println("HANDLETABLESIZE "+handleTableSize);
                     break;
                 case DEBUGFLAGS:
-                    System.out.println("DEBUGFLAGS\t\t"+block+" "+type);
-                    
+                    debugFlagsAvailable = true;
+                    canBeDebugged = blockBytes[17];
+                    canDebugOthers = blockBytes[18];
+                    System.out.println("DEBUGFLAGS "+canBeDebugged+" "+canDebugOthers);
                     break;
                 default:
-                    System.out.println("UNKNOWN\t\t"+block+" "+type);
+                    //System.out.println("UNKNOWN\t\t"+block+" "+type);
             }
-            RainbowHexDump.octDumpInt(block);
         }
         System.out.println();
 
-        int KernelFlagsHiCpuId; // 7 31-24
-        int KernelFlagsLoCpuId; // 7 23-16
-        int KernelFlagsHiThreadPrio; // 5 15-10
-        int KernelFlagsLoThreadPrio; // 5 9-4
-        int SyscallMask;
-        int MapIoOrNormalRange;
-        int MapNormalPage_RW;
-        int InterruptPair;
-        int ApplicationType;
-        int KernelReleaseVersion;
-        int HandleTableSize ;
-        int DebugFlags;
     }
 
     private int getMinBitCnt(int value){
         int minBitCnt = 0;
-
         while ((value & 1) != 0){
             value >>= 1;
             minBitCnt++;
