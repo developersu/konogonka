@@ -221,7 +221,7 @@
 */
 // -======================== TAB PANE =========================-
 .tab-pane .tab SVGPath{
-    -fx-fill: #2c2c2c;                                      // OK
+    -fx-fill: #2c2c2c;
 }
 .tab-pane .tab:selected SVGPath, .tab-pane .tab:hover SVGPath{
     -fx-fill: #ffffff;
@@ -231,7 +231,7 @@
     -fx-text-fill: #2c2c2c;
 }
 .tab-pane .tab{
-    -fx-background-color: #f5f5f5;                          //ok
+    -fx-background-color: #f5f5f5;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
     -fx-background-radius: 5;
@@ -240,7 +240,7 @@
     -fx-text-fill: #ffffff;
 }
 .tab-pane .tab:selected{
-    -fx-background-color: #007cad;                          // OK
+    -fx-background-color: #007cad;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
     -fx-background-radius: 5;
@@ -249,7 +249,7 @@
     -fx-text-fill: #ffffff;
 }
 .tab-pane .tab:hover{
-    -fx-background-color: #0d98ba;                          // OK
+    -fx-background-color: #0d98ba;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
     -fx-background-radius: 5;
@@ -261,12 +261,27 @@
 
 .tab-pane > .tab-header-area > .tab-header-background
 {
-   -fx-background-color: #f5f5f5;                       // OK
+   -fx-background-color: #f5f5f5;
    -fx-border-width: 0 0 1 0;
-   -fx-border-color: #959595;                              // OK
+   -fx-border-color: #959595;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab {
     -fx-padding: 10;
+}
+
+// Special colors for in-file sub-files
+.tab-pane .tab-sub:selected{
+    -fx-background-color: #b90078;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-radius: 5;
+}
+
+.tab-pane .tab-sub:hover{
+    -fx-background-color: #df0091;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-radius: 5;
 }
 // -=========================== TABLE ======================-
 .table-view {
