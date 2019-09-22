@@ -1,14 +1,13 @@
 package konogonka.Tools.NPDM.ACID;
 
 import konogonka.LoperConverter;
-import konogonka.RainbowHexDump;
 
-import java.lang.reflect.Array;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 /*
+NOTE: This implementation is extremely bad for using application as library. Use raw for own purposes.
+
 NOTE:
 KAC is set of 4-byes blocks
 Consider them as uInt32 (Read as Little endian)
@@ -57,44 +56,65 @@ for (byte i = 0; i < 16; i++){
 
 public class KernelAccessControlProvider {
 
-    private static final int KERNELFLAGS = 3;
-    private static final int SYSCALLMASK = 4;
-    private static final int MAPIOORNORMALRANGE = 6;
-    private static final int MAPNORMALPAGE_RW = 7;
-    private static final int INTERRUPTPAIR = 11;
-    private static final int APPLICATIONTYPE = 13;
-    private static final int KERNELRELEASEVERSION = 14;
-    private static final int HANDLETABLESIZE = 15;
-    private static final int DEBUGFLAGS = 16;
+    private static final int    KERNELFLAGS = 3,
+                                SYSCALLMASK = 4,
+                                MAPIOORNORMALRANGE = 6,
+                                MAPNORMALPAGE_RW = 7,
+                                INTERRUPTPAIR = 11,
+                                APPLICATIONTYPE = 13,
+                                KERNELRELEASEVERSION = 14,
+                                HANDLETABLESIZE = 15,
+                                DEBUGFLAGS = 16;
+
+    // RAW data
+    private LinkedList<Integer> rawData;
     // Kernel flags
     private boolean kernelFlagsAvailable;
-    private int kernelFlagCpuIdHi;
-    private int kernelFlagCpuIdLo;
-    private int kernelFlagThreadPrioHi;
-    private int kernelFlagThreadPrioLo;
-    // System Call Mask
-    private int maskTableIndex;
-    private int mask;
-
-    // Handle Table Size
-    private int handleTableSize;
+    private int     kernelFlagCpuIdHi,
+                    kernelFlagCpuIdLo,
+                    kernelFlagThreadPrioHi,
+                    kernelFlagThreadPrioLo;
+    // Syscall Masks as index | mask  - order AS IS. [0] = bit5; [1] = bit6
+    private LinkedHashMap<Byte, byte[]> syscallMasks; // Index, Mask
+    // MapIoOrNormalRange
+    private LinkedHashMap<byte[], Boolean> mapIoOrNormalRange; // alt page+num, RO flag
+    // MapNormalPage (RW)
+    private byte[] mapNormalPage;   // TODO: clarify is possible to have multiple
+    // InterruptPair
+    private boolean interruptPairAvailable;
+    private byte[] irq0,
+                    irq1;
     // Application type
     private int applicationType;
+    // KernelReleaseVersion
+    private boolean isKernelRelVersionAvailable;
+    private int kernelRelVersionMajor,
+                kernelRelVersionMinor;
+    // Handle Table Size
+    private int handleTableSize;
     // Debug flags
-    private  boolean debugFlagsAvailable;
-    private byte canBeDebugged;
-    private byte canDebugOthers;
+    private boolean debugFlagsAvailable,
+                    canBeDebugged,
+                    canDebugOthers;
 
     KernelAccessControlProvider(byte[] bytes) throws Exception{
         if (bytes.length < 4)
             throw new Exception("ACID-> KernelAccessControlProvider: too small size of the Kernel Access Control");
 
+        rawData = new LinkedList<Integer>();
+
+        syscallMasks = new LinkedHashMap<Byte, byte[]>();
+        mapIoOrNormalRange = new LinkedHashMap<byte[], Boolean>();
+
         int position = 0;
         // Collect all blocks
         for (int i = 0; i < bytes.length / 4; i++) {
             int block = LoperConverter.getLEint(bytes, position);
-            byte[] blockBytes = Arrays.copyOfRange(bytes, position, position+4);
             position += 4;
+
+            rawData.add(block);
+
+            //RainbowHexDump.octDumpInt(block);
 
             int type = getMinBitCnt(block);
 
@@ -105,56 +125,75 @@ public class KernelAccessControlProvider {
                     kernelFlagCpuIdLo = block >> 16 & 0b11111111;
                     kernelFlagThreadPrioHi = block >> 10 & 0b111111;
                     kernelFlagThreadPrioLo = block >> 4 & 0b111111;
-                    System.out.println("KERNELFLAGS "+
-                            kernelFlagCpuIdHi+" "+
-                            kernelFlagCpuIdLo+" "+
-                            kernelFlagThreadPrioHi+" "+
-                            kernelFlagThreadPrioLo+"\n"
-                    );
+                    //System.out.println("KERNELFLAGS "+kernelFlagCpuIdHi+" "+kernelFlagCpuIdLo+" "+kernelFlagThreadPrioHi+" "+kernelFlagThreadPrioLo);
                     break;
                 case SYSCALLMASK:
-                    /*
-                    System.out.println("SYSCALLMASK\t\t"+block+" "+type);
-                    maskTableIndex = block >> 29;
-                    mask = block >> 5 & 0b11111111111111111111111;
-                     */
+                    byte maskTableIndex = (byte) (block >> 29 & 0b111); // declared as byte; max value could be 7; min - 0;
+                    byte[] mask = new byte[24];                         // Consider as bit.
+                    //System.out.println("SYSCALLMASK ind: "+maskTableIndex);
+
+                    for (int k = 28; k >= 5; k--) {
+                        mask[k-5] = (byte) (block >> k & 1);        // Only 1 or 0 possible
+                        //System.out.print(mask[k-5]);
+                    }
+                    //System.out.println();
+                    syscallMasks.put(maskTableIndex, mask);
                     break;
                 case MAPIOORNORMALRANGE:
-                    //System.out.println("MAPIOORNORMALRANGE\t\t"+block+" "+type);
-                    
+                    byte[] altStPgNPgNum = new byte[24];
+                    //System.out.println("MAPIOORNORMALRANGE Flag: "+((block >> 31 & 1) != 0));
+
+                    for (int k = 30; k >= 7; k--){
+                        altStPgNPgNum[k-7] = (byte) (block >> k & 1);        // Only 1 or 0 possible
+                        //System.out.print(altStPgNPgNum[k-7]);
+                    }
+                    mapIoOrNormalRange.put(altStPgNPgNum, (block >> 31 & 1) != 0);
+                    //System.out.println();
                     break;
                 case MAPNORMALPAGE_RW:
-                    //System.out.println("MAPNORMALPAGE_RW\t\t"+block+" "+type);
-                    
+                    //System.out.println("MAPNORMALPAGE_RW\t");
+                    mapNormalPage = new byte[24];
+                    for (int k = 31; k >= 8; k--){
+                        mapNormalPage[k-8] = (byte) (block >> k & 1);
+                        //System.out.print(mapNormalPage[k-8]);
+                    }
+                    //System.out.println();
                     break;
                 case INTERRUPTPAIR:
-                    //System.out.println("INTERRUPTPAIR\t\t"+block+" "+type);
-                    
+                    System.out.println("INTERRUPTPAIR found (must (?) appear once, please report if it's not)");
+                    interruptPairAvailable = true;
+                    irq0 = new byte[10];
+                    irq1 = new byte[10];
+                    for (int k = 21; k >= 12; k--)
+                        irq0[k-12] = (byte) (block >> k & 1);
+                    for (int k = 31; k >= 22; k--)
+                        irq1[k-22] = (byte) (block >> k & 1);
                     break;
                 case APPLICATIONTYPE:
                     applicationType = block >> 14 & 0b111;
-                    System.out.println("APPLICATIONTYPE "+applicationType);
+                    //System.out.println("APPLICATIONTYPE "+applicationType);
                     break;
                 case KERNELRELEASEVERSION:
-                    //System.out.println("KERNELRELEASEVERSION\t"+block+" "+type);
-                    
+                    //System.out.println("KERNELRELEASEVERSION\t"+(block >> 19 & 0b111111111111)+"."+(block >> 15 & 0b1111)+".X");
+                    isKernelRelVersionAvailable = true;
+                    kernelRelVersionMajor = (block >> 19 & 0b111111111111);
+                    kernelRelVersionMinor = (block >> 15 & 0b1111);
                     break;
                 case HANDLETABLESIZE:
                     handleTableSize = block >> 16 & 0b1111111111;
-                    System.out.println("HANDLETABLESIZE "+handleTableSize);
+                    //System.out.println("HANDLETABLESIZE "+handleTableSize);
                     break;
                 case DEBUGFLAGS:
                     debugFlagsAvailable = true;
-                    canBeDebugged = blockBytes[17];
-                    canDebugOthers = blockBytes[18];
-                    System.out.println("DEBUGFLAGS "+canBeDebugged+" "+canDebugOthers);
+                    canBeDebugged = (block >> 17 & 1) != 0;
+                    canDebugOthers = (block >> 18 & 1) != 0;
+                    //System.out.println("DEBUGFLAGS "+canBeDebugged+" "+canDebugOthers);
                     break;
                 default:
-                    //System.out.println("UNKNOWN\t\t"+block+" "+type);
+                    System.out.println("UNKNOWN\t\t"+block+" "+type);
             }
         }
-        System.out.println();
-
+        //System.out.println();
     }
 
     private int getMinBitCnt(int value){
@@ -165,4 +204,24 @@ public class KernelAccessControlProvider {
         }
         return minBitCnt;
     }
+    public LinkedList<Integer> getRawData() { return rawData; }
+    public boolean isKernelFlagsAvailable() { return kernelFlagsAvailable; }
+    public int getKernelFlagCpuIdHi() { return kernelFlagCpuIdHi; }
+    public int getKernelFlagCpuIdLo() { return kernelFlagCpuIdLo; }
+    public int getKernelFlagThreadPrioHi() { return kernelFlagThreadPrioHi; }
+    public int getKernelFlagThreadPrioLo() { return kernelFlagThreadPrioLo; }
+    public LinkedHashMap<byte[], Boolean> getMapIoOrNormalRange() { return mapIoOrNormalRange; }
+    public byte[] getMapNormalPage() { return mapNormalPage; }
+    public boolean isInterruptPairAvailable() { return interruptPairAvailable; }
+    public byte[] getIrq0() { return irq0; }
+    public byte[] getIrq1() { return irq1; }
+    public int getApplicationType() { return applicationType; }
+    public boolean isKernelRelVersionAvailable() { return isKernelRelVersionAvailable; }
+    public int getKernelRelVersionMajor() { return kernelRelVersionMajor; }
+    public int getKernelRelVersionMinor() { return kernelRelVersionMinor;}
+    public int getHandleTableSize() { return handleTableSize; }
+    public boolean isDebugFlagsAvailable() { return debugFlagsAvailable; }
+    public boolean isCanBeDebugged() { return canBeDebugged; }
+    public boolean isCanDebugOthers() { return canDebugOthers; }
+    public LinkedHashMap<Byte, byte[]> getSyscallMasks() { return syscallMasks; }
 }

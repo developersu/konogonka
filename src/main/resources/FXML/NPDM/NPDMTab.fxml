@@ -1175,6 +1175,7 @@
                   <Label text="*** Inside of ACID block" />
                    <fx:include fx:id="FSAccessControlTable" source="FSAccessControlTable.fxml" />
                    <fx:include fx:id="ServiceAccessControlTable" source="ServiceAccessControlTable.fxml" />
+                   <fx:include fx:id="KernelAccessControlTable" source="KernelAccessControlTable.fxml" />
                </children>
             </VBox>
          </content>

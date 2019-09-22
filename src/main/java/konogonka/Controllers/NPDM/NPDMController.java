@@ -81,6 +81,9 @@ public class NPDMController implements ITabController {
     @FXML
     private ServiceAccessControlController ServiceAccessControlTableController;
 
+    @FXML
+    private KernelAccessControlController KernelAccessControlTableController;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { }
 
@@ -168,6 +171,8 @@ public class NPDMController implements ITabController {
         FSAccessControlTableController.resetTab();
 
         ServiceAccessControlTableController.resetTab();
+
+        KernelAccessControlTableController.resetTab();
     }
     private void setData(NPDMProvider npdmProvider, File file) {
         if (npdmProvider == null)
@@ -230,6 +235,6 @@ public class NPDMController implements ITabController {
 
         FSAccessControlTableController.populateFields(acid.getFsAccessControlProvider());
         ServiceAccessControlTableController.populateFields(acid.getServiceAccessControlProvider().getCollection());
-
+        KernelAccessControlTableController.populateFields(acid.getKernelAccessControlProvider());
     }
 }

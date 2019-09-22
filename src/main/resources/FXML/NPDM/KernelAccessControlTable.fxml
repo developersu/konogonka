@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Controllers.NPDM.KernelAccessControlController">
+   <TitledPane text="Kernel Access Control">
+      <VBox.margin>
+         <Insets bottom="5.0" />
+      </VBox.margin>
+      <content>
+         <VBox spacing="5.0">
+            <children>
+               <TitledPane animated="false" expanded="false" text="Kernel Access Control (RAW)">
+                  <content>
+                     <VBox fx:id="KACRawPane" />
+                  </content>
+               </TitledPane>
+               <HBox spacing="5.0">
+                  <children>
+                     <Label text="Kernel flags">
+                        <font>
+                           <Font name="System Bold" size="13.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="kFlagsAval" text="?" />
+                  </children>
+               </HBox>
+               <GridPane gridLinesVisible="true">
+                 <columnConstraints>
+                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" />
+                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" />
+                 </columnConstraints>
+                 <rowConstraints>
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                 </rowConstraints>
+                  <children>
+                     <Label text="Highest allowed cpu id">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                     <Label text="Lowest allowed cpu id" GridPane.rowIndex="1">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                     <Label text="Highest allowed thread prio" GridPane.rowIndex="2">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                     <Label text="Lowest allowed thread prio" GridPane.rowIndex="3">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                     <Label fx:id="hiAllCpuId" text="-" GridPane.columnIndex="1">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                     <Label fx:id="loAllCpuId" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                     <Label fx:id="hiAllThreadPrio" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                     <Label fx:id="loAllThreadPrio" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                  </children>
+               </GridPane>
+               <Separator prefWidth="200.0" />
+               <Label text=" Syscall Mask">
+                  <font>
+                     <Font name="System Bold" size="13.0" />
+                  </font>
+               </Label>
+               <HBox spacing="5.0">
+                  <children>
+                     <Label text="Indx" />
+                     <Label text="Mask" />
+                  </children>
+               </HBox>
+               <VBox fx:id="syscallMaskPane" />
+               <Separator prefWidth="200.0" />
+               <Label text="Map IO or normal range">
+                  <font>
+                     <Font name="System Bold" size="13.0" />
+                  </font>
+               </Label>
+               <VBox fx:id="mapIoPane">
+                  <children>
+                     <Separator prefWidth="200.0" />
+                  </children></VBox>
+               <Label text="Map normal page (RW)">
+                  <font>
+                     <Font name="System Bold" size="13.0" />
+                  </font></Label>
+               <Label fx:id="mapNormalPageRwLbl" text="-" />
+               <Separator prefWidth="200.0" />
+               <HBox spacing="5.0">
+                  <children>
+                     <Label text="Interrupt pair">
+                        <font>
+                           <Font name="System Bold" size="13.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="interruptPairAvalLbl" text="?" />
+                  </children>
+               </HBox>
+               <GridPane gridLinesVisible="true">
+                 <columnConstraints>
+                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="40.0" />
+                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="400.0" minWidth="300.0" />
+                 </columnConstraints>
+                 <rowConstraints>
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                 </rowConstraints>
+                  <children>
+                     <Label text="Irq0">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                     <Label text="Irq1" GridPane.rowIndex="1">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                     <Label fx:id="irq0Lbl" text="-" GridPane.columnIndex="1">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                     <Label fx:id="irq1Lbl" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                  </children>
+               </GridPane>
+               <Separator prefWidth="200.0" />
+               <HBox spacing="5.0">
+                  <children>
+                     <Label text="Application Type:">
+                        <font>
+                           <Font name="System Bold" size="13.0" />
+                        </font></Label>
+                     <Label fx:id="appTypeLbl" text="-" />
+                  </children>
+               </HBox>
+               <Separator prefWidth="200.0" />
+               <Label text="Kernel release version">
+                  <font>
+                     <Font name="System Bold" size="13.0" />
+                  </font></Label>
+               <Label fx:id="kerRelVerLbl" text="-" />
+               <Separator prefWidth="200.0" />
+               <Label text="Handle table size ">
+                  <font>
+                     <Font name="System Bold" size="13.0" />
+                  </font></Label>
+               <Label fx:id="handleTableSizeLbl" text="-" />
+               <Separator prefWidth="200.0" />
+               <HBox spacing="5.0">
+                  <children>
+                     <Label text="Debug flags">
+                        <font>
+                           <Font name="System Bold" size="13.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="dbgAvalLbl" text="?" />
+                  </children>
+               </HBox>
+               <GridPane gridLinesVisible="true">
+                 <columnConstraints>
+                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="120.0" />
+                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" />
+                 </columnConstraints>
+                 <rowConstraints>
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                 </rowConstraints>
+                  <children>
+                     <Label text="Can be debugged">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                     <Label text="Can debug others" GridPane.rowIndex="1">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                     <Label fx:id="canBeDbgLbl" text="-" GridPane.columnIndex="1">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                     <Label fx:id="canDbgLbl" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </Label>
+                  </children>
+               </GridPane>
+               <Separator prefWidth="200.0" />
+            </children>
+         </VBox>
+      </content>
+   </TitledPane>
+</VBox>

@@ -1,26 +1,19 @@
 package konogonka.Controllers.NPDM;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
-public class ServiceAccessControlController implements Initializable {
+public class ServiceAccessControlController {
 
     @FXML
     private VBox SACPane;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
     public void resetTab(){
         SACPane.getChildren().clear();
     }
