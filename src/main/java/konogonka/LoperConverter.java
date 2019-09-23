@@ -30,6 +30,11 @@ public class LoperConverter {
             sb.append(String.format("%02x", b));
         return sb.toString();
     }
+
+    public static String longToOctString(long value){
+        return String.format("%64s", Long.toBinaryString( value )).replace(' ', '0');
+    }
+
     public static byte[] flip(byte[] bytes){
         int size = bytes.length;
         byte[] ret = new byte[size];

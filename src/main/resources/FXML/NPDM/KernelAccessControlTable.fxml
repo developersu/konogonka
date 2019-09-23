@@ -117,49 +117,16 @@
                   </font></Label>
                <Label fx:id="mapNormalPageRwLbl" text="-" />
                <Separator prefWidth="200.0" />
-               <HBox spacing="5.0">
+               <Label text="Interrupt pairs">
+                  <font>
+                     <Font name="System Bold" size="13.0" />
+                  </font>
+               </Label>
+               <VBox fx:id="interruptPairsPane">
                   <children>
-                     <Label text="Interrupt pair">
-                        <font>
-                           <Font name="System Bold" size="13.0" />
-                        </font>
-                     </Label>
-                     <Label fx:id="interruptPairAvalLbl" text="?" />
+                     <Separator prefWidth="200.0" />
                   </children>
-               </HBox>
-               <GridPane gridLinesVisible="true">
-                 <columnConstraints>
-                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="40.0" />
-                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="400.0" minWidth="300.0" />
-                 </columnConstraints>
-                 <rowConstraints>
-                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                 </rowConstraints>
-                  <children>
-                     <Label text="Irq0">
-                        <padding>
-                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                        </padding>
-                     </Label>
-                     <Label text="Irq1" GridPane.rowIndex="1">
-                        <padding>
-                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                        </padding>
-                     </Label>
-                     <Label fx:id="irq0Lbl" text="-" GridPane.columnIndex="1">
-                        <padding>
-                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                        </padding>
-                     </Label>
-                     <Label fx:id="irq1Lbl" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <padding>
-                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                        </padding>
-                     </Label>
-                  </children>
-               </GridPane>
-               <Separator prefWidth="200.0" />
+               </VBox>
                <HBox spacing="5.0">
                   <children>
                      <Label text="Application Type:">

@@ -1,8 +1,10 @@
 package konogonka.Tools.NPDM;
 
+import konogonka.Tools.NPDM.ACID.KernelAccessControlProvider;
+import konogonka.Tools.NPDM.ACID.ServiceAccessControlProvider;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.LinkedList;
 
 import static konogonka.LoperConverter.getLEint;
 
@@ -19,6 +21,10 @@ public class ACI0Provider  {
     private int kernelAccessControlSize;
     private byte[] reserved3;
 
+    private FSAccessHeaderProvider fsAccessHeaderProvider;
+    private ServiceAccessControlProvider serviceAccessControlProvider;
+    private KernelAccessControlProvider kernelAccessControlProvider;
+
     public ACI0Provider(byte[] aci0bytes) throws Exception {
         if (aci0bytes.length < 0x40)
             throw new Exception("ACI0 size is too short");
@@ -33,6 +39,10 @@ public class ACI0Provider  {
         kernelAccessControlOffset = getLEint(aci0bytes, 0x30);
         kernelAccessControlSize = getLEint(aci0bytes, 0x34);
         reserved3 = Arrays.copyOfRange(aci0bytes, 0x38, 0x40);
+
+        fsAccessHeaderProvider = new FSAccessHeaderProvider(Arrays.copyOfRange(aci0bytes, fsAccessHeaderOffset, fsAccessHeaderOffset+fsAccessHeaderSize));
+        serviceAccessControlProvider = new ServiceAccessControlProvider(Arrays.copyOfRange(aci0bytes, serviceAccessControlOffset, serviceAccessControlOffset+serviceAccessControlSize));
+        kernelAccessControlProvider = new KernelAccessControlProvider(Arrays.copyOfRange(aci0bytes, kernelAccessControlOffset, kernelAccessControlOffset+kernelAccessControlSize));
     }
 
     public String getMagicNum()  { return magicNum; }
@@ -46,4 +56,8 @@ public class ACI0Provider  {
     public int getKernelAccessControlOffset()  { return kernelAccessControlOffset; }
     public int getKernelAccessControlSize()  { return kernelAccessControlSize; }
     public byte[] getReserved3()  { return reserved3; }
+
+    public FSAccessHeaderProvider getFsAccessHeaderProvider() { return fsAccessHeaderProvider; }
+    public ServiceAccessControlProvider getServiceAccessControlProvider() { return serviceAccessControlProvider; }
+    public KernelAccessControlProvider getKernelAccessControlProvider() { return kernelAccessControlProvider; }
 }

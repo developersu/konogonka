@@ -1,9 +1,12 @@
 package konogonka.Tools.NPDM.ACID;
 
 import konogonka.LoperConverter;
+import konogonka.RainbowHexDump;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 /*
 NOTE: This implementation is extremely bad for using application as library. Use raw for own purposes.
@@ -81,9 +84,7 @@ public class KernelAccessControlProvider {
     // MapNormalPage (RW)
     private byte[] mapNormalPage;   // TODO: clarify is possible to have multiple
     // InterruptPair
-    private boolean interruptPairAvailable;
-    private byte[] irq0,
-                    irq1;
+    private LinkedHashMap<Integer, byte[][]> interruptPairs;   // Number; irq0, irq2
     // Application type
     private int applicationType;
     // KernelReleaseVersion
@@ -97,12 +98,13 @@ public class KernelAccessControlProvider {
                     canBeDebugged,
                     canDebugOthers;
 
-    KernelAccessControlProvider(byte[] bytes) throws Exception{
+    public KernelAccessControlProvider(byte[] bytes) throws Exception{
         if (bytes.length < 4)
             throw new Exception("ACID-> KernelAccessControlProvider: too small size of the Kernel Access Control");
 
         rawData = new LinkedList<Integer>();
 
+        interruptPairs = new LinkedHashMap<>();
         syscallMasks = new LinkedHashMap<Byte, byte[]>();
         mapIoOrNormalRange = new LinkedHashMap<byte[], Boolean>();
 
@@ -160,14 +162,19 @@ public class KernelAccessControlProvider {
                     //System.out.println();
                     break;
                 case INTERRUPTPAIR:
-                    System.out.println("INTERRUPTPAIR found (must (?) appear once, please report if it's not)");
-                    interruptPairAvailable = true;
-                    irq0 = new byte[10];
-                    irq1 = new byte[10];
+                    //System.out.println("INTERRUPTPAIR");
+                    //RainbowHexDump.octDumpInt(block);
+                    byte[][] pair = new byte[2][];
+                    byte[] irq0 = new byte[10];
+                    byte[] irq1 = new byte[10];
+
                     for (int k = 21; k >= 12; k--)
                         irq0[k-12] = (byte) (block >> k & 1);
                     for (int k = 31; k >= 22; k--)
                         irq1[k-22] = (byte) (block >> k & 1);
+                    pair[0] = irq0;
+                    pair[1] = irq1;
+                    interruptPairs.put(interruptPairs.size(), pair);
                     break;
                 case APPLICATIONTYPE:
                     applicationType = block >> 14 & 0b111;
@@ -193,7 +200,6 @@ public class KernelAccessControlProvider {
                     System.out.println("UNKNOWN\t\t"+block+" "+type);
             }
         }
-        //System.out.println();
     }
 
     private int getMinBitCnt(int value){
@@ -212,9 +218,7 @@ public class KernelAccessControlProvider {
     public int getKernelFlagThreadPrioLo() { return kernelFlagThreadPrioLo; }
     public LinkedHashMap<byte[], Boolean> getMapIoOrNormalRange() { return mapIoOrNormalRange; }
     public byte[] getMapNormalPage() { return mapNormalPage; }
-    public boolean isInterruptPairAvailable() { return interruptPairAvailable; }
-    public byte[] getIrq0() { return irq0; }
-    public byte[] getIrq1() { return irq1; }
+    public LinkedHashMap<Integer, byte[][]> getInterruptPairs() { return interruptPairs; }
     public int getApplicationType() { return applicationType; }
     public boolean isKernelRelVersionAvailable() { return isKernelRelVersionAvailable; }
     public int getKernelRelVersionMajor() { return kernelRelVersionMajor; }

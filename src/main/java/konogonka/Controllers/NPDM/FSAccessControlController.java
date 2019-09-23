@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static konogonka.LoperConverter.byteArrToHexString;
+import static konogonka.LoperConverter.longToOctString;
 
 public class FSAccessControlController implements Initializable {
     @FXML
@@ -168,19 +169,11 @@ public class FSAccessControlController implements Initializable {
     public void populateFields(FSAccessControlProvider provider){
         ACID_FSAcccessControlVersionLbl.setText(String.format("0x%02x", provider.getVersion()));
         ACID_FSAcccessControlPaddingLbl.setText(byteArrToHexString(provider.getPadding()));
-        ACID_FSAcccessControlBitbaskLbl.setText(byteArrToHexString(provider.getPermissionsBitmask()));
+        StringBuilder sb = new StringBuilder(longToOctString(provider.getPermissionsBitmask()));
+        sb.reverse();
+        String mask = sb.toString();
+        ACID_FSAcccessControlBitbaskLbl.setText(mask);
         ACID_FSAcccessControlReservedTf.setText(byteArrToHexString(provider.getReserved()));
-
-        byte[] permissionsBitmask = provider.getPermissionsBitmask();
-        String mask =
-            String.format("%8s", Integer.toBinaryString(permissionsBitmask[7] & 0xFF)).replace(' ', '0')+
-            String.format("%8s", Integer.toBinaryString(permissionsBitmask[6] & 0xFF)).replace(' ', '0')+
-            String.format("%8s", Integer.toBinaryString(permissionsBitmask[5] & 0xFF)).replace(' ', '0')+
-            String.format("%8s", Integer.toBinaryString(permissionsBitmask[4] & 0xFF)).replace(' ', '0')+
-            String.format("%8s", Integer.toBinaryString(permissionsBitmask[3] & 0xFF)).replace(' ', '0')+
-            String.format("%8s", Integer.toBinaryString(permissionsBitmask[2] & 0xFF)).replace(' ', '0')+
-            String.format("%8s", Integer.toBinaryString(permissionsBitmask[1] & 0xFF)).replace(' ', '0')+
-            String.format("%8s", Integer.toBinaryString(permissionsBitmask[0] & 0xFF)).replace(' ', '0');
 
         for (int i = 0; i < 64; i++)
             masksArr[i].setText(mask.substring(i, i+1));

@@ -75,14 +75,21 @@ public class NPDMController implements ITabController {
             acidKernelAccessControlOffsetLbl,
             acidKernelAccessControlSizeLbl,
             acidReserved2Lbl;
+    //ACID
     @FXML
-    private FSAccessControlController FSAccessControlTableController;
+    private FSAccessControlController ACIDFSAccessControlTableController;
 
     @FXML
-    private ServiceAccessControlController ServiceAccessControlTableController;
+    private ServiceAccessControlController ACIDServiceAccessControlTableController;
 
     @FXML
-    private KernelAccessControlController KernelAccessControlTableController;
+    private KernelAccessControlController ACIDKernelAccessControlTableController;
+    // ACI0
+    @FXML
+    private ServiceAccessControlController ACI0ServiceAccessControlTableController;
+
+    @FXML
+    private KernelAccessControlController ACI0KernelAccessControlTableController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { }
@@ -167,12 +174,13 @@ public class NPDMController implements ITabController {
         acidKernelAccessControlOffsetLbl.setText("-");
         acidKernelAccessControlSizeLbl.setText("-");
         acidReserved2Lbl.setText("-");
-
-        FSAccessControlTableController.resetTab();
-
-        ServiceAccessControlTableController.resetTab();
-
-        KernelAccessControlTableController.resetTab();
+        // ACID
+        ACIDFSAccessControlTableController.resetTab();
+        ACIDServiceAccessControlTableController.resetTab();
+        ACIDKernelAccessControlTableController.resetTab();
+        // ACI0
+        ACI0ServiceAccessControlTableController.resetTab();
+        ACI0KernelAccessControlTableController.resetTab();
     }
     private void setData(NPDMProvider npdmProvider, File file) {
         if (npdmProvider == null)
@@ -212,6 +220,10 @@ public class NPDMController implements ITabController {
         aci0KernelAccessControlOffsetLbl.setText(Integer.toString(aci0.getKernelAccessControlOffset()));
         aci0KernelAccessControlSizeLbl.setText(Integer.toString(aci0.getKernelAccessControlSize()));
         aci0Reserved3Lbl.setText(byteArrToHexString(aci0.getReserved3()));
+
+
+        ACI0ServiceAccessControlTableController.populateFields(aci0.getServiceAccessControlProvider().getCollection());
+        ACI0KernelAccessControlTableController.populateFields(aci0.getKernelAccessControlProvider());
         // ACID
         ACIDProvider acid = npdmProvider.getAcid();
         acidRsa2048signatureTf.setText(byteArrToHexString(acid.getRsa2048signature()));
@@ -233,8 +245,8 @@ public class NPDMController implements ITabController {
         acidKernelAccessControlSizeLbl.setText(Integer.toString(acid.getKernelAccessControlSize()));
         acidReserved2Lbl.setText(byteArrToHexString(acid.getReserved2()));
 
-        FSAccessControlTableController.populateFields(acid.getFsAccessControlProvider());
-        ServiceAccessControlTableController.populateFields(acid.getServiceAccessControlProvider().getCollection());
-        KernelAccessControlTableController.populateFields(acid.getKernelAccessControlProvider());
+        ACIDFSAccessControlTableController.populateFields(acid.getFsAccessControlProvider());
+        ACIDServiceAccessControlTableController.populateFields(acid.getServiceAccessControlProvider().getCollection());
+        ACIDKernelAccessControlTableController.populateFields(acid.getKernelAccessControlProvider());
     }
 }

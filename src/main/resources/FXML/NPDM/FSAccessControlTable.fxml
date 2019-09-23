@@ -211,7 +211,7 @@
                         <children>
                            <HBox spacing="5.0">
                               <children>
-                                 <Label text="Permissions bitmask (Raw, big-endian) : ">
+                                 <Label text="Permissions bitmask (Raw) : ">
                                     <padding>
                                        <Insets left="5.0" right="5.0" />
                                     </padding>

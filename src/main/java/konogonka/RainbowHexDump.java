@@ -33,4 +33,8 @@ public class RainbowHexDump {
     public static void octDumpInt(int value){
         System.out.println(String.format("%32s", Integer.toBinaryString( value )).replace(' ', '0')+" | "+value);
     }
+
+    public static void octDumpLong(long value){
+        System.out.println(String.format("%64s", Long.toBinaryString( value )).replace(' ', '0')+" | "+value);
+    }
 }

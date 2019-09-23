@@ -28,9 +28,10 @@ JRE/JDK 8u60 or higher.
 * [X] TIK
 * [X] XML 
 * [X] NRO
-* [ ] LogPrinter to singleton implementation.
 * [ ] NPDM support
+* [ ] CERT support
 * [ ] CNMT support
 * [ ] NSO support
-* [ ] RomFS deep-dive 
-* [ ] 'Save to folder' option
+* [ ] RomFS deep-dive
+* [ ] LogPrinter to singleton implementation. 
+* [X] 'Save to folder' option

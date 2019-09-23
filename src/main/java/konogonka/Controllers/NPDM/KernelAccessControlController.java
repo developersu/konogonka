@@ -29,10 +29,7 @@ public class KernelAccessControlController {
     private Label mapNormalPageRwLbl;
 
     @FXML
-    private Label interruptPairAvalLbl,
-            irq0Lbl,
-            irq1Lbl;
-
+    private VBox interruptPairsPane;
     @FXML
     private Label appTypeLbl,
             kerRelVerLbl,
@@ -54,9 +51,8 @@ public class KernelAccessControlController {
         mapIoPane.getChildren().clear();
         mapIoPane.getChildren().add(new Separator());
         mapNormalPageRwLbl.setText("-");
-        interruptPairAvalLbl.setText("?");
-        irq0Lbl.setText("-");
-        irq1Lbl.setText("-");
+        interruptPairsPane.getChildren().clear();
+        interruptPairsPane.getChildren().add(new Separator());
         appTypeLbl.setText("-");
         kerRelVerLbl.setText("-");
         handleTableSizeLbl.setText("-");
@@ -115,9 +111,11 @@ public class KernelAccessControlController {
             roFlagLbl.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
             roFlagVal.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
 
-            mapIoPane.getChildren().add(new HBox(altStPgNnumOfPgLbl, altStPgNnumOfPgVal));
-            mapIoPane.getChildren().add(new HBox(roFlagLbl, roFlagVal));
-            mapIoPane.getChildren().add(new Separator());
+            mapIoPane.getChildren().addAll(
+                    new HBox(altStPgNnumOfPgLbl, altStPgNnumOfPgVal),
+                    new HBox(roFlagLbl, roFlagVal),
+                    new Separator()
+            );
         }
         byte[] mapNormalPageRwBarr = kacProvider.getMapNormalPage();
         if (mapNormalPageRwBarr != null){
@@ -128,22 +126,34 @@ public class KernelAccessControlController {
 
             mapNormalPageRwLbl.setText(stringBuilder.toString());
         }
-        if (kacProvider.isInterruptPairAvailable()){
-            interruptPairAvalLbl.setText("(available)");
-            stringBuilder = new StringBuilder();
-            for (byte b : kacProvider.getIrq0())
-                stringBuilder.append(b);
-            stringBuilder.reverse();
-            irq0Lbl.setText(stringBuilder.toString());
+        for (Map.Entry entry : kacProvider.getInterruptPairs().entrySet()){
+            Label no = new Label("# "+entry.getKey());
+            Label irq0Lbl = new Label("irq0:");
+            Label irq1Lbl = new Label("irq1:");
+            Label irq0, irq1;
 
             stringBuilder = new StringBuilder();
-            for (byte b : kacProvider.getIrq1())
+            for (byte b : ((byte[][]) entry.getValue())[0])
                 stringBuilder.append(b);
             stringBuilder.reverse();
-            irq1Lbl.setText(stringBuilder.toString());
-        }
-        else {
-            interruptPairAvalLbl.setText("(not available)");
+            irq0 = new Label(stringBuilder.toString());
+            for (byte b : ((byte[][]) entry.getValue())[1])
+                stringBuilder.append(b);
+            stringBuilder.reverse();
+            irq1 = new Label(stringBuilder.toString());
+
+            no.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
+            irq0Lbl.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
+            irq1Lbl.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
+            irq0.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
+            irq1.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
+
+            interruptPairsPane.getChildren().addAll(
+                    no,
+                    new HBox(irq0Lbl, irq0),
+                    new HBox(irq1Lbl, irq1),
+                    new Separator()
+            );
         }
         switch (kacProvider.getApplicationType()){
             case 0:
