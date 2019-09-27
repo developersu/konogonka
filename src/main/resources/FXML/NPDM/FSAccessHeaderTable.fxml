@@ -49,7 +49,7 @@
                            </Label>
                         </children>
                      </AnchorPane>
-                     <AnchorPane styleClass="customGrid" GridPane.columnIndex="1">
+                     <AnchorPane styleClass="customTitleGrid" GridPane.columnIndex="1">
                         <children>
                                 <Label text="Size" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <font>
@@ -61,7 +61,7 @@
                                 </Label>
                         </children>
                      </AnchorPane>
-                     <AnchorPane styleClass="customGrid" GridPane.columnIndex="2">
+                     <AnchorPane styleClass="customTitleGrid" GridPane.columnIndex="2">
                         <children>
                                 <Label text="Description" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <font>
@@ -73,7 +73,7 @@
                                 </Label>
                         </children>
                      </AnchorPane>
-                     <AnchorPane styleClass="customGrid" GridPane.columnIndex="3">
+                     <AnchorPane styleClass="customTitleGrid" GridPane.columnIndex="3">
                         <children>
                                 <Label text="Value" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <font>
@@ -85,7 +85,7 @@
                                 </Label>
                         </children>
                      </AnchorPane>
-                     <AnchorPane styleClass="customGrid">
+                     <AnchorPane styleClass="customTitleGrid">
                         <children>
                                 <Label text="Offset" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <font>

@@ -201,6 +201,8 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
                         // If we have extra-small file that is less then a block and even more
                         if ((0x200 - skipBytes) > pfs0subFiles[subFileNumber].getSize()){
                             streamOut.write(dectyptedBlock, skipBytes, (int) pfs0subFiles[subFileNumber].getSize());    // safe cast
+                            bis.close();
+                            streamOut.close();
                             return;
                         }
                         else
@@ -212,7 +214,6 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
                     }
                     startBlock++;
                 }
-
                 long endBlock = pfs0subFiles[subFileNumber].getSize() / 0x200 + startBlock;  // <- pointing to place where any data related to this media-block ends
 
                 //----------------------------- Step 2: Detect if we have junk data on the end of the final block --------------------------------
