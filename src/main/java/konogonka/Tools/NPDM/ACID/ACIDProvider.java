@@ -1,6 +1,7 @@
 package konogonka.Tools.NPDM.ACID;
 
-import konogonka.Tools.NPDM.ACI0Provider;
+import konogonka.Tools.NPDM.KernelAccessControlProvider;
+import konogonka.Tools.NPDM.ServiceAccessControlProvider;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

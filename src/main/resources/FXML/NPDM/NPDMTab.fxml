@@ -735,6 +735,7 @@
                         </Label>
                         </children>
                     </GridPane>
+                   <fx:include fx:id="ACI0FSAccessHeaderTable" source="FSAccessHeaderTable.fxml" />
                    <fx:include fx:id="ACI0ServiceAccessControlTable" source="ServiceAccessControlTable.fxml" />
                    <fx:include fx:id="ACI0KernelAccessControlTable" source="KernelAccessControlTable.fxml" />
                </children>

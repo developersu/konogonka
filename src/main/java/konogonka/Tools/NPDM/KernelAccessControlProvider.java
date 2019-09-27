@@ -1,4 +1,4 @@
-package konogonka.Tools.NPDM.ACID;
+package konogonka.Tools.NPDM;
 
 import konogonka.LoperConverter;
 import konogonka.RainbowHexDump;

@@ -1,7 +1,6 @@
-package konogonka.Tools.NPDM;
+package konogonka.Tools.NPDM.ACI0;
 
 import konogonka.LoperConverter;
-import konogonka.RainbowHexDump;
 
 import java.util.Arrays;
 
@@ -28,21 +27,6 @@ public class FSAccessHeaderProvider {
         dataNownerSizes = LoperConverter.getLEint(bytes, 0x14);
         saveDataOwnSectionSize = LoperConverter.getLEint(bytes, 0x18);
         unknownData = Arrays.copyOfRange(bytes, 0x1C, bytes.length);
-        //
-        System.out.println("version "+version);
-        System.out.print("padding ");
-        RainbowHexDump.hexDumpUTF8(padding);
-        System.out.print("Permissions Bitmask ");
-        RainbowHexDump.octDumpLong(permissionsBitmask);
-        System.out.println(
-                "DataSize "+dataSize+"\n"+
-                "Content OwnId Section Size "+contentOwnIdSectionSize+"\n"+
-                "Data + owner  "+dataNownerSizes+"\n"+
-                "Save Data Own Section Size "+saveDataOwnSectionSize
-        );
-        RainbowHexDump.hexDumpUTF8(Arrays.copyOfRange(bytes, 0x1C, bytes.length));
-        //*/
-        //reserved = Arrays.copyOfRange(bytes, 0xC, 0x2C);
     }
 
     public byte getVersion() { return version; }

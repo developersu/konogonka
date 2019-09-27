@@ -1,4 +1,4 @@
-package konogonka.Tools.NPDM.ACID;
+package konogonka.Tools.NPDM;
 
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;

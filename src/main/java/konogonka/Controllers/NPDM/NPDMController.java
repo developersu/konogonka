@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import konogonka.Controllers.ITabController;
 import konogonka.Tools.ISuperProvider;
-import konogonka.Tools.NPDM.ACI0Provider;
+import konogonka.Tools.NPDM.ACI0.ACI0Provider;
 import konogonka.Tools.NPDM.ACID.ACIDProvider;
 import konogonka.Tools.NPDM.NPDMProvider;
 import konogonka.Workers.Analyzer;
@@ -78,16 +78,15 @@ public class NPDMController implements ITabController {
     //ACID
     @FXML
     private FSAccessControlController ACIDFSAccessControlTableController;
-
     @FXML
     private ServiceAccessControlController ACIDServiceAccessControlTableController;
-
     @FXML
     private KernelAccessControlController ACIDKernelAccessControlTableController;
     // ACI0
     @FXML
+    private FSAccessHeaderController ACI0FSAccessHeaderTableController;
+    @FXML
     private ServiceAccessControlController ACI0ServiceAccessControlTableController;
-
     @FXML
     private KernelAccessControlController ACI0KernelAccessControlTableController;
 
@@ -174,13 +173,14 @@ public class NPDMController implements ITabController {
         acidKernelAccessControlOffsetLbl.setText("-");
         acidKernelAccessControlSizeLbl.setText("-");
         acidReserved2Lbl.setText("-");
+        // ACI0
+        ACI0FSAccessHeaderTableController.resetTab();
+        ACI0ServiceAccessControlTableController.resetTab();
+        ACI0KernelAccessControlTableController.resetTab();
         // ACID
         ACIDFSAccessControlTableController.resetTab();
         ACIDServiceAccessControlTableController.resetTab();
         ACIDKernelAccessControlTableController.resetTab();
-        // ACI0
-        ACI0ServiceAccessControlTableController.resetTab();
-        ACI0KernelAccessControlTableController.resetTab();
     }
     private void setData(NPDMProvider npdmProvider, File file) {
         if (npdmProvider == null)
@@ -221,7 +221,7 @@ public class NPDMController implements ITabController {
         aci0KernelAccessControlSizeLbl.setText(Integer.toString(aci0.getKernelAccessControlSize()));
         aci0Reserved3Lbl.setText(byteArrToHexString(aci0.getReserved3()));
 
-
+        ACI0FSAccessHeaderTableController.populateFields(aci0.getFsAccessHeaderProvider());
         ACI0ServiceAccessControlTableController.populateFields(aci0.getServiceAccessControlProvider().getCollection());
         ACI0KernelAccessControlTableController.populateFields(aci0.getKernelAccessControlProvider());
         // ACID
