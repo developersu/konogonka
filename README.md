@@ -23,15 +23,15 @@ JRE/JDK 8u60 or higher.
 
 ### Checklist
 
-* [X] NSP (PFS0)
-* [X] XCI (+HFS0)
-* [X] TIK
-* [X] XML 
-* [X] NRO
+* [x] NSP (PFS0)
+* [x] XCI (+HFS0)
+* [x] TIK
+* [x] XML 
+* [x] NRO
 * [ ] NPDM support
 * [ ] CERT support
 * [ ] CNMT support
 * [ ] NSO support
 * [ ] RomFS deep-dive
 * [ ] LogPrinter to singleton implementation. 
-* [X] 'Save to folder' option
+* [x] 'Save to folder' option
