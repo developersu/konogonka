@@ -193,8 +193,27 @@ public class NCAProvider {
                 decryptedKey2 = cipher.doFinal(encryptedKey2);
                 decryptedKey3 = cipher.doFinal(encryptedKey3);
             }
-            else
-                throw new Exception("key_are_key_[UNKNOWN] requested ("+keyIndex+"). Not supported.");
+            else{
+                StringBuilder exceptionStringBuilder = new StringBuilder("key_area_key_");
+                switch (keyIndex){
+                    case 0:
+                        exceptionStringBuilder.append("application_");
+                        break;
+                    case 1:
+                        exceptionStringBuilder.append("ocean_");
+                        break;
+                    case 2:
+                        exceptionStringBuilder.append("system_");
+                        break;
+                    default:
+                        exceptionStringBuilder.append(keyIndex);
+                        exceptionStringBuilder.append("[UNKNOWN]_");
+                }
+                exceptionStringBuilder.append(String.format("%02d", cryptoTypeReal));
+                exceptionStringBuilder.append(" requested. Not supported or not found.");
+
+                throw new Exception(exceptionStringBuilder.toString());
+            }
         }
 
         tableEntry0 = new NCAHeaderTableEntry(tableBytes);

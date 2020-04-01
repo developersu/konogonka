@@ -86,7 +86,7 @@ public class MainController implements Initializable {
         else
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NS files", "*.nsp", "*.xci", "*.nca", "*.tik", "*.xml", "*.npdm"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NS files", "*.nsp", "*.nsz", "*.xci", "*.nca", "*.tik", "*.xml", "*.npdm"));
 
         this.selectedFile = fileChooser.showOpenDialog(analyzeBtn.getScene().getWindow());
         // todo: fix
@@ -102,18 +102,28 @@ public class MainController implements Initializable {
             filenameSelected.setText(this.selectedFile.getAbsolutePath());
             previouslyOpenedPath = this.selectedFile.getParent();
             analyzeBtn.setDisable(false);
-            if (this.selectedFile.getName().toLowerCase().endsWith(".nsp"))
-                tabPane.getSelectionModel().select(0);
-            else if (this.selectedFile.getName().toLowerCase().endsWith(".xci"))
-                tabPane.getSelectionModel().select(1);
-            else if (this.selectedFile.getName().toLowerCase().endsWith(".nca"))
-                tabPane.getSelectionModel().select(2);
-            else if (this.selectedFile.getName().toLowerCase().endsWith(".tik"))
-                tabPane.getSelectionModel().select(3);
-            else if (this.selectedFile.getName().toLowerCase().endsWith(".xml"))
-                tabPane.getSelectionModel().select(4);
-            else if (this.selectedFile.getName().toLowerCase().endsWith(".npdm"))
-                tabPane.getSelectionModel().select(5);
+            String fileExtension = this.selectedFile.getName().toLowerCase().replaceAll("^.*\\.", "");
+            switch (fileExtension){
+                case "nsp":
+                case "nsz":
+                    tabPane.getSelectionModel().select(0);
+                    break;
+                case "xci":
+                    tabPane.getSelectionModel().select(1);
+                    break;
+                case "nca":
+                    tabPane.getSelectionModel().select(2);
+                    break;
+                case "tic":
+                    tabPane.getSelectionModel().select(3);
+                    break;
+                case "xml":
+                    tabPane.getSelectionModel().select(4);
+                    break;
+                case "npdm":
+                    tabPane.getSelectionModel().select(5);
+                    break;
+            }
         }
 
         logArea.clear();
@@ -122,18 +132,28 @@ public class MainController implements Initializable {
      * Start analyze
      * */
     private void analyzeFile(){
-        if (selectedFile.getName().toLowerCase().endsWith("nsp"))
-            NSPTabController.analyze(selectedFile);      // TODO: NSP OR XCI
-        else if (selectedFile.getName().toLowerCase().endsWith("xci"))
-            XCITabController.analyze(selectedFile);
-        else if (selectedFile.getName().toLowerCase().endsWith("nca"))
-            NCATabController.analyze(selectedFile);
-        else if (selectedFile.getName().toLowerCase().endsWith("tik"))
-            TIKTabController.analyze(selectedFile);
-        else if (selectedFile.getName().toLowerCase().endsWith("xml"))
-            XMLTabController.analyze(selectedFile);
-        else if (selectedFile.getName().toLowerCase().endsWith("npdm"))
-            NPDMTabController.analyze(selectedFile);
+        final String fileExtension = selectedFile.getName().toLowerCase().replaceAll("^.*\\.", "");
+        switch (fileExtension){
+            case "nsp":
+            case "nsz":
+                NSPTabController.analyze(selectedFile);      // TODO: NSP OR XCI
+                break;
+            case "xci":
+                XCITabController.analyze(selectedFile);
+                break;
+            case "nca":
+                NCATabController.analyze(selectedFile);
+                break;
+            case "tic":
+                TIKTabController.analyze(selectedFile);
+                break;
+            case "xml":
+                XMLTabController.analyze(selectedFile);
+                break;
+            case "npdm":
+                NPDMTabController.analyze(selectedFile);
+                break;
+        }
     }
     @FXML
     private void showHideLogs(){
