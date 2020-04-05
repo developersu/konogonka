@@ -51,6 +51,8 @@ public class NCAController implements ITabController {
             contentIndexLbl,
             sdkVersionLbl,
             cryptoType2Lbl,
+            header1SignatureKeyGenerationLbl,
+            keyGenerationReservedLbl,
             ticketLbl;
     @FXML
     private TextField
@@ -94,9 +96,9 @@ public class NCAController implements ITabController {
                 keysMap.put(pair[0], pair[1]);
         }
 
-        Task analyzer = Analyzer.analyzeNCA(file, keysMap, offset);
+        Task<NCAProvider> analyzer = Analyzer.analyzeNCA(file, keysMap, offset);
         analyzer.setOnSucceeded(e->{
-            populateFields((NCAProvider) analyzer.getValue());
+            populateFields(analyzer.getValue());
         });
         Thread workThread = new Thread(analyzer);
         workThread.setDaemon(true);
@@ -125,6 +127,8 @@ public class NCAController implements ITabController {
         titleIdLbl.setText("-");
         sdkVersionLbl.setText("-");
         cryptoType2Lbl.setText("-");
+        header1SignatureKeyGenerationLbl.setText("-");
+        keyGenerationReservedLbl.setText("-");
         ticketLbl.setText("-");
         contentIndexLbl.setText("-");
         sha256section1TF.setText("-");
@@ -174,6 +178,8 @@ public class NCAController implements ITabController {
                     +"."+ncaProvider.getSdkVersion()[1]
                     +"."+ncaProvider.getSdkVersion()[0]);
             cryptoType2Lbl.setText(Byte.toString(ncaProvider.getCryptoType2()));
+            header1SignatureKeyGenerationLbl.setText(Byte.toString(ncaProvider.getHeader1SignatureKeyGeneration()));
+            keyGenerationReservedLbl.setText(byteArrToHexString(ncaProvider.getKeyGenerationReserved()));
             ticketLbl.setText(byteArrToHexString(ncaProvider.getRightsId()));
             sha256section1TF.setText(byteArrToHexString(ncaProvider.getSha256hash0()));
             sha256section2TF.setText(byteArrToHexString(ncaProvider.getSha256hash1()));

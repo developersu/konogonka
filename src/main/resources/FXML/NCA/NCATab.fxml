@@ -40,6 +40,8 @@
                            <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
@@ -73,7 +75,7 @@
                               </Label>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.rowIndex="14">
+                           <AnchorPane styleClass="customGrid" GridPane.rowIndex="16">
                               <children>
                               <Label text="0x240" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
@@ -145,7 +147,7 @@
                               </Label>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.rowIndex="13">
+                           <AnchorPane styleClass="customGrid" GridPane.rowIndex="15">
                               <children>
                               <Label text="0x230" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
@@ -163,7 +165,7 @@
                               </Label>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.rowIndex="15">
+                           <AnchorPane styleClass="customGrid" GridPane.rowIndex="17">
                               <children>
                               <Label text="0x280" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
@@ -172,7 +174,7 @@
                               </Label>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.rowIndex="16">
+                           <AnchorPane styleClass="customGrid" GridPane.rowIndex="18">
                               <children>
                               <Label text="0x300" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
@@ -244,7 +246,7 @@
                               </Label>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="16">
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="18">
                               <children>
                               <Label text="0x10*0x4(0x40)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
@@ -253,7 +255,7 @@
                               </Label>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="15">
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="17">
                               <children>
                               <Label text="0x20*0x4(0x80)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
@@ -262,7 +264,7 @@
                               </Label>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="16">
                               <children>
                               <Label text="0x10*0x4(0x40)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
@@ -343,7 +345,7 @@
                               </Label>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="15">
                               <children>
                               <Label text="0x10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
@@ -406,7 +408,7 @@
                               </Label>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="13">
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="15">
                               <children>
                               <Label text="Rights ID (title.keys key-name to decrypt)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
@@ -415,7 +417,7 @@
                               </Label>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="14">
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="16">
                               <children>
                                  <VBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
@@ -438,7 +440,7 @@
                                  </VBox>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="15">
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="17">
                               <children>
                               <Label text="Table of SHA256 hashes, over each 0x200-byte Section Header Block." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
@@ -447,7 +449,7 @@
                               </Label>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="16">
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="18">
                               <children>
                               <Label text="Key area" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
@@ -537,7 +539,7 @@
                               </Label>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="3" GridPane.rowIndex="13">
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="3" GridPane.rowIndex="15">
                               <children>
                               <Label fx:id="ticketLbl" text="-" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
@@ -565,7 +567,7 @@
                               <TextField fx:id="rsa2048twoTF" editable="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="3" GridPane.rowIndex="15">
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="3" GridPane.rowIndex="17">
                               <children>
                                  <VBox spacing="3.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
@@ -580,7 +582,7 @@
                                  </VBox>
                               </children>
                            </AnchorPane>
-                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="3" GridPane.rowIndex="16">
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="3" GridPane.rowIndex="18">
                               <children>
                                  <VBox spacing="3.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <padding>
@@ -679,6 +681,78 @@
                            <AnchorPane styleClass="customGrid" GridPane.columnIndex="3" GridPane.rowIndex="10">
                               <children>
                                  <Label fx:id="contentIndexLbl" text="-" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <padding>
+                                       <Insets left="5.0" right="5.0" />
+                                    </padding>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane styleClass="customGrid" GridPane.rowIndex="13">
+                              <children>
+                                 <Label layoutX="5.0" layoutY="6.0" text="0x221" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <padding>
+                                       <Insets left="5.0" right="5.0" />
+                                    </padding>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane styleClass="customGrid" GridPane.rowIndex="14">
+                              <children>
+                                 <Label text="0x222" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <padding>
+                                       <Insets left="5.0" right="5.0" />
+                                    </padding>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                              <children>
+                                 <Label text="0x1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <padding>
+                                       <Insets left="5.0" right="5.0" />
+                                    </padding>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                              <children>
+                                 <Label text="0xE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <padding>
+                                       <Insets left="5.0" right="5.0" />
+                                    </padding>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="13">
+                              <children>
+                                 <Label text="[9.0.0+] Header1SignatureKeyGeneration (0 or 1) " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <padding>
+                                       <Insets left="5.0" right="5.0" />
+                                    </padding>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="14">
+                              <children>
+                                 <Label text="Reserved (?)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <padding>
+                                       <Insets left="5.0" right="5.0" />
+                                    </padding>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="3" GridPane.rowIndex="13">
+                              <children>
+                                 <Label fx:id="header1SignatureKeyGenerationLbl" text="-" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <padding>
+                                       <Insets left="5.0" right="5.0" />
+                                    </padding>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane styleClass="customGrid" GridPane.columnIndex="3" GridPane.rowIndex="14">
+                              <children>
+                                 <Label fx:id="keyGenerationReservedLbl" text="-" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <padding>
                                        <Insets left="5.0" right="5.0" />
                                     </padding>

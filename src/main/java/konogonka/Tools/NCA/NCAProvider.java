@@ -31,7 +31,9 @@ public class NCAProvider {
     private byte[] titleId;
     private byte[] contentIndx;
     private byte[] sdkVersion;                  // version ver_revision.ver_micro.vev_minor.ver_major
-    private byte cryptoType2;                   // keyblob index. Considering as number within application/ocean/system
+    private byte cryptoType2;                   // keyblob index. Considering as number within application/ocean/system | AKA KeyGeneration
+    private byte Header1SignatureKeyGeneration;
+    private byte[] keyGenerationReserved;
     private byte[] rightsId;
 
     private byte cryptoTypeReal;
@@ -143,6 +145,8 @@ public class NCAProvider {
         contentIndx = Arrays.copyOfRange(decryptedData, 0x218, 0x21C);
         sdkVersion = Arrays.copyOfRange(decryptedData, 0x21c, 0x220);
         cryptoType2 = decryptedData[0x220];
+        Header1SignatureKeyGeneration = decryptedData[0x221];
+        keyGenerationReserved = Arrays.copyOfRange(decryptedData, 0x222, 0x230);
         rightsId = Arrays.copyOfRange(decryptedData, 0x230, 0x240);
         byte[] tableBytes = Arrays.copyOfRange(decryptedData, 0x240, 0x280);
         byte[] sha256tableBytes = Arrays.copyOfRange(decryptedData, 0x280, 0x300);
@@ -239,6 +243,8 @@ public class NCAProvider {
     public byte[] getContentIndx() { return contentIndx; }
     public byte[] getSdkVersion() { return sdkVersion; }
     public byte getCryptoType2() { return cryptoType2; }
+    public byte getHeader1SignatureKeyGeneration() { return Header1SignatureKeyGeneration; }
+    public byte[] getKeyGenerationReserved() { return keyGenerationReserved; }
     public byte[] getRightsId() { return rightsId; }
 
     public byte[] getSha256hash0() { return sha256hash0; }
