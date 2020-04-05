@@ -38,8 +38,11 @@ import java.util.function.LongFunction;
  * XTS tweak with pluggable tweak function.
  *
  * @author Ahseya
- *         (updates for special usage by Dmitry Isaenko)
  */
+
+/**
+ * Updated for special usage by Dmitry Isaenko.
+ * */
 @NotThreadSafe
 class XTSTweak {
     static byte[] nintTweakFunction(long tweakValue) {

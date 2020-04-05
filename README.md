@@ -4,7 +4,7 @@ Deep WIP multi-tool to work with NS-specific files / filesystem images.
 
 ### License
 
-[GNU General Public License v3](https://github.com/developersu/konogonka/blob/master/LICENSE)
+[GNU General Public License v3+](https://github.com/developersu/konogonka/blob/master/LICENSE)
 
 ### Used libraries & resources
 * [Bouncy Castle](https://www.bouncycastle.org/) for Java.

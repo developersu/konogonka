@@ -34,8 +34,11 @@ import java.util.function.LongFunction;
  * XTS-AES cipher with arbitrary (non 128-bit aligned) data unit lengths.
  *
  * @author Ahseya
- *              (updates for special usage by Dmitry Isaenko)
  */
+
+/**
+* Updated for special usage by Dmitry Isaenko.
+* */
 @NotThreadSafe
 public class XTSAESCipher {
 
