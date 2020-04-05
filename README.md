@@ -12,10 +12,10 @@ Deep WIP multi-tool to work with NS-specific files / filesystem images.
 * [OpenJFX](https://wiki.openjdk.java.net/display/OpenJFX/Main)
 * Few icons taken from: [materialdesignicons.com](http://materialdesignicons.com/)
 
-### Information taken from
+#### Thanks 
 * Switch brew wiki
 * Original ScriesM software
-* Thanks to roothorick, shchmue, He and others for their advices, notes and examples
+* roothorick, [shchmue](https://github.com/shchmue/), He, other Team AtlasNX discord members for their advices, notes and examples!
 
 ### System requirements
 
@@ -28,7 +28,7 @@ JRE/JDK 8u60 or higher.
 * [x] TIK
 * [x] XML 
 * [x] NRO
-* [ ] NPDM support
+* [x] NPDM support (to check)
 * [ ] CERT support
 * [ ] CNMT support
 * [ ] NSO support

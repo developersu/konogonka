@@ -8,7 +8,7 @@
     <name>konogonka</name>
 
     <artifactId>konogonka</artifactId>
-    <version>0.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <url>https://github.com/developersu/${project.name}}/</url>
     <description>
