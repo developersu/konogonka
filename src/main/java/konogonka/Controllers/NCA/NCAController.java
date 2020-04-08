@@ -101,13 +101,13 @@ public class NCAController implements ITabController {
         keysMap.put("header_key", AppPreferences.getInstance().getHeaderKey());
 
         for (int i = 0; i < AppPreferences.getInstance().getKAKAppCount(); i++)
-            keysMap.put(String.format("key_area_key_application_%02d", i), AppPreferences.getInstance().getApplicationKey(i));
+            keysMap.put(String.format("key_area_key_application_%02x", i), AppPreferences.getInstance().getApplicationKey(i));
         for (int i = 0; i < AppPreferences.getInstance().getKAKOceanCount(); i++)
-            keysMap.put(String.format("key_area_key_ocean_%02d", i), AppPreferences.getInstance().getOceanKey(i));
+            keysMap.put(String.format("key_area_key_ocean_%02x", i), AppPreferences.getInstance().getOceanKey(i));
         for (int i = 0; i < AppPreferences.getInstance().getKAKSysCount(); i++)
-            keysMap.put(String.format("key_area_key_system_%02d", i), AppPreferences.getInstance().getSystemKey(i));
+            keysMap.put(String.format("key_area_key_system_%02x", i), AppPreferences.getInstance().getSystemKey(i));
         for (int i = 0; i < AppPreferences.getInstance().getTitleKeksCount(); i++)
-            keysMap.put(String.format("titlekek_%02d", i), AppPreferences.getInstance().getTitleKek(i));
+            keysMap.put(String.format("titlekek_%02x", i), AppPreferences.getInstance().getTitleKek(i));
         for (int i = 0; i < AppPreferences.getInstance().getTitleKeysCount(); i++){
             String[] pair = AppPreferences.getInstance().getTitleKeyPair(i);
             if ( ! pair[0].equals("0") && ! pair[1].equals("0"))
@@ -180,59 +180,59 @@ public class NCAController implements ITabController {
     }
 
     private void populateFields(NCAProvider ncaProvider){
-        if (ncaProvider != null){
-            rsa2048oneTF.setText(byteArrToHexString(ncaProvider.getRsa2048one()));
-            rsa2048twoTF.setText(byteArrToHexString(ncaProvider.getRsa2048two()));
-            magicnumLbl.setText(ncaProvider.getMagicnum());
-            systemOrGcIndLbl.setText(Byte.toString(ncaProvider.getSystemOrGcIndicator()));
-            contentTypeLbl.setText(Byte.toString(ncaProvider.getContentType()));
-            cryptoType1Lbl.setText(Byte.toString(ncaProvider.getCryptoType1()));
-            keyIndexLbl.setText(Byte.toString(ncaProvider.getKeyIndex()));
-            ncaSizeLbl.setText(Long.toString(ncaProvider.getNcaSize()));
-            titleIdLbl.setText(byteArrToHexString(ncaProvider.getTitleId()));
-            contentIndexLbl.setText(byteArrToHexString(ncaProvider.getContentIndx()));   //
-            sdkVersionLbl.setText(ncaProvider.getSdkVersion()[3]
-                    +"."+ncaProvider.getSdkVersion()[2]
-                    +"."+ncaProvider.getSdkVersion()[1]
-                    +"."+ncaProvider.getSdkVersion()[0]);
-            cryptoType2Lbl.setText(Byte.toString(ncaProvider.getCryptoType2()));
-            header1SignatureKeyGenerationLbl.setText(Byte.toString(ncaProvider.getHeader1SignatureKeyGeneration()));
-            keyGenerationReservedLbl.setText(byteArrToHexString(ncaProvider.getKeyGenerationReserved()));
-            ticketLbl.setText(byteArrToHexString(ncaProvider.getRightsId()));
-            sha256section1TF.setText(byteArrToHexString(ncaProvider.getSha256hash0()));
-            sha256section2TF.setText(byteArrToHexString(ncaProvider.getSha256hash1()));
-            sha256section3TF.setText(byteArrToHexString(ncaProvider.getSha256hash2()));
-            sha256section4TF.setText(byteArrToHexString(ncaProvider.getSha256hash3()));
-            keyAreaEnKey0TF.setText(byteArrToHexString(ncaProvider.getEncryptedKey0()));
-            keyAreaEnKey1TF.setText(byteArrToHexString(ncaProvider.getEncryptedKey1()));
-            keyAreaEnKey2TF.setText(byteArrToHexString(ncaProvider.getEncryptedKey2()));
-            keyAreaEnKey3TF.setText(byteArrToHexString(ncaProvider.getEncryptedKey3()));
+        if (ncaProvider == null)
+            return;
+        rsa2048oneTF.setText(byteArrToHexString(ncaProvider.getRsa2048one()));
+        rsa2048twoTF.setText(byteArrToHexString(ncaProvider.getRsa2048two()));
+        magicnumLbl.setText(ncaProvider.getMagicnum());
+        systemOrGcIndLbl.setText(Byte.toString(ncaProvider.getSystemOrGcIndicator()));
+        contentTypeLbl.setText(Byte.toString(ncaProvider.getContentType()));
+        cryptoType1Lbl.setText(Byte.toString(ncaProvider.getCryptoType1()));
+        keyIndexLbl.setText(Byte.toString(ncaProvider.getKeyIndex()));
+        ncaSizeLbl.setText(Long.toString(ncaProvider.getNcaSize()));
+        titleIdLbl.setText(byteArrToHexString(ncaProvider.getTitleId()));
+        contentIndexLbl.setText(byteArrToHexString(ncaProvider.getContentIndx()));   //
+        sdkVersionLbl.setText(ncaProvider.getSdkVersion()[3]
+                +"."+ncaProvider.getSdkVersion()[2]
+                +"."+ncaProvider.getSdkVersion()[1]
+                +"."+ncaProvider.getSdkVersion()[0]);
+        cryptoType2Lbl.setText(Byte.toString(ncaProvider.getCryptoType2()));
+        header1SignatureKeyGenerationLbl.setText(Byte.toString(ncaProvider.getHeader1SignatureKeyGeneration()));
+        keyGenerationReservedLbl.setText(byteArrToHexString(ncaProvider.getKeyGenerationReserved()));
+        ticketLbl.setText(byteArrToHexString(ncaProvider.getRightsId()));
+        sha256section1TF.setText(byteArrToHexString(ncaProvider.getSha256hash0()));
+        sha256section2TF.setText(byteArrToHexString(ncaProvider.getSha256hash1()));
+        sha256section3TF.setText(byteArrToHexString(ncaProvider.getSha256hash2()));
+        sha256section4TF.setText(byteArrToHexString(ncaProvider.getSha256hash3()));
+        keyAreaEnKey0TF.setText(byteArrToHexString(ncaProvider.getEncryptedKey0()));
+        keyAreaEnKey1TF.setText(byteArrToHexString(ncaProvider.getEncryptedKey1()));
+        keyAreaEnKey2TF.setText(byteArrToHexString(ncaProvider.getEncryptedKey2()));
+        keyAreaEnKey3TF.setText(byteArrToHexString(ncaProvider.getEncryptedKey3()));
 
-            keyAreaDecKey0TF.setText(byteArrToHexString(ncaProvider.getDecryptedKey0()));
-            keyAreaDecKey1TF.setText(byteArrToHexString(ncaProvider.getDecryptedKey1()));
-            keyAreaDecKey2TF.setText(byteArrToHexString(ncaProvider.getDecryptedKey2()));
-            keyAreaDecKey3TF.setText(byteArrToHexString(ncaProvider.getDecryptedKey3()));
-            // Tables
-            NCATable1Controller.populateTab(ncaProvider.getTableEntry0());
-            NCATable2Controller.populateTab(ncaProvider.getTableEntry1());
-            NCATable3Controller.populateTab(ncaProvider.getTableEntry2());
-            NCATable4Controller.populateTab(ncaProvider.getTableEntry3());
-            // Table blocks
-            NCASectionHeaderFirstController.populateTab(ncaProvider.getSectionBlock0());
-            NCASectionHeaderSecondController.populateTab(ncaProvider.getSectionBlock1());
-            NCASectionHeaderThirdController.populateTab(ncaProvider.getSectionBlock2());
-            NCASectionHeaderFourthController.populateTab(ncaProvider.getSectionBlock3());
-            // Section content blocks
-            // TODO: FIX: This code executes getNCAContentPFS0() method twice
-            NCAContentPFS0 ncaContentPFS0;
-            ncaContentPFS0 = ncaProvider.getNCAContentPFS0(0);
-            NCASectionContentFirstController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
-            ncaContentPFS0 = ncaProvider.getNCAContentPFS0(1);
-            NCASectionContentSecondController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
-            ncaContentPFS0 = ncaProvider.getNCAContentPFS0(2);
-            NCASectionContentThirdController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
-            ncaContentPFS0 = ncaProvider.getNCAContentPFS0(3);
-            NCASectionContentFourthController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
-        }
+        keyAreaDecKey0TF.setText(byteArrToHexString(ncaProvider.getDecryptedKey0()));
+        keyAreaDecKey1TF.setText(byteArrToHexString(ncaProvider.getDecryptedKey1()));
+        keyAreaDecKey2TF.setText(byteArrToHexString(ncaProvider.getDecryptedKey2()));
+        keyAreaDecKey3TF.setText(byteArrToHexString(ncaProvider.getDecryptedKey3()));
+        // Tables
+        NCATable1Controller.populateTab(ncaProvider.getTableEntry0());
+        NCATable2Controller.populateTab(ncaProvider.getTableEntry1());
+        NCATable3Controller.populateTab(ncaProvider.getTableEntry2());
+        NCATable4Controller.populateTab(ncaProvider.getTableEntry3());
+        // Table blocks
+        NCASectionHeaderFirstController.populateTab(ncaProvider.getSectionBlock0());
+        NCASectionHeaderSecondController.populateTab(ncaProvider.getSectionBlock1());
+        NCASectionHeaderThirdController.populateTab(ncaProvider.getSectionBlock2());
+        NCASectionHeaderFourthController.populateTab(ncaProvider.getSectionBlock3());
+        // Section content blocks
+        // TODO: FIX: This code executes getNCAContentPFS0() method twice
+        NCAContentPFS0 ncaContentPFS0;
+        ncaContentPFS0 = ncaProvider.getNCAContentPFS0(0);
+        NCASectionContentFirstController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
+        ncaContentPFS0 = ncaProvider.getNCAContentPFS0(1);
+        NCASectionContentSecondController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
+        ncaContentPFS0 = ncaProvider.getNCAContentPFS0(2);
+        NCASectionContentThirdController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
+        ncaContentPFS0 = ncaProvider.getNCAContentPFS0(3);
+        NCASectionContentFourthController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
     }
 }

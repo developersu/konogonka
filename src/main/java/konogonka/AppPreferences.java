@@ -77,7 +77,7 @@ public class AppPreferences {
     public void setKAKAppCount(int number){
         if (this.kakAppCount > number){
             for (int i = number; i < this.kakAppCount; i++) {
-                preferences.remove(String.format("key_area_key_application_%02d", number));
+                preferences.remove(String.format("key_area_key_application_%02x", number));
             }
         }
         preferences.putInt("key_area_key_application_count", number);
@@ -86,7 +86,7 @@ public class AppPreferences {
     public void setKAKOceanCount(int number){
         if (this.kakOceanCount > number){
             for (int i = number; i < this.kakOceanCount; i++) {
-                preferences.remove(String.format("key_area_key_ocean_%02d", number));
+                preferences.remove(String.format("key_area_key_ocean_%02x", number));
             }
         }
         preferences.putInt("key_area_key_ocean_count", number);
@@ -95,7 +95,7 @@ public class AppPreferences {
     public void setKAKSysCount(int number){
         if (this.kakSysCount > number){
             for (int i = number; i < this.kakSysCount; i++) {
-                preferences.remove(String.format("key_area_key_system_%02d", number));
+                preferences.remove(String.format("key_area_key_system_%02x", number));
             }
         }
         preferences.putInt("key_area_key_system_count", number);
@@ -105,7 +105,7 @@ public class AppPreferences {
     public void setTitleKeksCount(int number){
         if (this.titleKeksCount > number){
             for (int i = number; i < this.titleKeksCount; i++) {
-                preferences.remove(String.format("titlekek_%02d", number));
+                preferences.remove(String.format("titlekek_%02x", number));
             }
         }
         preferences.putInt("titlekek_count", number);
@@ -117,17 +117,17 @@ public class AppPreferences {
     public int getKAKSysCount(){ return preferences.getInt("key_area_key_system_count", 0); }
     public int getTitleKeksCount(){ return preferences.getInt("titlekek_count", 0); }
 
-    public String getApplicationKey(int number){ return preferences.get(String.format("key_area_key_application_%02d", number), "");}
-    public void setApplicationKey(int number, String key){ preferences.put(String.format("key_area_key_application_%02d", number), key); }
+    public String getApplicationKey(int number){ return preferences.get(String.format("key_area_key_application_%02x", number), "");}
+    public void setApplicationKey(int number, String key){ preferences.put(String.format("key_area_key_application_%02x", number), key); }
 
-    public String getOceanKey(int number){ return preferences.get(String.format("key_area_key_ocean_%02d", number), "");}
-    public void setOceanKey(int number, String key){ preferences.put(String.format("key_area_key_ocean_%02d", number), key); }
+    public String getOceanKey(int number){ return preferences.get(String.format("key_area_key_ocean_%02x", number), "");}
+    public void setOceanKey(int number, String key){ preferences.put(String.format("key_area_key_ocean_%02x", number), key); }
 
-    public String getSystemKey(int number){ return preferences.get(String.format("key_area_key_system_%02d", number), "");}
-    public void setSystemKey(int number, String key){ preferences.put(String.format("key_area_key_system_%02d", number), key); }
+    public String getSystemKey(int number){ return preferences.get(String.format("key_area_key_system_%02x", number), "");}
+    public void setSystemKey(int number, String key){ preferences.put(String.format("key_area_key_system_%02x", number), key); }
 
-    public String getTitleKek(int number){ return preferences.get(String.format("titlekek_%02d", number), "");}
-    public void setTitleKek(int number, String key){ preferences.put(String.format("titlekek_%02d", number), key); }
+    public String getTitleKek(int number){ return preferences.get(String.format("titlekek_%02x", number), "");}
+    public void setTitleKek(int number, String key){ preferences.put(String.format("titlekek_%02x", number), key); }
 
 
     // Title keys

@@ -78,25 +78,25 @@ public class SettingsController implements Initializable {
         LinkedHashMap<String, String> preparedPairsMapInit = new LinkedHashMap<>();
 
         for (int i = 0; i < AppPreferences.getInstance().getKAKAppCount(); i++){
-            preparedPairsMapInit.put(String.format("key_area_key_application_%02d", i), AppPreferences.getInstance().getApplicationKey(i));
+            preparedPairsMapInit.put(String.format("key_area_key_application_%02x", i), AppPreferences.getInstance().getApplicationKey(i));
         }
         ListSelectorKAEKAppController.setList(preparedPairsMapInit);
         preparedPairsMapInit.clear();
 
         for (int i = 0; i < AppPreferences.getInstance().getKAKOceanCount(); i++){
-            preparedPairsMapInit.put(String.format("key_area_key_ocean_%02d", i), AppPreferences.getInstance().getOceanKey(i));
+            preparedPairsMapInit.put(String.format("key_area_key_ocean_%02x", i), AppPreferences.getInstance().getOceanKey(i));
         }
         ListSelectorKAEKOceanController.setList(preparedPairsMapInit);
         preparedPairsMapInit.clear();
 
         for (int i = 0; i < AppPreferences.getInstance().getKAKSysCount(); i++){
-            preparedPairsMapInit.put(String.format("key_area_key_system_%02d", i), AppPreferences.getInstance().getSystemKey(i));
+            preparedPairsMapInit.put(String.format("key_area_key_system_%02x", i), AppPreferences.getInstance().getSystemKey(i));
         }
         ListSelectorKAEKSysController.setList(preparedPairsMapInit);
         preparedPairsMapInit.clear();
 
         for (int i = 0; i < AppPreferences.getInstance().getTitleKeksCount(); i++){
-            preparedPairsMapInit.put(String.format("titlekek_%02d", i), AppPreferences.getInstance().getTitleKek(i));
+            preparedPairsMapInit.put(String.format("titlekek_%02x", i), AppPreferences.getInstance().getTitleKek(i));
         }
         ListSelectorTitleKeksController.setList(preparedPairsMapInit);
         preparedPairsMapInit.clear();
@@ -143,32 +143,32 @@ public class SettingsController implements Initializable {
 
                     String keyParsed;
                     int counter = 0;
-                    while ((keyParsed = fileMap.get(String.format("key_area_key_application_%02d", counter))) != null){
-                        kaekSingle.put(String.format("key_area_key_application_%02d", counter), keyParsed);
+                    while ((keyParsed = fileMap.get(String.format("key_area_key_application_%02x", counter))) != null){
+                        kaekSingle.put(String.format("key_area_key_application_%02x", counter), keyParsed);
                         counter++;
                     }
                     ListSelectorKAEKAppController.setList(kaekSingle);
 
                     kaekSingle.clear();
                     counter = 0;
-                    while ((keyParsed = fileMap.get(String.format("key_area_key_ocean_%02d", counter))) != null){
-                        kaekSingle.put(String.format("key_area_key_ocean_%02d", counter), keyParsed);
+                    while ((keyParsed = fileMap.get(String.format("key_area_key_ocean_%02x", counter))) != null){
+                        kaekSingle.put(String.format("key_area_key_ocean_%02x", counter), keyParsed);
                         counter++;
                     }
                     ListSelectorKAEKOceanController.setList(kaekSingle);
 
                     kaekSingle.clear();
                     counter = 0;
-                    while ((keyParsed = fileMap.get(String.format("key_area_key_system_%02d", counter))) != null){
-                        kaekSingle.put(String.format("key_area_key_system_%02d", counter), keyParsed);
+                    while ((keyParsed = fileMap.get(String.format("key_area_key_system_%02x", counter))) != null){
+                        kaekSingle.put(String.format("key_area_key_system_%02x", counter), keyParsed);
                         counter++;
                     }
                     ListSelectorKAEKSysController.setList(kaekSingle);
 
                     kaekSingle.clear();
                     counter = 0;
-                    while ((keyParsed = fileMap.get(String.format("titlekek_%02d", counter))) != null){
-                        kaekSingle.put(String.format("titlekek_%02d", counter), keyParsed);
+                    while ((keyParsed = fileMap.get(String.format("titlekek_%02x", counter))) != null){
+                        kaekSingle.put(String.format("titlekek_%02x", counter), keyParsed);
                         counter++;
                     }
                     ListSelectorTitleKeksController.setList(kaekSingle);

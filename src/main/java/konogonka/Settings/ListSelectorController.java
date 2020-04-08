@@ -70,7 +70,7 @@ public class ListSelectorController implements Initializable {
 
             newRecordName.setText(predictionPattern);
             newRecordName.setTextFormatter(new TextFormatter<Object>(change -> {
-                if (change.getControlNewText().matches("^"+predictionPattern+"[0-9]{0,2}$"))
+                if (change.getControlNewText().matches("^"+predictionPattern+"[a-fA-F0-9]{0,2}$"))
                     return change;
                 return null;
             }));
@@ -110,7 +110,7 @@ public class ListSelectorController implements Initializable {
                 newRecordValue.clear();
             }
             else {
-                if (newRecordName.getText().matches("^"+predictionPattern+"[0-9]{2}$")){
+                if (newRecordName.getText().matches("^"+predictionPattern+"[a-fA-F0-9]{2}$")){
                     validateAndAdd(newRecordName.getText() + " = " + newRecordValue.getText());
                     newRecordName.setText(predictionPattern);
                     newRecordValue.clear();

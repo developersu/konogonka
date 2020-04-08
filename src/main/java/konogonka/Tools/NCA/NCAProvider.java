@@ -194,13 +194,13 @@ public class NCAProvider {
             String keyAreaKey;
             switch (keyIndex){
                 case 0:
-                    keyAreaKey = keys.get(String.format("key_area_key_application_%02d", cryptoTypeReal));
+                    keyAreaKey = keys.get(String.format("key_area_key_application_%02x", cryptoTypeReal));
                     break;
                 case 1:
-                    keyAreaKey = keys.get(String.format("key_area_key_ocean_%02d", cryptoTypeReal));
+                    keyAreaKey = keys.get(String.format("key_area_key_ocean_%02x", cryptoTypeReal));
                     break;
                 case 2:
-                    keyAreaKey = keys.get(String.format("key_area_key_system_%02d", cryptoTypeReal));
+                    keyAreaKey = keys.get(String.format("key_area_key_system_%02x", cryptoTypeReal));
                     break;
                 default:
                     keyAreaKey = null;
@@ -231,7 +231,7 @@ public class NCAProvider {
                         exceptionStringBuilder.append(keyIndex);
                         exceptionStringBuilder.append("[UNKNOWN]_");
                 }
-                exceptionStringBuilder.append(String.format("%02d", cryptoTypeReal));
+                exceptionStringBuilder.append(String.format("%02x", cryptoTypeReal));
                 exceptionStringBuilder.append(" requested. Not supported or not found.");
 
                 throw new Exception(exceptionStringBuilder.toString());
@@ -312,7 +312,7 @@ public class NCAProvider {
                 byte[] rightsIDkey = hexStrToByteArray(keys.get(byteArrToHexString(rightsId))); // throws NullPointerException
 
                 SecretKeySpec skSpec = new SecretKeySpec(
-                        hexStrToByteArray(keys.get(String.format("titlekek_%02d", cryptoTypeReal))
+                        hexStrToByteArray(keys.get(String.format("titlekek_%02x", cryptoTypeReal))
                         ), "AES");
                 Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
                 cipher.init(Cipher.DECRYPT_MODE, skSpec);
