@@ -21,6 +21,19 @@ Deep WIP multi-tool to work with NS-specific files / filesystem images.
 
 JRE/JDK 8u60 or higher.
 
+### Notes about usage
+
+1. Start from clicking on 'settings' and importing keys. Use import. Don't waste your time.
+2. To open sub-file from the file use right mouse click and select 'Open'. Supported formats listed below.
+
+### Build this
+
+1. Install JDK
+2. Install Maven
+3. $ git clone https://github.com/developersu/konogonka.git
+4. $ mvn -B -DskipTests clean package
+5. $ java -jar target/konogonka-0.x.x-jar-with-dependencies.jar
+
 ### Checklist
 
 * [x] NSP (PFS0)

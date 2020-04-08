@@ -117,64 +117,48 @@ public class Pfs0TableViewController implements Initializable {
         fileSizeColumn.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
         fileOffsetColumn.setCellValueFactory(new PropertyValueFactory<>("fileOffset"));
         // ><
-        uploadColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Pfs0RowModel, Boolean>, ObservableValue<Boolean>>() {
-            @Override
-            public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Pfs0RowModel, Boolean> paramFeatures) {
-                Pfs0RowModel model = paramFeatures.getValue();
+        uploadColumn.setCellValueFactory(paramFeatures -> {
+            Pfs0RowModel model = paramFeatures.getValue();
 
-                SimpleBooleanProperty booleanProperty = new SimpleBooleanProperty(model.isMarkSelected());
+            SimpleBooleanProperty booleanProperty = new SimpleBooleanProperty(model.isMarkSelected());
 
-                booleanProperty.addListener(new ChangeListener<Boolean>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
-                        model.setMarkSelected(newValue);
-                        table.refresh();
-                    }
-                });
-                return booleanProperty;
-            }
+            booleanProperty.addListener((observableValue, oldValue, newValue) -> {
+                model.setMarkSelected(newValue);
+                table.refresh();
+            });
+            return booleanProperty;
         });
 
-        uploadColumn.setCellFactory(new Callback<TableColumn<Pfs0RowModel, Boolean>, TableCell<Pfs0RowModel, Boolean>>() {
-            @Override
-            public TableCell<Pfs0RowModel, Boolean> call(TableColumn<Pfs0RowModel, Boolean> paramFeatures) {
-                return new CheckBoxTableCell<>();
-            }
-        });
+        uploadColumn.setCellFactory(paramFeatures -> new CheckBoxTableCell<>());
         table.setRowFactory(        // this shit is made to implement context menu. It's such a pain..
-                new Callback<TableView<Pfs0RowModel>, TableRow<Pfs0RowModel>>() {
-                    @Override
-                    public TableRow<Pfs0RowModel> call(TableView<Pfs0RowModel> Pfs0RowModelTableView) {
-                        final TableRow<Pfs0RowModel> row = new TableRow<>();
-                        ContextMenu contextMenu = new ContextMenu();
+                Pfs0RowModelTableView -> {
+                    final TableRow<Pfs0RowModel> row = new TableRow<>();
+                    ContextMenu contextMenu = new ContextMenu();
 
-                        MenuItem openMenuItem = new MenuItem("Open");
-                        openMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent actionEvent) {
-                                MediatorControl.getInstance().getContoller().showContentWindow(provider, row.getItem());    // TODO: change to something better
-                            }
-                        });
+                    MenuItem openMenuItem = new MenuItem("Open");
+                    openMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            MediatorControl.getInstance().getContoller().showContentWindow(provider, row.getItem());    // TODO: change to something better
+                        }
+                    });
 
-                        contextMenu.getItems().addAll(openMenuItem);
+                    contextMenu.getItems().addAll(openMenuItem);
 
-                        row.setContextMenu(contextMenu);
-                        row.contextMenuProperty().bind(
-                                Bindings.when(Bindings.isNotNull(row.itemProperty())).then(contextMenu).otherwise((ContextMenu)null)
-                        );
-                        row.setOnMouseClicked(new EventHandler<MouseEvent>() {      // Just.. don't ask..
-                            @Override
-                            public void handle(MouseEvent mouseEvent) {
-                                if (!row.isEmpty() && mouseEvent.getButton() == MouseButton.PRIMARY){
-                                    Pfs0RowModel thisItem = row.getItem();
-                                    thisItem.setMarkSelected(!thisItem.isMarkSelected());
-                                    table.refresh();
-                                }
-                                mouseEvent.consume();
-                            }
-                        });
-                        return row;
-                    }
+                    row.setContextMenu(contextMenu);
+                    row.contextMenuProperty().bind(
+                            Bindings.when(Bindings.isNotNull(row.itemProperty())).then(contextMenu).otherwise((ContextMenu)null)
+                    );
+                    // Just.. don't ask..
+                    row.setOnMouseClicked(mouseEvent -> {
+                        if (!row.isEmpty() && mouseEvent.getButton() == MouseButton.PRIMARY){
+                            Pfs0RowModel thisItem = row.getItem();
+                            thisItem.setMarkSelected(!thisItem.isMarkSelected());
+                            table.refresh();
+                        }
+                        mouseEvent.consume();
+                    });
+                    return row;
                 }
         );
         table.setItems(rowsObsLst);
