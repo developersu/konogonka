@@ -420,9 +420,9 @@
                               <Insets left="5.0" right="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="titleNameTf" GridPane.columnIndex="3" GridPane.rowIndex="11" />
-                        <TextField fx:id="productCodeTf" GridPane.columnIndex="3" GridPane.rowIndex="12" />
-                        <TextField fx:id="reserved4Tf" GridPane.columnIndex="3" GridPane.rowIndex="13" />
+                        <TextField fx:id="titleNameTf"  editable="false"  GridPane.columnIndex="3" GridPane.rowIndex="11" />
+                        <TextField fx:id="productCodeTf"  editable="false"  GridPane.columnIndex="3" GridPane.rowIndex="12" />
+                        <TextField fx:id="reserved4Tf"  editable="false"  GridPane.columnIndex="3" GridPane.rowIndex="13" />
                         </children>
                     </GridPane>
                   <Label text="* bit0 = use 64-bit instructions, bit1 = use 64-bit address space, bit2 = use 32-bit address space, bit3 = use 32-bit address space without reserved region, bit4 = optimize memory allocation?" />
@@ -1138,8 +1138,8 @@
                                     <Insets left="5.0" right="5.0" />
                                 </padding>
                             </Label>
-                            <TextField fx:id="acidRsa2048publicKeyTf" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                            <TextField fx:id="acidRsa2048signatureTf" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                            <TextField fx:id="acidRsa2048publicKeyTf" editable="false" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                            <TextField fx:id="acidRsa2048signatureTf" editable="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         <Label text="0x238" GridPane.rowIndex="18">
                            <padding>
                               <Insets left="5.0" right="5.0" />
