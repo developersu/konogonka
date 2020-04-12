@@ -191,14 +191,14 @@ public class NCASectionHeaderBlockController {
     public void populateTab(NCASectionBlock ncaSectionBlock){
         versionLbl.setText(byteArrToHexString(ncaSectionBlock.getVersion()));
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%02x ", ncaSectionBlock.getFsType()));
+        sb.append(String.format("0x%02x ", ncaSectionBlock.getFsType()));
         if (ncaSectionBlock.getFsType() == 0)
             sb.append("(RomFS)");
         else if (ncaSectionBlock.getFsType() == 1)
             sb.append("(PFS0)");
         fsTypeLbl.setText(sb.toString());
         sb = new StringBuilder();
-        sb.append(String.format("%02x ", ncaSectionBlock.getHashType()));
+        sb.append(String.format("0x%02x ", ncaSectionBlock.getHashType()));
         if (ncaSectionBlock.getHashType() == 0x3)
             sb.append("(RomFS)");
         else if (ncaSectionBlock.getHashType() == 0x2)
@@ -212,33 +212,33 @@ public class NCASectionHeaderBlockController {
                 +(ncaSectionBlock.getSuperBlockIVFC().getMagicNumber() == 0x20000? " (OK)":" (wrong magic number)"));
             romFsMasterHashSizeLbl.setText(Integer.toString(ncaSectionBlock.getSuperBlockIVFC().getMasterHashSize()));
             romFsTotalNumberOfLevelsLbl.setText(Integer.toString(ncaSectionBlock.getSuperBlockIVFC().getTotalNumberOfLevels()));
-            romFsLvl1OffsetLbl.setText(Long.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl1Offset()));
-            romFsLvl1SizeLbl.setText(Long.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl1Size()));
+            romFsLvl1OffsetLbl.setText(getCuteDecHexRepresentation(ncaSectionBlock.getSuperBlockIVFC().getLvl1Offset()));
+            romFsLvl1SizeLbl.setText(getCuteDecHexRepresentation(ncaSectionBlock.getSuperBlockIVFC().getLvl1Size()));
             romFsLvl1SBlockSizeLbl.setText(Integer.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl1SBlockSize()));
             romFsReserved1Lbl.setText(byteArrToHexString(ncaSectionBlock.getSuperBlockIVFC().getReserved1()));
 
-            romFsLvl2OffsetLbl.setText(Long.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl2Offset()));
-            romFsLvl2SizeLbl.setText(Long.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl2Size()));
+            romFsLvl2OffsetLbl.setText(getCuteDecHexRepresentation(ncaSectionBlock.getSuperBlockIVFC().getLvl2Offset()));
+            romFsLvl2SizeLbl.setText(getCuteDecHexRepresentation(ncaSectionBlock.getSuperBlockIVFC().getLvl2Size()));
             romFsLvl2SBlockSizeLbl.setText(Integer.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl2SBlockSize()));
             romFsReserved2Lbl.setText(byteArrToHexString(ncaSectionBlock.getSuperBlockIVFC().getReserved2()));
             
-            romFsLvl3OffsetLbl.setText(Long.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl3Offset()));
-            romFsLvl3SizeLbl.setText(Long.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl3Size()));
+            romFsLvl3OffsetLbl.setText(getCuteDecHexRepresentation(ncaSectionBlock.getSuperBlockIVFC().getLvl3Offset()));
+            romFsLvl3SizeLbl.setText(getCuteDecHexRepresentation(ncaSectionBlock.getSuperBlockIVFC().getLvl3Size()));
             romFsLvl3SBlockSizeLbl.setText(Integer.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl3SBlockSize()));
             romFsReserved3Lbl.setText(byteArrToHexString(ncaSectionBlock.getSuperBlockIVFC().getReserved3()));
 
-            romFsLvl4OffsetLbl.setText(Long.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl4Offset()));
-            romFsLvl4SizeLbl.setText(Long.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl4Size()));
+            romFsLvl4OffsetLbl.setText(getCuteDecHexRepresentation(ncaSectionBlock.getSuperBlockIVFC().getLvl4Offset()));
+            romFsLvl4SizeLbl.setText(getCuteDecHexRepresentation(ncaSectionBlock.getSuperBlockIVFC().getLvl4Size()));
             romFsLvl4SBlockSizeLbl.setText(Integer.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl4SBlockSize()));
             romFsReserved4Lbl.setText(byteArrToHexString(ncaSectionBlock.getSuperBlockIVFC().getReserved4()));
 
-            romFsLvl5OffsetLbl.setText(Long.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl5Offset()));
-            romFsLvl5SizeLbl.setText(Long.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl5Size()));
+            romFsLvl5OffsetLbl.setText(getCuteDecHexRepresentation(ncaSectionBlock.getSuperBlockIVFC().getLvl5Offset()));
+            romFsLvl5SizeLbl.setText(getCuteDecHexRepresentation(ncaSectionBlock.getSuperBlockIVFC().getLvl5Size()));
             romFsLvl5SBlockSizeLbl.setText(Integer.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl5SBlockSize()));
             romFsReserved5Lbl.setText(byteArrToHexString(ncaSectionBlock.getSuperBlockIVFC().getReserved5()));
 
-            romFsLvl6OffsetLbl.setText(Long.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl6Offset()));
-            romFsLvl6SizeLbl.setText(Long.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl6Size()));
+            romFsLvl6OffsetLbl.setText(getCuteDecHexRepresentation(ncaSectionBlock.getSuperBlockIVFC().getLvl6Offset()));
+            romFsLvl6SizeLbl.setText(getCuteDecHexRepresentation(ncaSectionBlock.getSuperBlockIVFC().getLvl6Size()));
             romFsLvl6SBlockSizeLbl.setText(Integer.toString(ncaSectionBlock.getSuperBlockIVFC().getLvl6SBlockSize()));
             romFsReserved6Lbl.setText(byteArrToHexString(ncaSectionBlock.getSuperBlockIVFC().getReserved6()));
 
@@ -276,5 +276,9 @@ public class NCASectionHeaderBlockController {
         BKTRunknownSection2Lbl.setText(byteArrToHexString(ncaSectionBlock.getBKTRunknownSection2()));
         sectionCTRLbl.setText(byteArrToHexString(ncaSectionBlock.getSectionCTR()));
         unknwnEndPaddingTF.setText(byteArrToHexString(ncaSectionBlock.getUnknownEndPadding()));
+    }
+
+    private String getCuteDecHexRepresentation(long value){
+        return String.format("%d (0x%02x)", value, value);
     }
 }

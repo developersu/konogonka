@@ -19,6 +19,7 @@
 package konogonka.Tools.NCA;
 
 import konogonka.Tools.NCA.NCASectionTableBlock.NCASectionBlock;
+import konogonka.exceptions.EmptySectionException;
 import konogonka.xtsaes.XTSAESCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
 
@@ -81,6 +82,11 @@ public class NCAProvider {
     private NCASectionBlock sectionBlock2;
     private NCASectionBlock sectionBlock3;
 
+    private NCAContent ncaContent0;
+    private NCAContent ncaContent1;
+    private NCAContent ncaContent2;
+    private NCAContent ncaContent3;
+
     public NCAProvider(File file, HashMap<String, String> keys) throws Exception{
         this(file, keys, 0);
     }
@@ -126,6 +132,7 @@ public class NCAProvider {
 
         raf.close();
 
+        getNCAContent();
         /*
         //---------------------------------------------------------------------
         FileInputStream fis = new FileInputStream(file);
@@ -215,27 +222,8 @@ public class NCAProvider {
                 decryptedKey2 = cipher.doFinal(encryptedKey2);
                 decryptedKey3 = cipher.doFinal(encryptedKey3);
             }
-            else{
-                StringBuilder exceptionStringBuilder = new StringBuilder("key_area_key_");
-                switch (keyIndex){
-                    case 0:
-                        exceptionStringBuilder.append("application_");
-                        break;
-                    case 1:
-                        exceptionStringBuilder.append("ocean_");
-                        break;
-                    case 2:
-                        exceptionStringBuilder.append("system_");
-                        break;
-                    default:
-                        exceptionStringBuilder.append(keyIndex);
-                        exceptionStringBuilder.append("[UNKNOWN]_");
-                }
-                exceptionStringBuilder.append(String.format("%02x", cryptoTypeReal));
-                exceptionStringBuilder.append(" requested. Not supported or not found.");
-
-                throw new Exception(exceptionStringBuilder.toString());
-            }
+            else
+                keyAreaKeyNotSupportedOrFound();
         }
 
         tableEntry0 = new NCAHeaderTableEntry(tableBytes);
@@ -247,6 +235,85 @@ public class NCAProvider {
         sectionBlock1 = new NCASectionBlock(Arrays.copyOfRange(decryptedData, 0x600, 0x800));
         sectionBlock2 = new NCASectionBlock(Arrays.copyOfRange(decryptedData, 0x800, 0xa00));
         sectionBlock3 = new NCASectionBlock(Arrays.copyOfRange(decryptedData, 0xa00, 0xc00));
+    }
+
+    private void keyAreaKeyNotSupportedOrFound() throws Exception{
+        StringBuilder exceptionStringBuilder = new StringBuilder("key_area_key_");
+        switch (keyIndex){
+            case 0:
+                exceptionStringBuilder.append("application_");
+                break;
+            case 1:
+                exceptionStringBuilder.append("ocean_");
+                break;
+            case 2:
+                exceptionStringBuilder.append("system_");
+                break;
+            default:
+                exceptionStringBuilder.append(keyIndex);
+                exceptionStringBuilder.append("[UNKNOWN]_");
+        }
+        exceptionStringBuilder.append(String.format("%02x", cryptoTypeReal));
+        exceptionStringBuilder.append(" requested. Not supported or not found.");
+        throw new Exception(exceptionStringBuilder.toString());
+    }
+
+    private void getNCAContent(){
+        byte[] key;
+
+        // If empty Rights ID
+        if (Arrays.equals(rightsId, new byte[0x10])) {
+            key = decryptedKey2;                                       // TODO: Just remember this dumb hack
+        }
+        else {
+            try {
+                byte[] rightsIDkey = hexStrToByteArray(keys.get(byteArrToHexString(rightsId))); // throws NullPointerException
+
+                SecretKeySpec skSpec = new SecretKeySpec(
+                        hexStrToByteArray(keys.get(String.format("titlekek_%02x", cryptoTypeReal))
+                        ), "AES");
+                Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
+                cipher.init(Cipher.DECRYPT_MODE, skSpec);
+                key = cipher.doFinal(rightsIDkey);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                System.out.println("No title.keys loaded?");
+                return;
+            }
+        }
+        try {
+            this.ncaContent0 = new NCAContent(file, offset, sectionBlock0, tableEntry0, key);
+        }
+        catch (EmptySectionException ignored){}
+        catch (Exception e){
+            this.ncaContent0 = null;
+            e.printStackTrace();
+        }
+        try{
+            this.ncaContent1 = new NCAContent(file, offset, sectionBlock1, tableEntry1, key);
+        }
+        catch (EmptySectionException ignored){}
+        catch (Exception e){
+            this.ncaContent1 = null;
+            e.printStackTrace();
+        }
+        try{
+            this.ncaContent2 = new NCAContent(file, offset, sectionBlock2, tableEntry2, key);
+        }
+        catch (EmptySectionException ignored){}
+        catch (Exception e){
+            this.ncaContent2 = null;
+            e.printStackTrace();
+        }
+        try{
+            this.ncaContent3 = new NCAContent(file, offset, sectionBlock3, tableEntry3, key);
+        }
+        catch (EmptySectionException ignored){}
+        catch (Exception e){
+            this.ncaContent3 = null;
+            e.printStackTrace();
+        }
     }
 
     public byte[] getRsa2048one() { return rsa2048one; }
@@ -298,41 +365,18 @@ public class NCAProvider {
     }
     /**
      * Get content for the selected section
-     * @param sectionNumber should be 1-4
+     * @param sectionNumber should be 0-3
      * */
-    public NCAContentPFS0 getNCAContentPFS0(int sectionNumber){
-        byte[] key;
-
-        // If empty Rights ID
-        if (Arrays.equals(rightsId, new byte[0x10])) {
-            key = decryptedKey2;                                       // TODO: Just remember this dumb hack
-        }
-        else {
-            try {
-                byte[] rightsIDkey = hexStrToByteArray(keys.get(byteArrToHexString(rightsId))); // throws NullPointerException
-
-                SecretKeySpec skSpec = new SecretKeySpec(
-                        hexStrToByteArray(keys.get(String.format("titlekek_%02x", cryptoTypeReal))
-                        ), "AES");
-                Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
-                cipher.init(Cipher.DECRYPT_MODE, skSpec);
-                key = cipher.doFinal(rightsIDkey);
-            }
-            catch (Exception e){
-                e.printStackTrace();
-                System.out.println("No title.keys loaded?");
-                return null;
-            }
-        }
+    public NCAContent getNCAContentProvider(int sectionNumber){
         switch (sectionNumber) {
             case 0:
-                return new NCAContentPFS0(file, offset, sectionBlock0, tableEntry0, key);     // TODO: remove decryptedKey2 ?
+                return ncaContent0;
             case 1:
-                return new NCAContentPFS0(file, offset, sectionBlock1, tableEntry1, key);
+                return ncaContent1;
             case 2:
-                return new NCAContentPFS0(file, offset, sectionBlock2, tableEntry2, key);
+                return ncaContent2;
             case 3:
-                return new NCAContentPFS0(file, offset, sectionBlock3, tableEntry3, key);
+                return ncaContent3;
             default:
                 return null;
         }

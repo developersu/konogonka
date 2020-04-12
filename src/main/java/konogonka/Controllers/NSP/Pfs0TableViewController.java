@@ -18,6 +18,7 @@
 */
 package konogonka.Controllers.NSP;
 
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -162,7 +163,10 @@ public class Pfs0TableViewController implements Initializable {
                 }
         );
         table.setItems(rowsObsLst);
-        table.getColumns().addAll(numberColumn, fileNameColumn, fileOffsetColumn, fileSizeColumn,  uploadColumn);
+        table.getColumns().add(numberColumn);
+        table.getColumns().add(fileNameColumn);
+        table.getColumns().add(fileOffsetColumn);
+        table.getColumns().add(fileSizeColumn);
     }
     /**
      * Add files when user selected them

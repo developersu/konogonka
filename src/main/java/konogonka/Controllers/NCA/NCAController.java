@@ -25,7 +25,7 @@ import javafx.scene.control.TextField;
 import konogonka.AppPreferences;
 import konogonka.Controllers.ITabController;
 import konogonka.Tools.ISuperProvider;
-import konogonka.Tools.NCA.NCAContentPFS0;
+import konogonka.Tools.NCA.NCAContent;
 import konogonka.Tools.NCA.NCAProvider;
 import konogonka.Workers.Analyzer;
 
@@ -224,15 +224,17 @@ public class NCAController implements ITabController {
         NCASectionHeaderThirdController.populateTab(ncaProvider.getSectionBlock2());
         NCASectionHeaderFourthController.populateTab(ncaProvider.getSectionBlock3());
         // Section content blocks
-        // TODO: FIX: This code executes getNCAContentPFS0() method twice
-        NCAContentPFS0 ncaContentPFS0;
-        ncaContentPFS0 = ncaProvider.getNCAContentPFS0(0);
-        NCASectionContentFirstController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
-        ncaContentPFS0 = ncaProvider.getNCAContentPFS0(1);
-        NCASectionContentSecondController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
-        ncaContentPFS0 = ncaProvider.getNCAContentPFS0(2);
-        NCASectionContentThirdController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
-        ncaContentPFS0 = ncaProvider.getNCAContentPFS0(3);
-        NCASectionContentFourthController.populateFields(ncaContentPFS0.getPfs0(), ncaContentPFS0.getSHA256hashes());
+        NCASectionContentFirstController.populateFields(
+                ncaProvider.getNCAContentProvider(0),
+                0);
+        NCASectionContentSecondController.populateFields(
+                ncaProvider.getNCAContentProvider(1),
+                1);
+        NCASectionContentThirdController.populateFields(
+                ncaProvider.getNCAContentProvider(2),
+                2);
+        NCASectionContentFourthController.populateFields(
+                    ncaProvider.getNCAContentProvider(3),
+                    3);
     }
 }

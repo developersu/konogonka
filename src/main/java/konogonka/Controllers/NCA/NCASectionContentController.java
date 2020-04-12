@@ -19,39 +19,97 @@
 package konogonka.Controllers.NCA;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import konogonka.AppPreferences;
 import konogonka.Controllers.NSP.NSPController;
 import konogonka.LoperConverter;
-import konogonka.Tools.PFS0.IPFS0Provider;
+import konogonka.MediatorControl;
+import konogonka.Tools.NCA.NCAContent;
+import konogonka.Workers.DumbNCA3ContentExtractor;
 
+import java.io.File;
+import java.net.URL;
 import java.util.LinkedList;
+import java.util.ResourceBundle;
 
-public class NCASectionContentController{
+public class NCASectionContentController implements Initializable {
+
+    private NCAContent ncaContent;
+    private int sectionNumber;
+
+    @FXML
+    private Button extractRawConentBtn;
     @FXML
     private NSPController SectionPFS0Controller;
     @FXML
     private VBox sha256pane;
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        extractRawConentBtn.setDisable(true);
+        extractRawConentBtn.setOnAction(event -> this.extractFiles());
+    }
+
     public void resetTab() {
         SectionPFS0Controller.resetTab();
         sha256pane.getChildren().clear();
+        extractRawConentBtn.setDisable(true);
     }
 
-    public void populateFields(IPFS0Provider pfs0, LinkedList<byte[]> sha256hashList) {
+    public void populateFields(NCAContent ncaContent, int sectionNumber) {
         resetTab();
-        SectionPFS0Controller.setData(pfs0, null);
-        if (sha256hashList != null){
-            for (int i = 0; i < sha256hashList.size(); i++){
-                Label numberLblTmp = new Label(String.format("%10d", i));
-                numberLblTmp.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
-                Label sha256LblTmp = new Label(LoperConverter.byteArrToHexString(sha256hashList.get(i)));
-                sha256LblTmp.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
 
-                sha256pane.getChildren().add(new HBox(numberLblTmp, sha256LblTmp));
-            }
+        if (ncaContent == null)
+            return;
+
+        this.ncaContent = ncaContent;
+        this.sectionNumber = sectionNumber;
+        this.extractRawConentBtn.setDisable(false);
+
+        if (ncaContent.getPfs0() != null)
+            SectionPFS0Controller.setData(ncaContent.getPfs0(), null);;
+
+        LinkedList<byte[]> sha256hashList = ncaContent.getPfs0SHA256hashes();
+
+        if (sha256hashList == null)
+            return;
+        for (int i = 0; i < sha256hashList.size(); i++){
+            Label numberLblTmp = new Label(String.format("%10d", i));
+            numberLblTmp.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
+            Label sha256LblTmp = new Label(LoperConverter.byteArrToHexString(sha256hashList.get(i)));
+            sha256LblTmp.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
+
+            sha256pane.getChildren().add(new HBox(numberLblTmp, sha256LblTmp));
         }
+    }
+
+    private void extractFiles(){
+        if (ncaContent == null)
+            return;
+
+        File dir = new File(AppPreferences.getInstance().getExtractFilesDir()+File.separator+ncaContent.getFileName()+" extracted");
+        try {
+            dir.mkdir();
+        }
+        catch (SecurityException se){
+            MediatorControl.getInstance().getContoller().logArea.setText("Can't create dir to store files.");
+        }
+        if (!dir.exists())
+            return;
+
+        extractRawConentBtn.setDisable(true);
+
+        DumbNCA3ContentExtractor extractor = new DumbNCA3ContentExtractor(ncaContent, sectionNumber, dir.getAbsolutePath()+File.separator);
+        extractor.setOnSucceeded(e->{
+            extractRawConentBtn.setDisable(false);
+        });
+        Thread workThread = new Thread(extractor);
+        workThread.setDaemon(true);
+        workThread.start();
     }
 }
