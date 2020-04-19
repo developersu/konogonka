@@ -33,28 +33,22 @@ public class Level6Header {
     private long headerFileMetadataTableOffset;
     private long headerFileMetadataTableLength;
     private long headerFileDataOffset;
-
+    
+    private byte[] headerBytes;
+    private int i;
+    
     Level6Header(byte[] headerBytes){
-        int i = 0;
-        headerHeaderLength = LoperConverter.getLEint(headerBytes, i);
-        i += 0x8;
-        headerDirectoryHashTableOffset = LoperConverter.getLEint(headerBytes, i);
-        i += 0x8;
-        headerDirectoryHashTableLength = LoperConverter.getLEint(headerBytes, i);
-        i += 0x8;
-        headerDirectoryMetadataTableOffset = LoperConverter.getLEint(headerBytes, i);
-        i += 0x8;
-        headerDirectoryMetadataTableLength = LoperConverter.getLEint(headerBytes, i);
-        i += 0x8;
-        headerFileHashTableOffset = LoperConverter.getLEint(headerBytes, i);
-        i += 0x8;
-        headerFileHashTableLength = LoperConverter.getLEint(headerBytes, i);
-        i += 0x8;
-        headerFileMetadataTableOffset = LoperConverter.getLEint(headerBytes, i);
-        i += 0x8;
-        headerFileMetadataTableLength = LoperConverter.getLEint(headerBytes, i);
-        i += 0x8;
-        headerFileDataOffset = LoperConverter.getLEint(headerBytes, i);
+        this.headerBytes = headerBytes;
+        headerHeaderLength = getNext();
+        headerDirectoryHashTableOffset = getNext();
+        headerDirectoryHashTableLength = getNext();
+        headerDirectoryMetadataTableOffset = getNext();
+        headerDirectoryMetadataTableLength = getNext();
+        headerFileHashTableOffset = getNext();
+        headerFileHashTableLength = getNext();
+        headerFileMetadataTableOffset = getNext();
+        headerFileMetadataTableLength = getNext();
+        headerFileDataOffset = getNext();
 
         System.out.println("== Level 6 Header ==\n" +
                 "Header Length (always 0x50 ?)   "+ RainbowDump.formatDecHexString(headerHeaderLength)+"   (size of this structure within first 0x200 block of LEVEL 6 part)\n" +
@@ -69,6 +63,12 @@ public class Level6Header {
                 "File Data Offset                "+ RainbowDump.formatDecHexString(headerFileDataOffset) + "\n" +
                 "-------------------------------------------------------------"
         );
+    }
+    
+    private long getNext(){
+        final long result = LoperConverter.getLEint(headerBytes, i);
+        i += 0x8;
+        return result;
     }
     
     public long getHeaderHeaderLength() { return headerHeaderLength; }

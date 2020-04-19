@@ -25,6 +25,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import konogonka.Controllers.ITabController;
 import konogonka.Tools.ISuperProvider;
+import konogonka.Tools.RomFs.RomFsDecryptedProvider;
 
 import java.io.File;
 import java.net.URL;
@@ -36,6 +37,8 @@ public class RomFsController implements ITabController {
     private TreeView<RFSFolderEntry> filesTreeView;
     @FXML
     private VBox folderContentVBox;
+
+    private RomFsDecryptedProvider RomFsProvider;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -54,6 +57,12 @@ public class RomFsController implements ITabController {
 
     @Override
     public void analyze(File file, long offset) {
+        try {
+            this.RomFsProvider = new RomFsDecryptedProvider(file);
+        }
+        catch (Exception e){    // TODO: FIX
+            e.printStackTrace();
+        }
         TreeItem<RFSFolderEntry> rootItem = getEmptyRoot();
 
         filesTreeView.setRoot(rootItem);
