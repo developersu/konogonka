@@ -18,7 +18,6 @@
 */
 package konogonka.Tools.XCI;
 
-import konogonka.RainbowHexDump;
 import konogonka.Tools.ISuperProvider;
 
 import java.io.*;

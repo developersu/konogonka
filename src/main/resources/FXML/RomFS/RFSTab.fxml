@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.VBox?>
+
+<SplitPane dividerPositions="0.2" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Controllers.RFS.RomFsController">
+        <items>
+      <TreeView fx:id="filesTreeView" />
+            <VBox fx:id="folderContentVBox">
+
+            </VBox>
+        </items>
+
+</SplitPane>

@@ -28,6 +28,7 @@ import konogonka.Child.ChildWindow;
 import konogonka.Controllers.NCA.NCAController;
 import konogonka.Controllers.NPDM.NPDMController;
 import konogonka.Controllers.NSP.NSPController;
+import konogonka.Controllers.RFS.RomFsController;
 import konogonka.Controllers.TIK.TIKController;
 import konogonka.Controllers.XCI.XCIController;
 import konogonka.Controllers.XML.XMLController;
@@ -71,6 +72,8 @@ public class MainController implements Initializable {
     private XMLController XMLTabController;
     @FXML
     private NPDMController NPDMTabController;
+    @FXML
+    private RomFsController RFSTabController;
 
     private File selectedFile;
 
@@ -104,10 +107,23 @@ public class MainController implements Initializable {
         else
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NS files", "*.nsp", "*.nsz", "*.xci", "*.nca", "*.tik", "*.xml", "*.npdm"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NS files",
+                "*.nsp", "*.nsz", "*.xci", "*.nca", "*.tik", "*.xml", "*.npdm", "*.romfs"));
 
         this.selectedFile = fileChooser.showOpenDialog(analyzeBtn.getScene().getWindow());
-        // todo: fix
+
+        if (this.selectedFile != null && this.selectedFile.exists()) {
+            resetAllTabsContent();
+            filenameSelected.setText(this.selectedFile.getAbsolutePath());
+            previouslyOpenedPath = this.selectedFile.getParent();
+            analyzeBtn.setDisable(false);
+            String fileExtension = this.selectedFile.getName().toLowerCase().replaceAll("^.*\\.", "");
+            setFocusOnPane(fileExtension);
+        }
+
+        logArea.clear();
+    }
+    private void resetAllTabsContent(){
         analyzeBtn.setDisable(true);
         NSPTabController.resetTab();
         XCITabController.resetTab();
@@ -115,36 +131,32 @@ public class MainController implements Initializable {
         TIKTabController.resetTab();
         XMLTabController.resetTab();
         NPDMTabController.resetTab();
-
-        if (this.selectedFile != null && this.selectedFile.exists()) {
-            filenameSelected.setText(this.selectedFile.getAbsolutePath());
-            previouslyOpenedPath = this.selectedFile.getParent();
-            analyzeBtn.setDisable(false);
-            String fileExtension = this.selectedFile.getName().toLowerCase().replaceAll("^.*\\.", "");
-            switch (fileExtension){
-                case "nsp":
-                case "nsz":
-                    tabPane.getSelectionModel().select(0);
-                    break;
-                case "xci":
-                    tabPane.getSelectionModel().select(1);
-                    break;
-                case "nca":
-                    tabPane.getSelectionModel().select(2);
-                    break;
-                case "tic":
-                    tabPane.getSelectionModel().select(3);
-                    break;
-                case "xml":
-                    tabPane.getSelectionModel().select(4);
-                    break;
-                case "npdm":
-                    tabPane.getSelectionModel().select(5);
-                    break;
-            }
+        RFSTabController.resetTab();
+    }
+    private void setFocusOnPane(String fileExtension){
+        switch (fileExtension){
+            case "nsp":
+            case "nsz":
+                tabPane.getSelectionModel().select(0);
+                break;
+            case "xci":
+                tabPane.getSelectionModel().select(1);
+                break;
+            case "nca":
+                tabPane.getSelectionModel().select(2);
+                break;
+            case "tic":
+                tabPane.getSelectionModel().select(3);
+                break;
+            case "xml":
+                tabPane.getSelectionModel().select(4);
+                break;
+            case "npdm":
+                tabPane.getSelectionModel().select(5);
+                break;
+            case "romfs":
+                tabPane.getSelectionModel().select(6);
         }
-
-        logArea.clear();
     }
     /**
      * Start analyze
@@ -154,7 +166,7 @@ public class MainController implements Initializable {
         switch (fileExtension){
             case "nsp":
             case "nsz":
-                NSPTabController.analyze(selectedFile);      // TODO: NSP OR XCI
+                NSPTabController.analyze(selectedFile);      // TODO: NSP OR NSZ ?
                 break;
             case "xci":
                 XCITabController.analyze(selectedFile);
@@ -171,6 +183,8 @@ public class MainController implements Initializable {
             case "npdm":
                 NPDMTabController.analyze(selectedFile);
                 break;
+            case "romfs":
+                RFSTabController.analyze(selectedFile);
         }
     }
     @FXML

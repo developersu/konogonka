@@ -19,12 +19,9 @@
 package konogonka.Tools.NPDM;
 
 import konogonka.LoperConverter;
-import konogonka.RainbowHexDump;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 /*
 NOTE: This implementation is extremely bad for using application as library. Use raw for own purposes.

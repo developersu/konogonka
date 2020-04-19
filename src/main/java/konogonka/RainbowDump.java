@@ -23,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Debug tool like hexdump <3
  */
-public class RainbowHexDump {
+public class RainbowDump {
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_BLACK = "\u001B[30m";
     private static final String ANSI_RED = "\u001B[31m";
@@ -54,5 +54,9 @@ public class RainbowHexDump {
 
     public static void octDumpLong(long value){
         System.out.println(String.format("%64s", Long.toBinaryString( value )).replace(' ', '0')+" | "+value);
+    }
+
+    public static String formatDecHexString(long value){
+        return String.format("%-20d 0x%x", value, value);
     }
 }

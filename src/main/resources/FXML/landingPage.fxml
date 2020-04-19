@@ -95,6 +95,14 @@
                                 <Label text="NPDM" />
                             </graphic>
                         </Tab>
+                        <Tab styleClass="tab-sub">
+                            <content>
+                                <fx:include fx:id="RFSTab" source="RomFS/RFSTab.fxml" />
+                            </content>
+                            <graphic>
+                                <Label text="RomFS" />
+                            </graphic>
+                        </Tab>
                     </tabs>
                   </TabPane>
                   <AnchorPane fx:id="logPane" prefHeight="200.0" prefWidth="200.0">

@@ -4,7 +4,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -61,5 +64,20 @@
                 <fx:include fx:id="SectionPFS0" source="../NSP/NSPTab.fxml" />
             </VBox>
          </content></TitledPane>
+      <TitledPane prefHeight="200.0" prefWidth="200.0" text="'RomFS'">
+         <content>
+            <VBox spacing="5.0">
+               <children>
+                  <Label text="WIP" />
+                  <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0">
+                    <items>
+                        <TreeView prefHeight="200.0" prefWidth="200.0" />
+                        <TableView prefHeight="200.0" prefWidth="200.0" />
+                    </items>
+                  </SplitPane>
+               </children>
+            </VBox>
+         </content>
+      </TitledPane>
     </children>
 </VBox>

@@ -313,7 +313,6 @@ public class NCAContent {
         }
     }
     private class CryptoSection03RomFS{
-
         CryptoSection03RomFS(File file,
                         long offsetPosition,
                         byte[] decryptedKey,
