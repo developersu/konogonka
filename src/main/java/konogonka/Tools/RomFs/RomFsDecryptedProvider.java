@@ -19,17 +19,12 @@
 
 package konogonka.Tools.RomFs;
 
-import konogonka.LoperConverter;
 import konogonka.Tools.ISuperProvider;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.PipedInputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 import static konogonka.RainbowDump.formatDecHexString;
 

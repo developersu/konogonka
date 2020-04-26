@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <!--
   ~ Copyright 2019-2020 Dmitry Isaenko
@@ -22,8 +24,13 @@
   ~ along with Konogonka.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Controllers.RFS.RFSFolderTableViewController">
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Controllers.RFS.RFSFolderTableViewController">
    <children>
-      <TableView fx:id="table" editable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <HBox fx:id="navigationHBox" prefHeight="40.0" spacing="5.0" VBox.vgrow="NEVER">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <TableView fx:id="table" editable="true" VBox.vgrow="ALWAYS" />
    </children>
-</AnchorPane>
+</VBox>

@@ -18,28 +18,35 @@
 */
 package konogonka.Controllers.RFS;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import konogonka.Controllers.IRowModel;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class RFSFolderTableViewController implements Initializable {
     @FXML
     private TableView<RFSEntry> table;
     private ObservableList<RFSEntry> rowsObsLst;
+    @FXML
+    private HBox navigationHBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -61,23 +68,23 @@ public class RFSFolderTableViewController implements Initializable {
             keyEvent.consume();
         });
 
-        TableColumn<RFSEntry, Integer> numberColumn = new TableColumn<>(resourceBundle.getString("tableNumberLbl"));
+        TableColumn<RFSEntry, Node> imageColumn = new TableColumn<>();
         TableColumn<RFSEntry, String> fileNameColumn = new TableColumn<>(resourceBundle.getString("tableFileNameLbl"));
         TableColumn<RFSEntry, Long> fileOffsetColumn = new TableColumn<>(resourceBundle.getString("tableOffsetLbl"));
         TableColumn<RFSEntry, Long> fileSizeColumn = new TableColumn<>(resourceBundle.getString("tableSizeLbl"));
         TableColumn<RFSEntry, Boolean> checkBoxColumn = new TableColumn<>(resourceBundle.getString("tableUploadLbl"));
 
-        numberColumn.setEditable(false);
+        imageColumn.setEditable(false);
         fileNameColumn.setEditable(false);
         fileOffsetColumn.setEditable(false);
         fileSizeColumn.setEditable(false);
         checkBoxColumn.setEditable(true);
 
         // See https://bugs.openjdk.java.net/browse/JDK-8157687
-        numberColumn.setMinWidth(30.0);
-        numberColumn.setPrefWidth(30.0);
-        numberColumn.setMaxWidth(30.0);
-        numberColumn.setResizable(false);
+        imageColumn.setMinWidth(30.0);
+        imageColumn.setPrefWidth(30.0);
+        imageColumn.setMaxWidth(30.0);
+        imageColumn.setResizable(false);
 
         fileNameColumn.setMinWidth(25.0);
 
@@ -96,12 +103,32 @@ public class RFSFolderTableViewController implements Initializable {
         checkBoxColumn.setMaxWidth(120.0);
         checkBoxColumn.setResizable(false);
 
-        numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
+        imageColumn.setCellValueFactory(paramFeatures -> {
+            RFSEntry model = paramFeatures.getValue();
+            return new ObservableValue<Node>() {
+                @Override
+                public Node getValue() {
+                    final Region folderImage = new Region();
+                    if (model.isDirectory())
+                        folderImage.getStyleClass().add("regionFolder");
+                    else
+                        folderImage.getStyleClass().add("regionFile");
+                    return folderImage;
+                }
+                @Override
+                public void addListener(ChangeListener<? super Node> changeListener) {}
+                @Override
+                public void removeListener(ChangeListener<? super Node> changeListener) {}
+                @Override
+                public void addListener(InvalidationListener invalidationListener) {}
+                @Override
+                public void removeListener(InvalidationListener invalidationListener) {}
+            };
+        });
+
         fileNameColumn.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         fileSizeColumn.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
         fileOffsetColumn.setCellValueFactory(new PropertyValueFactory<>("fileOffset"));
-
-        // ><
         checkBoxColumn.setCellValueFactory(paramFeatures -> {
             RFSEntry model = paramFeatures.getValue();
 
@@ -147,7 +174,7 @@ public class RFSFolderTableViewController implements Initializable {
                 }
         );
         table.setItems(rowsObsLst);
-        table.getColumns().add(numberColumn);
+        table.getColumns().add(imageColumn);
         table.getColumns().add(fileNameColumn);
         table.getColumns().add(fileOffsetColumn);
         table.getColumns().add(fileSizeColumn);
@@ -157,7 +184,7 @@ public class RFSFolderTableViewController implements Initializable {
      * Add files when user selected them on left-hand tree
      * */
     public void setContent(TreeItem<RFSEntry> containerTreeItem){
-        rowsObsLst.clear();
+        reset();
 
         if (containerTreeItem == null) {
             table.refresh();
@@ -167,6 +194,36 @@ public class RFSFolderTableViewController implements Initializable {
         for (TreeItem<RFSEntry> childTreeItem : containerTreeItem.getChildren())
             rowsObsLst.add(childTreeItem.getValue());
 
+        setNavigationContent(containerTreeItem);
+
         table.refresh();
+    }
+
+    private void setNavigationContent(TreeItem<RFSEntry> childTreeItem){
+        TreeItem<RFSEntry> parentTreeItem;
+
+        LinkedList<Button> content = new LinkedList<>();
+
+        content.add(new Button(childTreeItem.getValue().getFileName()));
+
+        while ((parentTreeItem = childTreeItem.getParent()) != null) {
+            content.add(createNavigationButton(parentTreeItem));
+            childTreeItem = parentTreeItem;
+        }
+
+        Collections.reverse(content);
+        for (Button button : content)
+            navigationHBox.getChildren().add(button);
+    }
+    private Button createNavigationButton(TreeItem<RFSEntry> treeItem){
+        Button button = new Button(treeItem.getValue().getFileName());
+        button.setOnAction(event -> setContent(treeItem));
+        return button;
+    }
+
+
+    public void reset(){
+        rowsObsLst.clear();
+        navigationHBox.getChildren().clear();
     }
 }

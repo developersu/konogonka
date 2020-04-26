@@ -20,9 +20,7 @@ package konogonka.Controllers.RFS;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
-import javafx.util.Callback;
 import konogonka.Controllers.ITabController;
 import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.RomFs.FileSystemEntry;
@@ -74,10 +72,6 @@ public class RomFsController implements ITabController {
                 RFSTableViewController.setContent(item);
             mouseEvent.consume();
         });
-    }
-
-    private final class RFSTreeCell extends TreeCell<RFSEntry>{
-
     }
 
     @Override
@@ -180,6 +174,7 @@ public class RomFsController implements ITabController {
         headerFileDataOffsetHexLbl.setText("");
 
         filesTreeView.setRoot(null);
+        RFSTableViewController.reset();
     }
 
     private Region getFolderImage(){
