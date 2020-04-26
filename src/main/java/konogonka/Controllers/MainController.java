@@ -21,6 +21,8 @@ package konogonka.Controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import konogonka.AppPreferences;
@@ -35,10 +37,10 @@ import konogonka.Controllers.XML.XMLController;
 import konogonka.MediatorControl;
 import konogonka.Settings.SettingsWindow;
 import konogonka.Tools.ISuperProvider;
-import konogonka.Tools.TIK.TIKProvider;
 
 import java.io.*;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -187,6 +189,21 @@ public class MainController implements Initializable {
                 RFSTabController.analyze(selectedFile);
         }
     }
+    private boolean isNotSupportedFileFormat(String fileExtension){
+        switch (fileExtension){
+            case "nsp":
+            case "nsz":
+            case "xci":
+            case "nca":
+            case "tic":
+            case "xml":
+            case "npdm":
+            case "romfs":
+                return false;
+            default:
+                return true;
+        }
+    }
     @FXML
     private void showHideLogs(){
         if (splitPane.getItems().size() == 2)
@@ -194,6 +211,50 @@ public class MainController implements Initializable {
         else
             splitPane.getItems().add(logPane);
     }
+    /**
+     * Drag-n-drop support (dragOver consumer)
+     * */
+    @FXML
+    private void handleDragOver(DragEvent event){
+        event.acceptTransferModes(TransferMode.ANY);
+
+        event.consume();
+    }
+    /**
+     * Drag-n-drop support (drop consumer)
+     * */
+    @FXML
+    private void handleDrop(DragEvent event){
+        List<File> filesDropped = event.getDragboard().getFiles();
+
+        if ( filesDropped.isEmpty() ) {
+            event.setDropCompleted(true);
+            event.consume();
+            return;
+        }
+
+        File droppedFile = filesDropped.get(0);
+
+        String fileExtension = droppedFile.getName().toLowerCase().replaceAll("^.*\\.", "");
+
+        if (isNotSupportedFileFormat(fileExtension)) {
+            event.setDropCompleted(true);
+            event.consume();
+            return;
+        }
+
+        selectedFile = droppedFile;
+
+        resetAllTabsContent();
+        filenameSelected.setText(selectedFile.getAbsolutePath());
+        previouslyOpenedPath = selectedFile.getParent();
+        analyzeBtn.setDisable(false);
+        setFocusOnPane(fileExtension);
+
+        event.setDropCompleted(true);
+        event.consume();
+    }
+
     public void showContentWindow(ISuperProvider provider, IRowModel model){
         try{
             new ChildWindow(provider, model);

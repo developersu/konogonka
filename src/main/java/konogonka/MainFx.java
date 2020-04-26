@@ -30,7 +30,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainFx extends Application {
-    public static final String appVersion = "v0.0.2";
+    public static final String appVersion = "v0.0.3";
 
     @Override
     public void start(Stage primaryStage) throws Exception{

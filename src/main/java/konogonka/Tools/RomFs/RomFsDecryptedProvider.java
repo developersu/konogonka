@@ -19,12 +19,19 @@
 
 package konogonka.Tools.RomFs;
 
+import konogonka.LoperConverter;
 import konogonka.Tools.ISuperProvider;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.PipedInputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import static konogonka.RainbowDump.formatDecHexString;
 
 public class RomFsDecryptedProvider implements ISuperProvider {
 
@@ -33,12 +40,14 @@ public class RomFsDecryptedProvider implements ISuperProvider {
     private File decryptedFSImage;
     private Level6Header header;
 
+    private FileSystemEntry rootEntry;
+
     public RomFsDecryptedProvider(File decryptedFSImage) throws Exception{     // TODO: add default setup AND using meta-data headers from NCA RomFs section (?)
         this.decryptedFSImage = decryptedFSImage;
 
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(decryptedFSImage));
 
-        skipTo(bis, LEVEL_6_DEFAULT_OFFSET);
+        skipBytes(bis, LEVEL_6_DEFAULT_OFFSET);
 
         byte[] rawDataChunk = new byte[0x50];
 
@@ -46,10 +55,52 @@ public class RomFsDecryptedProvider implements ISuperProvider {
             throw new Exception("Failed to read header (0x50)");
 
         this.header = new Level6Header(rawDataChunk);
+        /*
+        // Print Dir Hash table as is:
+        long seekTo = header.getDirectoryHashTableOffset() - 0x50;
+        rawDataChunk = new byte[(int) header.getDirectoryHashTableLength()];
+        skipTo(bis, seekTo);
+        if (bis.read(rawDataChunk) != (int) header.getDirectoryHashTableLength())
+            throw new Exception("Failed to read Dir hash table");
+        RainbowDump.hexDumpUTF8(rawDataChunk);
+        // Print Files Hash table as is:
+        seekTo = header.getFileHashTableOffset() - header.getDirectoryMetadataTableOffset();
+        rawDataChunk = new byte[(int) header.getFileHashTableLength()];
+        skipTo(bis, seekTo);
+        if (bis.read(rawDataChunk) != (int) header.getFileHashTableLength())
+            throw new Exception("Failed to read Files hash table");
+        RainbowDump.hexDumpUTF8(rawDataChunk);
+        */
+        // Read directories metadata
+        long locationInFile = header.getDirectoryMetadataTableOffset() - 0x50;
 
+        skipBytes(bis, locationInFile);
+
+        if (header.getDirectoryMetadataTableLength() < 0)
+            throw new Exception("Not supported operation.");
+
+        byte[] directoryMetadataTable = new byte[(int) header.getDirectoryMetadataTableLength()];
+
+        if (bis.read(directoryMetadataTable) != (int) header.getDirectoryMetadataTableLength())
+            throw new Exception("Failed to read "+header.getDirectoryMetadataTableLength());
+        // Read files metadata
+        locationInFile = header.getFileMetadataTableOffset() - header.getFileHashTableOffset();      // TODO: replace to 'CurrentPosition'?
+
+        skipBytes(bis, locationInFile);
+
+        if (header.getFileMetadataTableLength() < 0)
+            throw new Exception("Not supported operation.");
+
+        byte[] fileMetadataTable = new byte[(int) header.getFileMetadataTableLength()];
+
+        if (bis.read(fileMetadataTable) != (int) header.getFileMetadataTableLength())
+            throw new Exception("Failed to read "+header.getFileMetadataTableLength());
+
+        rootEntry = new FileSystemEntry(directoryMetadataTable, fileMetadataTable);
+        //printDebug(directoryMetadataTable, fileMetadataTable);
         bis.close();
     }
-    private void skipTo(BufferedInputStream bis, long size) throws Exception{
+    private void skipBytes(BufferedInputStream bis, long size) throws Exception{
         long mustSkip = size;
         long skipped = 0;
         while (mustSkip > 0){
@@ -57,13 +108,9 @@ public class RomFsDecryptedProvider implements ISuperProvider {
             mustSkip = size - skipped;
         }
     }
-    private int getRealNameSize(int value){
-        if (value % 4 == 0)
-            return value;
-        return value + 4 - value % 4;
-    }
 
     public Level6Header getHeader() { return header; }
+    public FileSystemEntry getRootEntry() { return rootEntry; }
 
     @Override
     public PipedInputStream getProviderSubFilePipedInpStream(String subFileName) throws Exception {
@@ -72,7 +119,7 @@ public class RomFsDecryptedProvider implements ISuperProvider {
 
     @Override
     public PipedInputStream getProviderSubFilePipedInpStream(int subFileNumber) throws Exception {
-        return null;
+        throw new Exception("RomFsDecryptedProvider -> getProviderSubFilePipedInpStream(): Get files by number is not supported.");
     }
 
     @Override
@@ -83,5 +130,11 @@ public class RomFsDecryptedProvider implements ISuperProvider {
     @Override
     public long getRawFileDataStart() {
         return 0;
+    }
+
+    private void printDebug(byte[] directoryMetadataTable, byte[] fileMetadataTable){
+        new FolderMeta4Debug(header.getDirectoryMetadataTableLength(), directoryMetadataTable);
+        new FileMeta4Debug(header.getFileMetadataTableLength(), fileMetadataTable);
+        rootEntry.printTreeForDebug();
     }
 }

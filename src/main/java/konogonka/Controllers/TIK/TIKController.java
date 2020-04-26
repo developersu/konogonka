@@ -87,9 +87,9 @@ public class TIKController implements ITabController {
     }
     @Override
     public void analyze(File file, long offset) {
-        Task analyzer = Analyzer.analyzeTIK(file, offset);
+        Task<TIKProvider> analyzer = Analyzer.analyzeTIK(file, offset);
         analyzer.setOnSucceeded(e->{
-            TIKProvider tik = (TIKProvider) analyzer.getValue();
+            TIKProvider tik = analyzer.getValue();
             if (offset == 0)
                 setData(tik, file);
             else

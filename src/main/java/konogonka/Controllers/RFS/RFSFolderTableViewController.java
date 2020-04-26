@@ -16,38 +16,30 @@
     You should have received a copy of the GNU General Public License
     along with Konogonka.  If not, see <https://www.gnu.org/licenses/>.
 */
-package konogonka.Controllers.NSP;
+package konogonka.Controllers.RFS;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import konogonka.Controllers.IRowModel;
-import konogonka.MediatorControl;
-import konogonka.Tools.ISuperProvider;
-import konogonka.Tools.PFS0.IPFS0Provider;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class Pfs0TableViewController implements Initializable {
+public class RFSFolderTableViewController implements Initializable {
     @FXML
-    private TableView<Pfs0RowModel> table;
-    private ObservableList<Pfs0RowModel> rowsObsLst;
-
-    private ISuperProvider provider;
+    private TableView<RFSEntry> table;
+    private ObservableList<RFSEntry> rowsObsLst;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -57,26 +49,23 @@ public class Pfs0TableViewController implements Initializable {
         table.setEditable(false);               // At least with hacks it works as expected. Otherwise - null pointer exception
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        table.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if (!rowsObsLst.isEmpty()) {
-                    if (keyEvent.getCode() == KeyCode.SPACE) {
-                        for (Pfs0RowModel item : table.getSelectionModel().getSelectedItems()) {
-                            item.setMarkSelected(!item.isMarkSelected());
-                        }
-                        table.refresh();
+        table.setOnKeyPressed(keyEvent -> {
+            if (!rowsObsLst.isEmpty()) {
+                if (keyEvent.getCode() == KeyCode.SPACE) {
+                    for (RFSEntry item : table.getSelectionModel().getSelectedItems()) {
+                        item.setMarkSelected( ! item.isMarkSelected());
                     }
+                    table.refresh();
                 }
-                keyEvent.consume();
             }
+            keyEvent.consume();
         });
 
-        TableColumn<Pfs0RowModel, Integer> numberColumn = new TableColumn<>(resourceBundle.getString("tableNumberLbl"));
-        TableColumn<Pfs0RowModel, String> fileNameColumn = new TableColumn<>(resourceBundle.getString("tableFileNameLbl"));
-        TableColumn<Pfs0RowModel, Long> fileOffsetColumn = new TableColumn<>(resourceBundle.getString("tableOffsetLbl"));
-        TableColumn<Pfs0RowModel, Long> fileSizeColumn = new TableColumn<>(resourceBundle.getString("tableSizeLbl"));
-        TableColumn<Pfs0RowModel, Boolean> checkBoxColumn = new TableColumn<>(resourceBundle.getString("tableUploadLbl"));
+        TableColumn<RFSEntry, Integer> numberColumn = new TableColumn<>(resourceBundle.getString("tableNumberLbl"));
+        TableColumn<RFSEntry, String> fileNameColumn = new TableColumn<>(resourceBundle.getString("tableFileNameLbl"));
+        TableColumn<RFSEntry, Long> fileOffsetColumn = new TableColumn<>(resourceBundle.getString("tableOffsetLbl"));
+        TableColumn<RFSEntry, Long> fileSizeColumn = new TableColumn<>(resourceBundle.getString("tableSizeLbl"));
+        TableColumn<RFSEntry, Boolean> checkBoxColumn = new TableColumn<>(resourceBundle.getString("tableUploadLbl"));
 
         numberColumn.setEditable(false);
         fileNameColumn.setEditable(false);
@@ -111,9 +100,10 @@ public class Pfs0TableViewController implements Initializable {
         fileNameColumn.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         fileSizeColumn.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
         fileOffsetColumn.setCellValueFactory(new PropertyValueFactory<>("fileOffset"));
+
         // ><
         checkBoxColumn.setCellValueFactory(paramFeatures -> {
-            Pfs0RowModel model = paramFeatures.getValue();
+            RFSEntry model = paramFeatures.getValue();
 
             SimpleBooleanProperty booleanProperty = new SimpleBooleanProperty(model.isMarkSelected());
 
@@ -126,20 +116,20 @@ public class Pfs0TableViewController implements Initializable {
 
         checkBoxColumn.setCellFactory(paramFeatures -> new CheckBoxTableCell<>());
         table.setRowFactory(        // this shit is made to implement context menu. It's such a pain..
-                Pfs0RowModelTableView -> {
-                    final TableRow<Pfs0RowModel> row = new TableRow<>();
+                RFSEntryTableView -> {
+                    final TableRow<RFSEntry> row = new TableRow<>();
                     ContextMenu contextMenu = new ContextMenu();
-
+                    /* // TODO: CHANGE TO 'Export' or something
                     MenuItem openMenuItem = new MenuItem("Open");
                     openMenuItem.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent actionEvent) {
-                            MediatorControl.getInstance().getContoller().showContentWindow(provider, row.getItem());    // TODO: change to something better
+                            MediatorControl.getInstance().getContoller().showContentWindow(provider, row.getItem());
                         }
                     });
 
                     contextMenu.getItems().addAll(openMenuItem);
-
+                    */
                     row.setContextMenu(contextMenu);
                     row.contextMenuProperty().bind(
                             Bindings.when(Bindings.isNotNull(row.itemProperty())).then(contextMenu).otherwise((ContextMenu)null)
@@ -147,7 +137,7 @@ public class Pfs0TableViewController implements Initializable {
                     // Just.. don't ask..
                     row.setOnMouseClicked(mouseEvent -> {
                         if (!row.isEmpty() && mouseEvent.getButton() == MouseButton.PRIMARY){
-                            Pfs0RowModel thisItem = row.getItem();
+                            RFSEntry thisItem = row.getItem();
                             thisItem.setMarkSelected(!thisItem.isMarkSelected());
                             table.refresh();
                         }
@@ -164,41 +154,19 @@ public class Pfs0TableViewController implements Initializable {
         table.getColumns().add(checkBoxColumn);
     }
     /**
-     * Add files when user selected them
+     * Add files when user selected them on left-hand tree
      * */
-    public void setNSPToTable(IPFS0Provider pfs){
-        this.provider = pfs;
+    public void setContent(TreeItem<RFSEntry> containerTreeItem){
         rowsObsLst.clear();
-        Pfs0RowModel.resetNumCnt();
-        if (pfs == null) {
+
+        if (containerTreeItem == null) {
             table.refresh();
             return;
         }
 
-        for (int i=0; i < pfs.getFilesCount(); i++){
-            rowsObsLst.add(new Pfs0RowModel(
-                    pfs.getPfs0subFiles()[i].getName(),
-                    pfs.getPfs0subFiles()[i].getSize(),
-                    pfs.getPfs0subFiles()[i].getOffset()
-            ));
-        }
+        for (TreeItem<RFSEntry> childTreeItem : containerTreeItem.getChildren())
+            rowsObsLst.add(childTreeItem.getValue());
+
         table.refresh();
     }
-    /**
-     * Return list of models checked. Requested from NSLMainController only -> uploadBtnAction()                            //TODO: set undefined
-     * @return null if no files marked for upload
-     *         List<File> if there are files
-     * */
-    public List<IRowModel> getFilesForDump(){
-        List<IRowModel> models = new ArrayList<>();
-        if (rowsObsLst.isEmpty())
-            return null;
-        for (Pfs0RowModel model: rowsObsLst) {
-            if (model.isMarkSelected()) {
-                models.add(model);
-            }
-        }
-        return models;
-    }
-    public ISuperProvider getProvider(){ return provider; }
 }

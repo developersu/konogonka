@@ -42,12 +42,8 @@ import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.XCI.HFS0Provider;
 
 
-import java.lang.reflect.Array;
 import java.net.URL;
-import java.nio.IntBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 

@@ -43,7 +43,7 @@
                   </Button>
                </items>
             </ToolBar>
-            <SplitPane fx:id="splitPane" dividerPositions="0.5" VBox.vgrow="ALWAYS">
+            <SplitPane fx:id="splitPane" onDragDropped="#handleDrop" onDragOver="#handleDragOver"  dividerPositions="0.5" VBox.vgrow="ALWAYS">
                <items>
                   <TabPane fx:id="tabPane" side="LEFT" tabClosingPolicy="UNAVAILABLE" tabMinHeight="35.0" tabMinWidth="25.0">
                     <tabs>
