@@ -45,7 +45,7 @@ public class FileSystemEntry {
         this.directoryFlag = true;
         DirectoryMetaData rootDirectoryMetaData = new DirectoryMetaData();
         if (rootDirectoryMetaData.dirName.isEmpty())
-            this.name = "/";
+            this.name = "ROOT";
         else
             this.name = rootDirectoryMetaData.dirName;
         if (rootDirectoryMetaData.parentDirectoryOffset != 0)

@@ -19,28 +19,21 @@
 
 package konogonka.Tools.RomFs;
 
-import konogonka.Tools.ISuperProvider;
+import java.io.*;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.PipedInputStream;
-
-import static konogonka.RainbowDump.formatDecHexString;
-
-public class RomFsDecryptedProvider implements ISuperProvider {
+public class RomFsDecryptedProvider implements IRomFsProvider{
 
     private static final long LEVEL_6_DEFAULT_OFFSET = 0x14000;
 
-    private File decryptedFSImage;
+    private File file;
     private Level6Header header;
 
     private FileSystemEntry rootEntry;
 
-    public RomFsDecryptedProvider(File decryptedFSImage) throws Exception{     // TODO: add default setup AND using meta-data headers from NCA RomFs section (?)
-        this.decryptedFSImage = decryptedFSImage;
+    public RomFsDecryptedProvider(File decryptedFsImageFile) throws Exception{     // TODO: add default setup AND using meta-data headers from NCA RomFs section (?)
+        this.file = decryptedFsImageFile;
 
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(decryptedFSImage));
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(decryptedFsImageFile));
 
         skipBytes(bis, LEVEL_6_DEFAULT_OFFSET);
 
@@ -103,28 +96,59 @@ public class RomFsDecryptedProvider implements ISuperProvider {
             mustSkip = size - skipped;
         }
     }
-
+    @Override
     public Level6Header getHeader() { return header; }
+    @Override
     public FileSystemEntry getRootEntry() { return rootEntry; }
-
     @Override
-    public PipedInputStream getProviderSubFilePipedInpStream(String subFileName) throws Exception {
-        return null;
-    }
+    public PipedInputStream getContent(FileSystemEntry entry) throws Exception{
+        if (entry.isDirectory())
+            throw new Exception("Request of the binary stream for the folder entry doesn't make sense.");
 
-    @Override
-    public PipedInputStream getProviderSubFilePipedInpStream(int subFileNumber) throws Exception {
-        throw new Exception("RomFsDecryptedProvider -> getProviderSubFilePipedInpStream(): Get files by number is not supported.");
-    }
+        PipedOutputStream streamOut = new PipedOutputStream();
+        Thread workerThread;
 
+        PipedInputStream streamIn = new PipedInputStream(streamOut);
+
+        workerThread = new Thread(() -> {
+            System.out.println("RomFsDecryptedProvider -> getContent(): Executing thread");
+            try {
+                long subFileRealPosition = LEVEL_6_DEFAULT_OFFSET + header.getFileDataOffset() + entry.getFileOffset();
+                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                skipBytes(bis, subFileRealPosition);
+
+                int readPice = 8388608; // 8mb NOTE: consider switching to 1mb 1048576
+
+                long readFrom = 0;
+                long realFileSize = entry.getFileSize();
+
+                byte[] readBuf;
+
+                while (readFrom < realFileSize) {
+                    if (realFileSize - readFrom < readPice)
+                        readPice = Math.toIntExact(realFileSize - readFrom);    // it's safe, I guarantee
+                    readBuf = new byte[readPice];
+                    if (bis.read(readBuf) != readPice) {
+                        System.out.println("RomFsDecryptedProvider -> getContent(): Unable to read requested size from file.");
+                        return;
+                    }
+                    streamOut.write(readBuf);
+                    readFrom += readPice;
+                }
+                bis.close();
+                streamOut.close();
+            } catch (Exception e) {
+                System.out.println("RomFsDecryptedProvider -> getContent(): Unable to provide stream");
+                e.printStackTrace();
+            }
+            System.out.println("RomFsDecryptedProvider -> getContent(): Thread is dead");
+        });
+        workerThread.start();
+        return streamIn;
+    }
     @Override
     public File getFile() {
-        return decryptedFSImage;
-    }
-
-    @Override
-    public long getRawFileDataStart() {
-        return 0;
+        return file;
     }
 
     private void printDebug(byte[] directoryMetadataTable, byte[] fileMetadataTable){

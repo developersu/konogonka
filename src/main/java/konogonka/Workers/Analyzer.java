@@ -25,6 +25,7 @@ import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.NCA.NCAProvider;
 import konogonka.Tools.NPDM.NPDMProvider;
 import konogonka.Tools.PFS0.PFS0Provider;
+import konogonka.Tools.RomFs.RomFsDecryptedProvider;
 import konogonka.Tools.TIK.TIKProvider;
 import konogonka.Tools.XCI.XCIProvider;
 
@@ -154,6 +155,25 @@ public class Analyzer {
                     return null;
                 } finally {
                     logPrinter.print("\tEnd chain: XCI", EMsgType.INFO);
+                    logPrinter.close();
+                }
+            }
+        };
+    }
+
+    public static Task<RomFsDecryptedProvider> analyzeRomFS(File file){
+        LogPrinter logPrinter = new LogPrinter();
+        return new Task<RomFsDecryptedProvider>() {
+            @Override
+            protected RomFsDecryptedProvider call() {
+                logPrinter.print("\tStart chain: RomFS", EMsgType.INFO);
+                try {
+                    return new RomFsDecryptedProvider(file);
+                } catch (Exception e) {
+                    logPrinter.print(e.getMessage(), EMsgType.FAIL);
+                    return null;
+                } finally {
+                    logPrinter.print("\tEnd chain: RomFS", EMsgType.INFO);
                     logPrinter.close();
                 }
             }

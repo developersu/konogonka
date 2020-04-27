@@ -18,17 +18,24 @@
 */
 package konogonka.Controllers.RFS;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
+import konogonka.AppPreferences;
 import konogonka.Controllers.ITabController;
+import konogonka.MediatorControl;
 import konogonka.Tools.ISuperProvider;
 import konogonka.Tools.RomFs.FileSystemEntry;
+import konogonka.Tools.RomFs.IRomFsProvider;
 import konogonka.Tools.RomFs.Level6Header;
 import konogonka.Tools.RomFs.RomFsDecryptedProvider;
+import konogonka.Workers.Analyzer;
+import konogonka.Workers.DumbRomFsExtractor;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class RomFsController implements ITabController {
@@ -57,33 +64,103 @@ public class RomFsController implements ITabController {
             headerFileDataOffsetHexLbl;
 
     @FXML
-    private TreeView<RFSEntry> filesTreeView;
+    private TreeView<RFSModelEntry> filesTreeView;
 
-    private RomFsDecryptedProvider RomFsProvider;
+    private IRomFsProvider provider;
 
     @FXML
     private RFSFolderTableViewController RFSTableViewController;
 
+    @FXML
+    private Button extractRootBtn, extractBtn;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         filesTreeView.setOnMouseClicked(mouseEvent -> {
-            TreeItem<RFSEntry> item = filesTreeView.getSelectionModel().getSelectedItem();
+            TreeItem<RFSModelEntry> item = filesTreeView.getSelectionModel().getSelectedItem();
             if (item != null && item.getValue().isDirectory())
                 RFSTableViewController.setContent(item);
             mouseEvent.consume();
         });
-    }
 
-    @Override
-    public void analyze(File file) {
-        this.analyze(file, 0);
+        extractRootBtn.setOnAction(event -> extractRootBtn());
+        extractBtn.setOnAction(event -> extractSelectedBtn());
+    }
+    private void extractRootBtn(){
+        File dir = new File(AppPreferences.getInstance().getExtractFilesDir()+File.separator+ provider.getFile().getName()+" extracted");
+        try {
+            dir.mkdir();
+        }
+        catch (SecurityException se){
+            MediatorControl.getInstance().getContoller().logArea.setText("Can't create dir to store files.");
+        }
+        if (!dir.exists())
+            return;
+
+        extractBtn.setDisable(true);
+        extractRootBtn.setDisable(true);
+
+        DumbRomFsExtractor extractor = new DumbRomFsExtractor(provider, provider.getRootEntry(), dir.getAbsolutePath()+File.separator);
+        extractor.setOnSucceeded(e->{
+            extractBtn.setDisable(false);
+            extractRootBtn.setDisable(false);
+        });
+        Thread workThread = new Thread(extractor);
+        workThread.setDaemon(true);
+        workThread.start();
+    }
+    private void extractSelectedBtn(){
+        List<FileSystemEntry> fsEntries = RFSTableViewController.getFilesForDump();
+
+        if (fsEntries == null || fsEntries.isEmpty() || provider == null)
+            return;
+
+        File dir = new File(AppPreferences.getInstance().getExtractFilesDir()+File.separator+ provider.getFile().getName()+" extracted");
+        try {
+            dir.mkdir();
+        }
+        catch (SecurityException se){
+            MediatorControl.getInstance().getContoller().logArea.setText("Can't create dir to store files.");
+        }
+        if (!dir.exists())
+            return;
+
+        extractBtn.setDisable(true);
+        extractRootBtn.setDisable(true);
+
+        DumbRomFsExtractor extractor = new DumbRomFsExtractor(provider, fsEntries, dir.getAbsolutePath()+File.separator);
+        extractor.setOnSucceeded(e->{
+            extractBtn.setDisable(false);
+            extractRootBtn.setDisable(false);
+        });
+        Thread workThread = new Thread(extractor);
+        workThread.setDaemon(true);
+        workThread.start();
+
     }
 
     @Override
     public void analyze(File file, long offset) {
+        // TODO: IMPLEMENT?
+        System.out.print("NOT IMPLEMENTED: RomFsController -> analyze(File selectedFile, long offset)");
+    }
+
+    @Override
+    public void analyze(File file) {
+        Task<RomFsDecryptedProvider> analyzer = Analyzer.analyzeRomFS(file);
+        analyzer.setOnSucceeded(e->{
+            RomFsDecryptedProvider provider = analyzer.getValue();
+            this.setData(provider);
+        });
+        Thread workThread = new Thread(analyzer);
+        workThread.setDaemon(true);
+        workThread.start();
+    }
+
+    public void setData(RomFsDecryptedProvider provider) {
         try {
-            this.RomFsProvider = new RomFsDecryptedProvider(file);
-            Level6Header header = RomFsProvider.getHeader();
+            this.provider = provider;
+            Level6Header header = provider.getHeader();
             long tempValue;
             tempValue = header.getHeaderLength();
             headerHeaderLengthLbl.setText(Long.toString(tempValue));
@@ -116,23 +193,25 @@ public class RomFsController implements ITabController {
             headerFileDataOffsetLbl.setText(Long.toString(tempValue));
             headerFileDataOffsetHexLbl.setText(getHexString(tempValue));
 
-            TreeItem<RFSEntry> rootItem = getTreeFolderItem(RomFsProvider.getRootEntry());
+            TreeItem<RFSModelEntry> rootItem = getTreeFolderItem(provider.getRootEntry());
 
             filesTreeView.setRoot(rootItem);
 
             RFSTableViewController.setContent(rootItem);
+
+            extractBtn.setDisable(false);
+            extractRootBtn.setDisable(false);
         }
-        catch (Exception e){    // TODO: FIX
+        catch (Exception e){    // TODO: FIX?
             e.printStackTrace();
         }
     }
 
-    private TreeItem<RFSEntry> getTreeFolderItem(FileSystemEntry childEntry){
-        TreeItem<RFSEntry> entryTreeItem = new TreeItem<>(new RFSEntry(childEntry), getFolderImage());
+    private TreeItem<RFSModelEntry> getTreeFolderItem(FileSystemEntry childEntry){
+        TreeItem<RFSModelEntry> entryTreeItem = new TreeItem<>(new RFSModelEntry(childEntry), getFolderImage());
         for (FileSystemEntry entry : childEntry.getContent()){
-            if (entry.isDirectory()) {
+            if (entry.isDirectory())
                 entryTreeItem.getChildren().add(getTreeFolderItem(entry));
-            }
             else
                 entryTreeItem.getChildren().add( getTreeFileItem(entry) );;
         }
@@ -140,13 +219,13 @@ public class RomFsController implements ITabController {
 
         return entryTreeItem;
     }
-    private TreeItem<RFSEntry> getTreeFileItem(FileSystemEntry childEntry) {
-        return new TreeItem<>(new RFSEntry(childEntry), getFileImage());
+    private TreeItem<RFSModelEntry> getTreeFileItem(FileSystemEntry childEntry) {
+        return new TreeItem<>(new RFSModelEntry(childEntry), getFileImage());
     }
 
     @Override
     public void analyze(ISuperProvider parentProvider, int fileNo) throws Exception {
-        throw new Exception("NOT IMPLEMENTED: analyze(ISuperProvider parentProvider, int fileNo)");
+        throw new Exception("NOT SUPPORTED FOR 'RomFS' Controller: analyze(ISuperProvider parentProvider, int fileNo)");
     }
 
     @Override
@@ -175,6 +254,8 @@ public class RomFsController implements ITabController {
 
         filesTreeView.setRoot(null);
         RFSTableViewController.reset();
+        extractBtn.setDisable(true);
+        extractRootBtn.setDisable(true);
     }
 
     private Region getFolderImage(){

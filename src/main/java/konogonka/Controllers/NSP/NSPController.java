@@ -112,13 +112,13 @@ public class NSPController implements ITabController {
     @Override
     public void analyze(File selectedFile, long offset){
         // TODO: IMPLEMENT??
-        return;
+        System.out.print("NOT IMPLEMENTED: NSPController -> analyze(File selectedFile, long offset)");
     }
     @Override
     public void analyze(File selectedFile){
-        Task analyzer = Analyzer.analyzePFS0(selectedFile);
+        Task<PFS0Provider> analyzer = Analyzer.analyzePFS0(selectedFile);
         analyzer.setOnSucceeded(e->{
-            PFS0Provider pfs0 = (PFS0Provider) analyzer.getValue();
+            PFS0Provider pfs0 = analyzer.getValue();
             this.setData(pfs0, selectedFile);
         });
         Thread workThread = new Thread(analyzer);

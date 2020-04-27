@@ -62,7 +62,7 @@ public class Extractor extends Task<Void> {
                     readBuf = new byte[0x800000];
                     //*** PROGRESS BAR DECORCATIONS START
                     progressHandleFRead += readSize;
-                    System.out.println(readSize);
+                    //System.out.println(readSize);
                     try {
                         logPrinter.updateProgress((progressHandleFRead)/(progressHandleFSize/100.0) / 100.0);
                     }catch (InterruptedException ie){

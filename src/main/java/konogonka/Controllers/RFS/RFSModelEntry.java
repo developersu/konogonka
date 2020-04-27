@@ -21,16 +21,20 @@ package konogonka.Controllers.RFS;
 import konogonka.Controllers.IRowModel;
 import konogonka.Tools.RomFs.FileSystemEntry;
 
-public class RFSEntry implements IRowModel {
+public class RFSModelEntry implements IRowModel {
     private FileSystemEntry fileSystemEntry;
     private boolean check;
 
-    public RFSEntry(FileSystemEntry fileSystemEntry){
+    public RFSModelEntry(FileSystemEntry fileSystemEntry){
         this.fileSystemEntry = fileSystemEntry;
     }
 
     public boolean isDirectory(){
         return fileSystemEntry.isDirectory();
+    }
+
+    public FileSystemEntry getFileSystemEntry() {
+        return fileSystemEntry;
     }
 
     @Override

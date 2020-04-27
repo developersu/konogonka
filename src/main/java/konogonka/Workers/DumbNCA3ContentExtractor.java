@@ -43,7 +43,7 @@ public class DumbNCA3ContentExtractor extends Task<Void> {
                 readBuf = new byte[0x200];
                 //*** PROGRESS BAR DECORCATIONS START
                 progressHandleFRead += readSize;
-                System.out.println(readSize);
+                //System.out.println(readSize);
                 try {
                     logPrinter.updateProgress((progressHandleFRead)/(progressHandleFSize/100.0) / 100.0);
                 }catch (InterruptedException ignore){}

@@ -19,8 +19,6 @@
 package konogonka.Controllers.RFS;
 
 import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -36,15 +34,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import konogonka.Controllers.IRowModel;
+import konogonka.Tools.RomFs.FileSystemEntry;
 
 import java.net.URL;
 import java.util.*;
 
 public class RFSFolderTableViewController implements Initializable {
     @FXML
-    private TableView<RFSEntry> table;
-    private ObservableList<RFSEntry> rowsObsLst;
+    private TableView<RFSModelEntry> table;
+    private ObservableList<RFSModelEntry> rowsObsLst;
     @FXML
     private HBox navigationHBox;
 
@@ -59,7 +57,7 @@ public class RFSFolderTableViewController implements Initializable {
         table.setOnKeyPressed(keyEvent -> {
             if (!rowsObsLst.isEmpty()) {
                 if (keyEvent.getCode() == KeyCode.SPACE) {
-                    for (RFSEntry item : table.getSelectionModel().getSelectedItems()) {
+                    for (RFSModelEntry item : table.getSelectionModel().getSelectedItems()) {
                         item.setMarkSelected( ! item.isMarkSelected());
                     }
                     table.refresh();
@@ -68,11 +66,11 @@ public class RFSFolderTableViewController implements Initializable {
             keyEvent.consume();
         });
 
-        TableColumn<RFSEntry, Node> imageColumn = new TableColumn<>();
-        TableColumn<RFSEntry, String> fileNameColumn = new TableColumn<>(resourceBundle.getString("tableFileNameLbl"));
-        TableColumn<RFSEntry, Long> fileOffsetColumn = new TableColumn<>(resourceBundle.getString("tableOffsetLbl"));
-        TableColumn<RFSEntry, Long> fileSizeColumn = new TableColumn<>(resourceBundle.getString("tableSizeLbl"));
-        TableColumn<RFSEntry, Boolean> checkBoxColumn = new TableColumn<>(resourceBundle.getString("tableUploadLbl"));
+        TableColumn<RFSModelEntry, Node> imageColumn = new TableColumn<>();
+        TableColumn<RFSModelEntry, String> fileNameColumn = new TableColumn<>(resourceBundle.getString("tableFileNameLbl"));
+        TableColumn<RFSModelEntry, Long> fileOffsetColumn = new TableColumn<>(resourceBundle.getString("tableOffsetLbl"));
+        TableColumn<RFSModelEntry, Long> fileSizeColumn = new TableColumn<>(resourceBundle.getString("tableSizeLbl"));
+        TableColumn<RFSModelEntry, Boolean> checkBoxColumn = new TableColumn<>(resourceBundle.getString("tableUploadLbl"));
 
         imageColumn.setEditable(false);
         fileNameColumn.setEditable(false);
@@ -104,7 +102,7 @@ public class RFSFolderTableViewController implements Initializable {
         checkBoxColumn.setResizable(false);
 
         imageColumn.setCellValueFactory(paramFeatures -> {
-            RFSEntry model = paramFeatures.getValue();
+            RFSModelEntry model = paramFeatures.getValue();
             return new ObservableValue<Node>() {
                 @Override
                 public Node getValue() {
@@ -130,7 +128,7 @@ public class RFSFolderTableViewController implements Initializable {
         fileSizeColumn.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
         fileOffsetColumn.setCellValueFactory(new PropertyValueFactory<>("fileOffset"));
         checkBoxColumn.setCellValueFactory(paramFeatures -> {
-            RFSEntry model = paramFeatures.getValue();
+            RFSModelEntry model = paramFeatures.getValue();
 
             SimpleBooleanProperty booleanProperty = new SimpleBooleanProperty(model.isMarkSelected());
 
@@ -144,30 +142,30 @@ public class RFSFolderTableViewController implements Initializable {
         checkBoxColumn.setCellFactory(paramFeatures -> new CheckBoxTableCell<>());
         table.setRowFactory(        // this shit is made to implement context menu. It's such a pain..
                 RFSEntryTableView -> {
-                    final TableRow<RFSEntry> row = new TableRow<>();
+                    final TableRow<RFSModelEntry> row = new TableRow<>();
+                    /*
                     ContextMenu contextMenu = new ContextMenu();
-                    /* // TODO: CHANGE TO 'Export' or something
-                    MenuItem openMenuItem = new MenuItem("Open");
-                    openMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent actionEvent) {
-                            MediatorControl.getInstance().getContoller().showContentWindow(provider, row.getItem());
-                        }
+                     // TODO: ADD'Export'?
+                    MenuItem openMenuItem = new MenuItem("Export");
+                    openMenuItem.setOnAction(event -> {
+                        RFSEntry entry = row.getItem();
+                        System.out.print("Selected: "+entry.getFileName());
                     });
 
-                    contextMenu.getItems().addAll(openMenuItem);
-                    */
+                    contextMenu.getItems().add(openMenuItem);
                     row.setContextMenu(contextMenu);
+
                     row.contextMenuProperty().bind(
                             Bindings.when(Bindings.isNotNull(row.itemProperty())).then(contextMenu).otherwise((ContextMenu)null)
                     );
-                    // Just.. don't ask..
+                     */
                     row.setOnMouseClicked(mouseEvent -> {
                         if (!row.isEmpty() && mouseEvent.getButton() == MouseButton.PRIMARY){
-                            RFSEntry thisItem = row.getItem();
+                            RFSModelEntry thisItem = row.getItem();
                             thisItem.setMarkSelected(!thisItem.isMarkSelected());
                             table.refresh();
                         }
+
                         mouseEvent.consume();
                     });
                     return row;
@@ -180,10 +178,11 @@ public class RFSFolderTableViewController implements Initializable {
         table.getColumns().add(fileSizeColumn);
         table.getColumns().add(checkBoxColumn);
     }
+
     /**
      * Add files when user selected them on left-hand tree
      * */
-    public void setContent(TreeItem<RFSEntry> containerTreeItem){
+    public void setContent(TreeItem<RFSModelEntry> containerTreeItem){
         reset();
 
         if (containerTreeItem == null) {
@@ -191,7 +190,7 @@ public class RFSFolderTableViewController implements Initializable {
             return;
         }
 
-        for (TreeItem<RFSEntry> childTreeItem : containerTreeItem.getChildren())
+        for (TreeItem<RFSModelEntry> childTreeItem : containerTreeItem.getChildren())
             rowsObsLst.add(childTreeItem.getValue());
 
         setNavigationContent(containerTreeItem);
@@ -199,8 +198,8 @@ public class RFSFolderTableViewController implements Initializable {
         table.refresh();
     }
 
-    private void setNavigationContent(TreeItem<RFSEntry> childTreeItem){
-        TreeItem<RFSEntry> parentTreeItem;
+    private void setNavigationContent(TreeItem<RFSModelEntry> childTreeItem){
+        TreeItem<RFSModelEntry> parentTreeItem;
 
         LinkedList<Button> content = new LinkedList<>();
 
@@ -215,15 +214,28 @@ public class RFSFolderTableViewController implements Initializable {
         for (Button button : content)
             navigationHBox.getChildren().add(button);
     }
-    private Button createNavigationButton(TreeItem<RFSEntry> treeItem){
+    private Button createNavigationButton(TreeItem<RFSModelEntry> treeItem){
         Button button = new Button(treeItem.getValue().getFileName());
         button.setOnAction(event -> setContent(treeItem));
         return button;
     }
 
-
     public void reset(){
         rowsObsLst.clear();
         navigationHBox.getChildren().clear();
+        table.refresh();
+    }
+
+    public List<FileSystemEntry> getFilesForDump(){
+        if (rowsObsLst.isEmpty())
+            return null;
+
+        List<FileSystemEntry> fsEntries = new ArrayList<>();
+
+        for (RFSModelEntry model: rowsObsLst) {
+            if (model.isMarkSelected())
+                fsEntries.add(model.getFileSystemEntry());
+        }
+        return fsEntries;
     }
 }
