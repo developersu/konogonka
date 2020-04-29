@@ -23,12 +23,13 @@ import java.io.*;
 
 public class RomFsDecryptedProvider implements IRomFsProvider{
 
-    private static final long LEVEL_6_DEFAULT_OFFSET = 0x14000;
+    private static final long LEVEL_6_DEFAULT_OFFSET = 0x14000; // TODO: FIX incorrect
 
     private File file;
     private Level6Header header;
 
     private FileSystemEntry rootEntry;
+    // TODO: FIX. LEVEL 6 OFFSET MUST be provided
 
     public RomFsDecryptedProvider(File decryptedFsImageFile) throws Exception{     // TODO: add default setup AND using meta-data headers from NCA RomFs section (?)
         this.file = decryptedFsImageFile;

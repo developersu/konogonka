@@ -46,7 +46,8 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
     private long mediaStartOffset;  // In 512-blocks
     private long mediaEndOffset;    // In 512-blocks
 
-    public PFS0EncryptedProvider(PipedInputStream pipedInputStream, long pfs0offsetPosition,
+    public PFS0EncryptedProvider(PipedInputStream pipedInputStream,
+                                 long pfs0offsetPosition,
                                  long offsetPositionInFile,
                                  File fileWithEncPFS0,
                                  byte[] key,
@@ -166,14 +167,12 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
     @Override
     public File getFile(){ return file; }
     @Override
-    public PipedInputStream getProviderSubFilePipedInpStream(int subFileNumber) throws Exception {
-        if (subFileNumber >= pfs0subFiles.length) {
+    public PipedInputStream getProviderSubFilePipedInpStream(int subFileNumber) throws Exception { // TODO: rewrite
+        if (subFileNumber >= pfs0subFiles.length)
             throw new Exception("PFS0Provider -> getPfs0subFilePipedInpStream(): Requested sub file doesn't exists");
-        }
 
         Thread workerThread;
         PipedOutputStream streamOut = new PipedOutputStream();
-
 
         PipedInputStream streamIn = new PipedInputStream(streamOut);
         workerThread = new Thread(() -> {
@@ -272,7 +271,7 @@ public class PFS0EncryptedProvider implements IPFS0Provider{
                     encryptedBlock = new byte[0x200];
                     if (bis.read(encryptedBlock) == 0x200) {
                         dectyptedBlock = aesCtrDecryptSimple.dectyptNext(encryptedBlock);
-                        streamOut.write(dectyptedBlock, 0, 0x200 + extraData);
+                        streamOut.write(dectyptedBlock, 0, 0x200 + extraData);       // WTF ??? THIS LOOKS INCORRECT
                     }
                     else {
                         System.out.println("PFS0EncryptedProvider -> getProviderSubFilePipedInpStream(): Unable to get 512 bytes from last bock");

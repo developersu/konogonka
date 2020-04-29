@@ -20,6 +20,7 @@
 package konogonka.Tools.RomFs;
 
 import konogonka.LoperConverter;
+import konogonka.RainbowDump;
 
 public class Level6Header {
     private long headerLength;
@@ -36,8 +37,10 @@ public class Level6Header {
     private byte[] headerBytes;
     private int i;
     
-    Level6Header(byte[] headerBytes){
+    Level6Header(byte[] headerBytes) throws Exception{
         this.headerBytes = headerBytes;
+        if (headerBytes.length < 0x50)
+            throw new Exception("Level 6 Header section is too small");
         headerLength = getNext();
         directoryHashTableOffset = getNext();
         directoryHashTableLength = getNext();
@@ -66,4 +69,20 @@ public class Level6Header {
     public long getFileMetadataTableOffset() { return fileMetadataTableOffset; }
     public long getFileMetadataTableLength() { return fileMetadataTableLength; }
     public long getFileDataOffset() { return fileDataOffset; }
+    
+    public void printDebugInfo(){
+        System.out.println("== Level 6 Header ==\n" +
+                "Header Length (always 0x50 ?)   "+ RainbowDump.formatDecHexString(headerLength)+"   (size of this structure within first 0x200 block of LEVEL 6 part)\n" +
+                "Directory Hash Table Offset     "+ RainbowDump.formatDecHexString(directoryHashTableOffset)+"   (against THIS block where HEADER contains)\n" +
+                "Directory Hash Table Length     "+ RainbowDump.formatDecHexString(directoryHashTableLength) + "\n" +
+                "Directory Metadata Table Offset "+ RainbowDump.formatDecHexString(directoryMetadataTableOffset) + "\n" +
+                "Directory Metadata Table Length "+ RainbowDump.formatDecHexString(directoryMetadataTableLength) + "\n" +
+                "File Hash Table Offset          "+ RainbowDump.formatDecHexString(fileHashTableOffset) + "\n" +
+                "File Hash Table Length          "+ RainbowDump.formatDecHexString(fileHashTableLength) + "\n" +
+                "File Metadata Table Offset      "+ RainbowDump.formatDecHexString(fileMetadataTableOffset) + "\n" +
+                "File Metadata Table Length      "+ RainbowDump.formatDecHexString(fileMetadataTableLength) + "\n" +
+                "File Data Offset                "+ RainbowDump.formatDecHexString(fileDataOffset) + "\n" +
+                "-------------------------------------------------------------"
+        );
+    }
 }

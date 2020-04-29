@@ -27,6 +27,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import konogonka.AppPreferences;
 import konogonka.Controllers.NSP.NSPController;
+import konogonka.Controllers.RFS.RomFsController;
 import konogonka.LoperConverter;
 import konogonka.MediatorControl;
 import konogonka.Tools.NCA.NCAContent;
@@ -47,6 +48,8 @@ public class NCASectionContentController implements Initializable {
     @FXML
     private NSPController SectionPFS0Controller;
     @FXML
+    private RomFsController SectionRomFsController;
+    @FXML
     private VBox sha256pane;
 
     @Override
@@ -57,6 +60,7 @@ public class NCASectionContentController implements Initializable {
 
     public void resetTab() {
         SectionPFS0Controller.resetTab();
+        SectionRomFsController.resetTab();
         sha256pane.getChildren().clear();
         extractRawConentBtn.setDisable(true);
     }
@@ -71,6 +75,10 @@ public class NCASectionContentController implements Initializable {
         this.sectionNumber = sectionNumber;
         this.extractRawConentBtn.setDisable(false);
 
+        setPFS0Content();
+        setRomFsContent();
+    }
+    private void setPFS0Content(){
         if (ncaContent.getPfs0() != null)
             SectionPFS0Controller.setData(ncaContent.getPfs0(), null);;
 
@@ -86,6 +94,10 @@ public class NCASectionContentController implements Initializable {
 
             sha256pane.getChildren().add(new HBox(numberLblTmp, sha256LblTmp));
         }
+    }
+    private void setRomFsContent(){
+        if (ncaContent.getRomfs() != null)
+            SectionRomFsController.setData(ncaContent.getRomfs());
     }
 
     private void extractFiles(){

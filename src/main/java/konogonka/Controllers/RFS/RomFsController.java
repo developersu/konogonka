@@ -42,15 +42,15 @@ public class RomFsController implements ITabController {
 
     @FXML
     private Label headerHeaderLengthLbl,
-        headerDirectoryHashTableOffsetLbl,
-        headerDirectoryHashTableLengthLbl,
-        headerDirectoryMetadataTableOffsetLbl,
-        headerDirectoryMetadataTableLengthLbl,
-        headerFileHashTableOffsetLbl,
-        headerFileHashTableLengthLbl,
-        headerFileMetadataTableOffsetLbl,
-        headerFileMetadataTableLengthLbl,
-        headerFileDataOffsetLbl;
+            headerDirectoryHashTableOffsetLbl,
+            headerDirectoryHashTableLengthLbl,
+            headerDirectoryMetadataTableOffsetLbl,
+            headerDirectoryMetadataTableLengthLbl,
+            headerFileHashTableOffsetLbl,
+            headerFileHashTableLengthLbl,
+            headerFileMetadataTableOffsetLbl,
+            headerFileMetadataTableLengthLbl,
+            headerFileDataOffsetLbl;
     @FXML
     private Label headerHeaderLengthHexLbl,
             headerDirectoryHashTableOffsetHexLbl,
@@ -157,7 +157,7 @@ public class RomFsController implements ITabController {
         workThread.start();
     }
 
-    public void setData(RomFsDecryptedProvider provider) {
+    public void setData(IRomFsProvider provider) {
         try {
             this.provider = provider;
             Level6Header header = provider.getHeader();

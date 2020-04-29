@@ -147,7 +147,7 @@ public class MainController implements Initializable {
             case "nca":
                 tabPane.getSelectionModel().select(2);
                 break;
-            case "tic":
+            case "tik":
                 tabPane.getSelectionModel().select(3);
                 break;
             case "xml":
@@ -176,7 +176,7 @@ public class MainController implements Initializable {
             case "nca":
                 NCATabController.analyze(selectedFile);
                 break;
-            case "tic":
+            case "tik":
                 TIKTabController.analyze(selectedFile);
                 break;
             case "xml":
@@ -195,7 +195,7 @@ public class MainController implements Initializable {
             case "nsz":
             case "xci":
             case "nca":
-            case "tic":
+            case "tik":
             case "xml":
             case "npdm":
             case "romfs":

@@ -23,6 +23,8 @@ import konogonka.Tools.NCA.NCASectionTableBlock.NCASectionBlock;
 import konogonka.Tools.PFS0.IPFS0Provider;
 import konogonka.Tools.PFS0.PFS0EncryptedProvider;
 import konogonka.Tools.PFS0.PFS0Provider;
+import konogonka.Tools.RomFs.IRomFsProvider;
+import konogonka.Tools.RomFs.RomFsEncryptedProvider;
 import konogonka.ctraes.AesCtrDecryptSimple;
 import konogonka.exceptions.EmptySectionException;
 
@@ -41,6 +43,7 @@ public class NCAContent {
 
     private LinkedList<byte[]> Pfs0SHA256hashes;
     private IPFS0Provider pfs0;
+    private IRomFsProvider romfs;
 
     // TODO: if decryptedKey is empty, throw exception ??
     public NCAContent(File file,
@@ -130,16 +133,22 @@ public class NCAContent {
         System.out.println("proceedRomFs() -> proceedRomFsNotEncrypted() is not implemented :(");
     }
     private void proceedRomFsEncrypted() throws Exception{
-        new CryptoSection03RomFS(file,
+        if (decryptedKey == null)
+            throw new Exception("CryptoSection03: unable to proceed. No decrypted key provided.");
+
+        this.romfs = new RomFsEncryptedProvider(
                 offsetPosition,
+                ncaSectionBlock.getSuperBlockIVFC().getLvl6Offset(),
+                file,
                 decryptedKey,
-                ncaSectionBlock,
+                ncaSectionBlock.getSectionCTR(),
                 ncaHeaderTableEntry.getMediaStartOffset(),
                 ncaHeaderTableEntry.getMediaEndOffset());
     }
 
     public LinkedList<byte[]> getPfs0SHA256hashes() { return Pfs0SHA256hashes; }
     public IPFS0Provider getPfs0() { return pfs0; }
+    public IRomFsProvider getRomfs() { return romfs; }
 
     private class CryptoSection03Pfs0 {
         
@@ -293,7 +302,8 @@ public class NCAContent {
                         counter += toSkip;
                     }
                     //---------------------------------------------------------
-                    pfs0 = new PFS0EncryptedProvider(pipedInputStream, counter,
+                    pfs0 = new PFS0EncryptedProvider(pipedInputStream,
+                            counter,
                             MetaOffsetPositionInFile,
                             MetaFileWithEncPFS0,
                             MetaKey,
@@ -308,124 +318,6 @@ public class NCAContent {
                 }
                 finally {
                     System.out.println("Thread dies");
-                }
-            }
-        }
-    }
-    private class CryptoSection03RomFS{
-        CryptoSection03RomFS(File file,
-                        long offsetPosition,
-                        byte[] decryptedKey,
-                        NCASectionBlock ncaSectionBlock,
-                        long mediaStartBlocksOffset,
-                        long mediaEndBlocksOffset) throws Exception
-        {
-            if (decryptedKey == null)
-                throw new Exception("CryptoSection03: unable to proceed. No decrypted key provided.");
-
-            RandomAccessFile raf = new RandomAccessFile(file, "r");
-            long abosluteOffsetPosition = offsetPosition + (mediaStartBlocksOffset * 0x200);
-            raf.seek(abosluteOffsetPosition);
-
-            AesCtrDecryptSimple decryptor = new AesCtrDecryptSimple(decryptedKey,
-                                            ncaSectionBlock.getSectionCTR(),
-                                            mediaStartBlocksOffset * 0x200);
-
-            byte[] encryptedBlock;
-            byte[] dectyptedBlock;
-            long mediaBlocksSize = mediaEndBlocksOffset - mediaStartBlocksOffset;
-            // Prepare thread to parse encrypted data
-            PipedOutputStream streamOut = new PipedOutputStream();
-            PipedInputStream streamInp = new PipedInputStream(streamOut);
-
-            Thread pThread = new Thread(new ParseThreadRomFs(
-                    streamInp,
-                    offsetPosition,
-                    file,
-                    decryptedKey,
-                    ncaSectionBlock.getSectionCTR(),
-                    mediaStartBlocksOffset,
-                    mediaEndBlocksOffset
-            ));
-            pThread.start();
-            // Decrypt data
-            for (int i = 0; i < mediaBlocksSize; i++){
-                encryptedBlock = new byte[0x200];
-                if (raf.read(encryptedBlock) != -1){
-                    dectyptedBlock = decryptor.dectyptNext(encryptedBlock);
-                    // Writing decrypted data to pipe
-                    try {
-                        streamOut.write(dectyptedBlock);
-                    }
-                    catch (IOException e){
-                        break;
-                    }
-                }
-            }
-            pThread.join();// TODO:UNCOMMENT
-            streamOut.close();
-            raf.close();
-        }
-        /*
-         * Since we representing decrypted data as stream (it's easier to look on it this way),
-         * this thread will be parsing it.
-         * */
-        private class ParseThreadRomFs implements Runnable{
-
-            PipedInputStream pipedInputStream;
-
-            private long MetaOffsetPositionInFile;
-            private File MetaFileWithEncPFS0;
-            private byte[] MetaKey;
-            private byte[] MetaSectionCTR;
-            private long MetaMediaStartOffset;
-            private long MetaMediaEndOffset;
-
-
-            ParseThreadRomFs(PipedInputStream pipedInputStream,
-                             long MetaOffsetPositionInFile,
-                             File MetaFileWithEncPFS0,
-                             byte[] MetaKey,
-                             byte[] MetaSectionCTR,
-                             long MetaMediaStartOffset,
-                             long MetaMediaEndOffset
-            ){
-                this.pipedInputStream = pipedInputStream;
-                //this.hashTableRecordsCount = hashTableSize / 0x20;
-
-                this.MetaOffsetPositionInFile = MetaOffsetPositionInFile;
-                this.MetaFileWithEncPFS0 = MetaFileWithEncPFS0;
-                this.MetaKey = MetaKey;
-                this.MetaSectionCTR = MetaSectionCTR;
-                this.MetaMediaStartOffset = MetaMediaStartOffset;
-                this.MetaMediaEndOffset = MetaMediaEndOffset;
-
-            }
-
-            @Override
-            public void run() {
-                long counter = 0;       // How many bytes already read
-                try {
-                    // TODO
-                    /*
-                    pfs0 = new PFS0EncryptedProvider(pipedInputStream,
-                            counter,
-                            MetaOffsetPositionInFile,
-                            MetaFileWithEncPFS0,
-                            MetaKey,
-                            MetaSectionCTR,
-                            MetaMediaStartOffset,
-                            MetaMediaEndOffset);
-
-                     */
-                    pipedInputStream.close();
-                }
-                catch (Exception e){
-                    System.out.println("'ParseThreadRomFs' thread exception");
-                    e.printStackTrace();
-                }
-                finally {
-                    System.out.println("ParseThreadRomFs dies");
                 }
             }
         }
