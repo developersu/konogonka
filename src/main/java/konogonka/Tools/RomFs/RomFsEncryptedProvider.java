@@ -177,6 +177,8 @@ public class RomFsEncryptedProvider implements IRomFsProvider{
     }
 
     @Override
+    public long getLevel6Offset() { return level6Offset; }
+    @Override
     public Level6Header getHeader() { return header; }
     @Override
     public FileSystemEntry getRootEntry() { return rootEntry; }

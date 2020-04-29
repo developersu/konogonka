@@ -23,20 +23,24 @@ import java.io.*;
 
 public class RomFsDecryptedProvider implements IRomFsProvider{
 
-    private static final long LEVEL_6_DEFAULT_OFFSET = 0x14000; // TODO: FIX incorrect
+    private long level6Offset;
 
     private File file;
     private Level6Header header;
 
     private FileSystemEntry rootEntry;
-    // TODO: FIX. LEVEL 6 OFFSET MUST be provided
 
-    public RomFsDecryptedProvider(File decryptedFsImageFile) throws Exception{     // TODO: add default setup AND using meta-data headers from NCA RomFs section (?)
+    public RomFsDecryptedProvider(File decryptedFsImageFile, long level6Offset) throws Exception{
+        if (level6Offset < 0)
+            throw new Exception("Incorrect Level 6 Offset");
+
         this.file = decryptedFsImageFile;
 
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(decryptedFsImageFile));
 
-        skipBytes(bis, LEVEL_6_DEFAULT_OFFSET);
+        this.level6Offset = level6Offset;
+
+        skipBytes(bis, level6Offset);
 
         byte[] rawDataChunk = new byte[0x50];
 
@@ -98,6 +102,8 @@ public class RomFsDecryptedProvider implements IRomFsProvider{
         }
     }
     @Override
+    public long getLevel6Offset() { return level6Offset; }
+    @Override
     public Level6Header getHeader() { return header; }
     @Override
     public FileSystemEntry getRootEntry() { return rootEntry; }
@@ -114,7 +120,7 @@ public class RomFsDecryptedProvider implements IRomFsProvider{
         workerThread = new Thread(() -> {
             System.out.println("RomFsDecryptedProvider -> getContent(): Executing thread");
             try {
-                long subFileRealPosition = LEVEL_6_DEFAULT_OFFSET + header.getFileDataOffset() + entry.getFileOffset();
+                long subFileRealPosition = level6Offset + header.getFileDataOffset() + entry.getFileOffset();
                 BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
                 skipBytes(bis, subFileRealPosition);
 

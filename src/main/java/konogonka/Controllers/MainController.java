@@ -110,7 +110,7 @@ public class MainController implements Initializable {
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NS files",
-                "*.nsp", "*.nsz", "*.xci", "*.nca", "*.tik", "*.xml", "*.npdm", "*.romfs"));
+                "*.nsp", "*.nsz", "*.xci", "*.nca", "*.tik", "*.xml", "*.npdm", "*.bin"));
 
         this.selectedFile = fileChooser.showOpenDialog(analyzeBtn.getScene().getWindow());
 
@@ -156,7 +156,7 @@ public class MainController implements Initializable {
             case "npdm":
                 tabPane.getSelectionModel().select(5);
                 break;
-            case "romfs":
+            case "bin":
                 tabPane.getSelectionModel().select(6);
         }
     }
@@ -185,7 +185,7 @@ public class MainController implements Initializable {
             case "npdm":
                 NPDMTabController.analyze(selectedFile);
                 break;
-            case "romfs":
+            case "bin":
                 RFSTabController.analyze(selectedFile);
         }
     }
@@ -198,7 +198,7 @@ public class MainController implements Initializable {
             case "tik":
             case "xml":
             case "npdm":
-            case "romfs":
+            case "bin":
                 return false;
             default:
                 return true;

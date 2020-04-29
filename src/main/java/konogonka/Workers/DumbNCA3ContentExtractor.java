@@ -26,8 +26,12 @@ public class DumbNCA3ContentExtractor extends Task<Void> {
 
     @Override
     protected Void call() {
-        logPrinter.print("\tStart dummy extracting: \n"+filesDestPath+"NCAContent_"+ncaNumberInFile+".bin", EMsgType.INFO);
-        File contentFile = new File(filesDestPath + "NCAContent_"+ncaNumberInFile+".bin");
+        String lv6mark = "";
+        if (ncaContent.getRomfs() != null){
+            lv6mark = " [lv6 "+ncaContent.getRomfs().getLevel6Offset()+"]";
+        }
+        logPrinter.print("\tStart dummy extracting: \n"+filesDestPath+"NCAContent_"+ncaNumberInFile+lv6mark+".bin", EMsgType.INFO);
+        File contentFile = new File(filesDestPath + "NCAContent_"+ncaNumberInFile+lv6mark+".bin");
         try {
             BufferedOutputStream extractedFileBOS = new BufferedOutputStream(new FileOutputStream(contentFile));
             PipedInputStream pis = ncaContent.getRawDataContentPipedInpStream();

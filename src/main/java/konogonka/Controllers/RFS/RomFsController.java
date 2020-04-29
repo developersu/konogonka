@@ -147,7 +147,15 @@ public class RomFsController implements ITabController {
 
     @Override
     public void analyze(File file) {
-        Task<RomFsDecryptedProvider> analyzer = Analyzer.analyzeRomFS(file);
+        long lv6offset = -1;
+        try{
+            System.out.println(file.getName().replaceAll("(^.*lv6\\s)|(]\\.bin)", ""));
+            lv6offset = Long.parseLong(file.getName().replaceAll("(^.*lv6\\s)|(]\\.bin)", ""));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        Task<RomFsDecryptedProvider> analyzer = Analyzer.analyzeRomFS(file, lv6offset);
         analyzer.setOnSucceeded(e->{
             RomFsDecryptedProvider provider = analyzer.getValue();
             this.setData(provider);

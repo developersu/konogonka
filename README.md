@@ -45,6 +45,6 @@ JRE/JDK 8u60 or higher.
 * [ ] CERT support
 * [ ] CNMT support
 * [ ] NSO support
-* [ ] RomFS deep-dive
+* [x] RomFS
 * [ ] LogPrinter to singleton implementation. 
 * [x] 'Save to folder' option

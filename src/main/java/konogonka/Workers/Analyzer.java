@@ -161,14 +161,14 @@ public class Analyzer {
         };
     }
 
-    public static Task<RomFsDecryptedProvider> analyzeRomFS(File file){
+    public static Task<RomFsDecryptedProvider> analyzeRomFS(File file, long lv6offset){
         LogPrinter logPrinter = new LogPrinter();
         return new Task<RomFsDecryptedProvider>() {
             @Override
             protected RomFsDecryptedProvider call() {
                 logPrinter.print("\tStart chain: RomFS", EMsgType.INFO);
                 try {
-                    return new RomFsDecryptedProvider(file);
+                    return new RomFsDecryptedProvider(file, lv6offset);
                 } catch (Exception e) {
                     logPrinter.print(e.getMessage(), EMsgType.FAIL);
                     return null;
