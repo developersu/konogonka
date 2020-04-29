@@ -26,7 +26,7 @@ import java.util.Arrays;
 
 public class RomFsEncryptedProvider implements IRomFsProvider{
 
-    private static long level6Offset;
+    private long level6Offset;
 
     private File file;
     private Level6Header header;
@@ -189,33 +189,80 @@ public class RomFsEncryptedProvider implements IRomFsProvider{
         Thread workerThread;
 
         PipedInputStream streamIn = new PipedInputStream(streamOut);
-
         workerThread = new Thread(() -> {
             System.out.println("RomFsDecryptedProvider -> getContent(): Executing thread");
             try {
-                long subFileRealPosition = level6Offset + header.getFileDataOffset() + entry.getFileOffset();
-                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-                bis.skip(subFileRealPosition);
 
-                int readPice = 8388608; // 8mb NOTE: consider switching to 1mb 1048576
+                byte[] encryptedBlock;
+                byte[] dectyptedBlock;
 
-                long readFrom = 0;
-                long realFileSize = entry.getFileSize();
+                RandomAccessFile raf = new RandomAccessFile(file, "r");
 
-                byte[] readBuf;
+                //0
+                AesCtrDecryptSimple decryptor = new AesCtrDecryptSimple(key, sectionCTR, mediaStartOffset * 0x200);
 
-                while (readFrom < realFileSize) {
-                    if (realFileSize - readFrom < readPice)
-                        readPice = Math.toIntExact(realFileSize - readFrom);    // it's safe, I guarantee
-                    readBuf = new byte[readPice];
-                    if (bis.read(readBuf) != readPice) {
-                        System.out.println("RomFsDecryptedProvider -> getContent(): Unable to read requested size from file.");
-                        return;
+                long startBlock = (entry.getFileOffset() + header.getFileDataOffset()) / 0x200;
+
+                decryptor.skipNext(level6Offset / 0x200 + startBlock);
+
+                long abosluteOffsetPosition = romFSoffsetPosition + (mediaStartOffset * 0x200);
+
+                raf.seek(abosluteOffsetPosition + level6Offset + startBlock * 0x200);
+
+                //1
+                long ignoreBytes = (entry.getFileOffset() + header.getFileDataOffset()) - startBlock * 0x200;
+
+                if (ignoreBytes > 0) {
+                    encryptedBlock = new byte[0x200];
+                    if (raf.read(encryptedBlock) == 0x200) {
+                        dectyptedBlock = decryptor.dectyptNext(encryptedBlock);
+                        // If we have extra-small file that is less then a block and even more
+                        if ((0x200 - ignoreBytes) > entry.getFileSize()){
+                            streamOut.write(dectyptedBlock, (int)ignoreBytes, (int) entry.getFileSize());    // safe cast
+                            raf.close();
+                            streamOut.close();
+                            return;
+                        }
+                        else {
+                            streamOut.write(dectyptedBlock, (int) ignoreBytes, 0x200 - (int) ignoreBytes);
+                        }
                     }
-                    streamOut.write(readBuf);
-                    readFrom += readPice;
+                    else {
+                        throw new Exception("RomFsEncryptedProvider(): Unable to get 512 bytes from 1st bock for Directory Metadata Table");
+                    }
+                    startBlock++;
                 }
-                bis.close();
+                long endBlock = (entry.getFileSize() + ignoreBytes) / 0x200 + startBlock;  // <- pointing to place where any data related to this media-block ends
+
+                //2
+                int extraData = (int) ((endBlock - startBlock)*0x200 - (entry.getFileSize() + ignoreBytes));
+
+                if (extraData < 0)
+                    endBlock--;
+                //3
+                while ( startBlock < endBlock ) {
+                    encryptedBlock = new byte[0x200];
+                    if (raf.read(encryptedBlock) == 0x200) {
+                        dectyptedBlock = decryptor.dectyptNext(encryptedBlock);
+                        streamOut.write(dectyptedBlock);
+                    }
+                    else
+                        throw new Exception("RomFsEncryptedProvider(): Unable to get 512 bytes from block for Directory Metadata Table");
+
+                    startBlock++;
+                }
+
+                //4
+                if (extraData != 0){                 // In case we didn't get what we want
+                    encryptedBlock = new byte[0x200];
+                    if (raf.read(encryptedBlock) == 0x200) {
+                        dectyptedBlock = decryptor.dectyptNext(encryptedBlock);
+                        streamOut.write(dectyptedBlock, 0, Math.abs(extraData));
+                    }
+                    else
+                        throw new Exception("RomFsEncryptedProvider(): Unable to get 512 bytes from block for Directory Metadata Table");
+                }
+                raf.close();
                 streamOut.close();
             } catch (Exception e) {
                 System.out.println("RomFsDecryptedProvider -> getContent(): Unable to provide stream");
@@ -226,6 +273,7 @@ public class RomFsEncryptedProvider implements IRomFsProvider{
         workerThread.start();
         return streamIn;
     }
+
     @Override
     public File getFile() {
         return file;
