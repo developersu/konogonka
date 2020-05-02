@@ -6,6 +6,12 @@ Deep WIP multi-tool to work with NS-specific files / filesystem images.
 
 [GNU General Public License v3+](https://github.com/developersu/konogonka/blob/master/LICENSE)
 
+<img src="screenshots/1.png" alt="drawing" width="250"/> <img src="screenshots/2.png" alt="drawing" width="250"/> <img src="screenshots/3.png" alt="drawing" width="250"/>
+
+<img src="screenshots/4.png" alt="drawing" width="250"/> <img src="screenshots/5.png" alt="drawing" width="250"/> <img src="screenshots/6.png" alt="drawing" width="250"/>
+
+<img src="screenshots/7.png" alt="drawing" width="250"/>
+
 ### Used libraries & resources
 * [Bouncy Castle](https://www.bouncycastle.org/) for Java.
 * [Java-XTS-AES](https://github.com/horrorho/Java-XTS-AES) by horrorho with minimal changes.
