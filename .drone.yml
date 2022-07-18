@@ -7,6 +7,7 @@ steps:
     image: maven:3-jdk-11
     commands:
       - mvn -B -DskipTests clean package
+      - mvn test -B
     volumes:
       - name: m2
         path: /root/.m2

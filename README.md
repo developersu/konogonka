@@ -1,5 +1,11 @@
 # konogonka
 
+[![Build Status](https://ci.redrise.ru/api/badges/desu/konogonka/status.svg)](https://ci.redrise.ru/desu/konogonka)
+
+GitHub mirror. [Click here to get it from independent source code location](https://git.redrise.ru/desu/konogonka) 
+
+Nightly builds could be found somewhere on [redrise.ru](https://redrise.ru)
+
 Deep WIP multi-tool to work with NS-specific files / filesystem images.
 
 ### License
