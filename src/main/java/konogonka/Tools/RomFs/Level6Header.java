@@ -22,6 +22,8 @@ package konogonka.Tools.RomFs;
 import konogonka.LoperConverter;
 import konogonka.RainbowDump;
 
+import java.util.Arrays;
+
 public class Level6Header {
     private long headerLength;
     private long directoryHashTableOffset;
@@ -43,6 +45,7 @@ public class Level6Header {
             throw new Exception("Level 6 Header section is too small");
         headerLength = getNext();
         directoryHashTableOffset = getNext();
+        directoryHashTableOffset <<= 32;
         directoryHashTableLength = getNext();
         directoryMetadataTableOffset = getNext();
         directoryMetadataTableLength = getNext();
@@ -51,6 +54,7 @@ public class Level6Header {
         fileMetadataTableOffset = getNext();
         fileMetadataTableLength = getNext();
         fileDataOffset = getNext();
+        RainbowDump.hexDumpUTF8(Arrays.copyOfRange(headerBytes, 0, 0x50));
     }
     
     private long getNext(){

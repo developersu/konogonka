@@ -1,0 +1,29 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: test
+    image: maven:3-jdk-11
+    commands:
+      - mvn -B -DskipTests clean package
+    volumes:
+      - name: m2
+        path: /root/.m2
+
+  - name: archive-artifact
+    image: alpine:latest
+    commands:
+      - mkdir -p /builds/konogonka
+      - cp target/konogonka-*jar /builds/konogonka/
+    volumes:
+      - name: builds
+        path: /builds
+
+volumes:
+  - name: m2
+    host:
+      path: /home/docker/drone/files/m2
+  - name: builds
+    host:
+      path: /home/www/builds
