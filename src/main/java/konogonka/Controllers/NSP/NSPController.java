@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -26,9 +26,9 @@ import konogonka.AppPreferences;
 import konogonka.Controllers.IRowModel;
 import konogonka.Controllers.ITabController;
 import konogonka.MediatorControl;
-import konogonka.Tools.ISuperProvider;
-import konogonka.Tools.PFS0.IPFS0Provider;
-import konogonka.Tools.PFS0.PFS0Provider;
+import libKonogonka.Tools.ISuperProvider;
+import libKonogonka.Tools.PFS0.IPFS0Provider;
+import libKonogonka.Tools.PFS0.PFS0Provider;
 import konogonka.Workers.Analyzer;
 import konogonka.Workers.Extractor;
 
@@ -37,7 +37,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static konogonka.LoperConverter.byteArrToHexString;
+import static libKonogonka.LoperConverter.byteArrToHexString;
 
 public class NSPController implements ITabController {
 

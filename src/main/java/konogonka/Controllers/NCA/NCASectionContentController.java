@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -28,9 +28,9 @@ import javafx.scene.layout.VBox;
 import konogonka.AppPreferences;
 import konogonka.Controllers.NSP.NSPController;
 import konogonka.Controllers.RFS.RomFsController;
-import konogonka.LoperConverter;
+import libKonogonka.LoperConverter;
 import konogonka.MediatorControl;
-import konogonka.Tools.NCA.NCAContent;
+import libKonogonka.Tools.NCA.NCAContent;
 import konogonka.Workers.DumbNCA3ContentExtractor;
 
 import java.io.File;

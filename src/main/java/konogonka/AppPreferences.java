@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 

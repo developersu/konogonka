@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -22,13 +22,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import konogonka.Tools.NPDM.ACID.FSAccessControlProvider;
+import libKonogonka.Tools.NPDM.ACID.FSAccessControlProvider;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static konogonka.LoperConverter.byteArrToHexString;
-import static konogonka.LoperConverter.longToOctString;
+import static libKonogonka.LoperConverter.byteArrToHexString;
+import static libKonogonka.LoperConverter.longToOctString;
 
 public class FSAccessControlController implements Initializable {
     @FXML

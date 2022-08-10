@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -19,7 +19,7 @@
 package konogonka.Controllers.RFS;
 
 import konogonka.Controllers.IRowModel;
-import konogonka.Tools.RomFs.FileSystemEntry;
+import libKonogonka.Tools.RomFs.FileSystemEntry;
 
 public class RFSModelEntry implements IRowModel {
     private FileSystemEntry fileSystemEntry;

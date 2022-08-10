@@ -3,7 +3,7 @@ package konogonka.Workers;
 import javafx.concurrent.Task;
 import konogonka.ModelControllers.EMsgType;
 import konogonka.ModelControllers.LogPrinter;
-import konogonka.Tools.NCA.NCAContent;
+import libKonogonka.Tools.NCA.NCAContent;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

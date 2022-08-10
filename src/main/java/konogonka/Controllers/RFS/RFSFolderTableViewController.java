@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -34,7 +34,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import konogonka.Tools.RomFs.FileSystemEntry;
+import libKonogonka.Tools.RomFs.FileSystemEntry;
 
 import java.net.URL;
 import java.util.*;

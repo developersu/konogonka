@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -22,7 +22,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import konogonka.Controllers.ITabController;
 import konogonka.MediatorControl;
-import konogonka.Tools.ISuperProvider;
+import libKonogonka.Tools.ISuperProvider;
 
 import java.io.BufferedInputStream;
 import java.io.File;

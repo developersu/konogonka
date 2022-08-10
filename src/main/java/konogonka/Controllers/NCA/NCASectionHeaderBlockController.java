@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -22,9 +22,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import konogonka.Tools.NCA.NCASectionTableBlock.NCASectionBlock;
+import libKonogonka.Tools.NCA.NCASectionTableBlock.NCASectionBlock;
 
-import static konogonka.LoperConverter.byteArrToHexString;
+import static libKonogonka.LoperConverter.byteArrToHexString;
 
 public class NCASectionHeaderBlockController {
     @FXML

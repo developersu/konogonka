@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 import konogonka.Controllers.IRowModel;
 import konogonka.Controllers.ITabController;
 import konogonka.Controllers.XML.XMLController;
-import konogonka.Tools.ISuperProvider;
+import libKonogonka.Tools.ISuperProvider;
 
 import java.io.IOException;
 import java.util.Locale;

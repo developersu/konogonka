@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -23,17 +23,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import konogonka.Controllers.ITabController;
-import konogonka.Tools.ISuperProvider;
-import konogonka.Tools.NPDM.ACI0.ACI0Provider;
-import konogonka.Tools.NPDM.ACID.ACIDProvider;
-import konogonka.Tools.NPDM.NPDMProvider;
+import libKonogonka.Tools.ISuperProvider;
+import libKonogonka.Tools.NPDM.ACI0.ACI0Provider;
+import libKonogonka.Tools.NPDM.ACID.ACIDProvider;
+import libKonogonka.Tools.NPDM.NPDMProvider;
 import konogonka.Workers.Analyzer;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static konogonka.LoperConverter.byteArrToHexString;
+import static libKonogonka.LoperConverter.byteArrToHexString;
 
 public class NPDMController implements ITabController {
 

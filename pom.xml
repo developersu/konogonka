@@ -8,7 +8,7 @@
     <name>konogonka</name>
 
     <artifactId>konogonka</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
 
     <url>https://github.com/developersu/${project.name}}/</url>
     <description>
@@ -137,19 +137,14 @@
             <classifier>mac</classifier>
             <scope>compile</scope>
         </dependency>
-        <!-- For AES XTS using bouncycastle -->
+        <!-- Local entry of the libKonogonka: replace once deployed to maven central -->
         <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15on</artifactId>
-            <version>1.54</version>
+            <groupId>ru.redrise</groupId>
+            <artifactId>libKonogonka</artifactId>
+            <version>0.1</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>net.jcip</groupId>
-            <artifactId>jcip-annotations</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
+
         <!-- Consider removing
         <dependency>
             <groupId>org.hamcrest</groupId>
@@ -166,6 +161,17 @@
     </dependencies>
     <build>
         <finalName>${project.artifactId}-${project.version}-${maven.build.timestamp}</finalName>
+        <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <filtering>false</filtering>
+        </resource>
+        <resource>
+            <directory>src/main/resources-filtered</directory>
+            <filtering>true</filtering>
+        </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -3,8 +3,8 @@ package konogonka.Workers;
 import javafx.concurrent.Task;
 import konogonka.ModelControllers.EMsgType;
 import konogonka.ModelControllers.LogPrinter;
-import konogonka.Tools.RomFs.FileSystemEntry;
-import konogonka.Tools.RomFs.IRomFsProvider;
+import libKonogonka.Tools.RomFs.FileSystemEntry;
+import libKonogonka.Tools.RomFs.IRomFsProvider;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

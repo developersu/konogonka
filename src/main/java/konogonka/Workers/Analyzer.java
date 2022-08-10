@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -21,13 +21,13 @@ package konogonka.Workers;
 import javafx.concurrent.Task;
 import konogonka.ModelControllers.EMsgType;
 import konogonka.ModelControllers.LogPrinter;
-import konogonka.Tools.ISuperProvider;
-import konogonka.Tools.NCA.NCAProvider;
-import konogonka.Tools.NPDM.NPDMProvider;
-import konogonka.Tools.PFS0.PFS0Provider;
-import konogonka.Tools.RomFs.RomFsDecryptedProvider;
-import konogonka.Tools.TIK.TIKProvider;
-import konogonka.Tools.XCI.XCIProvider;
+import libKonogonka.Tools.ISuperProvider;
+import libKonogonka.Tools.NCA.NCAProvider;
+import libKonogonka.Tools.NPDM.NPDMProvider;
+import libKonogonka.Tools.PFS0.PFS0Provider;
+import libKonogonka.Tools.RomFs.RomFsDecryptedProvider;
+import libKonogonka.Tools.TIK.TIKProvider;
+import libKonogonka.Tools.XCI.XCIProvider;
 
 import java.io.File;
 import java.util.HashMap;

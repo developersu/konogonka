@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -38,8 +38,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import konogonka.Controllers.IRowModel;
 import konogonka.MediatorControl;
-import konogonka.Tools.ISuperProvider;
-import konogonka.Tools.XCI.HFS0Provider;
+import libKonogonka.Tools.ISuperProvider;
+import libKonogonka.Tools.XCI.HFS0Provider;
 
 
 import java.net.URL;

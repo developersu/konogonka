@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -25,15 +25,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import konogonka.AppPreferences;
 import konogonka.Controllers.ITabController;
-import konogonka.Tools.ISuperProvider;
-import konogonka.Tools.TIK.TIKProvider;
+import libKonogonka.Tools.ISuperProvider;
+import libKonogonka.Tools.TIK.TIKProvider;
 import konogonka.Workers.Analyzer;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static konogonka.LoperConverter.byteArrToHexString;
+import static libKonogonka.LoperConverter.byteArrToHexString;
 
 public class TIKController implements ITabController {
     @FXML

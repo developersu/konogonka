@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -25,11 +25,11 @@ import javafx.scene.layout.Region;
 import konogonka.AppPreferences;
 import konogonka.Controllers.ITabController;
 import konogonka.MediatorControl;
-import konogonka.Tools.ISuperProvider;
-import konogonka.Tools.RomFs.FileSystemEntry;
-import konogonka.Tools.RomFs.IRomFsProvider;
-import konogonka.Tools.RomFs.Level6Header;
-import konogonka.Tools.RomFs.RomFsDecryptedProvider;
+import libKonogonka.Tools.ISuperProvider;
+import libKonogonka.Tools.RomFs.FileSystemEntry;
+import libKonogonka.Tools.RomFs.IRomFsProvider;
+import libKonogonka.Tools.RomFs.Level6Header;
+import libKonogonka.Tools.RomFs.RomFsDecryptedProvider;
 import konogonka.Workers.Analyzer;
 import konogonka.Workers.DumbRomFsExtractor;
 

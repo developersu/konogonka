@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -22,7 +22,7 @@ import javafx.concurrent.Task;
 import konogonka.Controllers.IRowModel;
 import konogonka.ModelControllers.EMsgType;
 import konogonka.ModelControllers.LogPrinter;
-import konogonka.Tools.ISuperProvider;
+import libKonogonka.Tools.ISuperProvider;
 
 import java.io.*;
 import java.util.List;

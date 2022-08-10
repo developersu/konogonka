@@ -8,6 +8,8 @@ Nightly builds could be found somewhere on [redrise.ru](https://redrise.ru)
 
 Deep WIP multi-tool to work with NS-specific files / filesystem images.
 
+Front end to libKonogonka
+
 ### License
 
 [GNU General Public License v3+](https://github.com/developersu/konogonka/blob/master/LICENSE)
@@ -19,15 +21,9 @@ Deep WIP multi-tool to work with NS-specific files / filesystem images.
 <img src="screenshots/7.png" alt="drawing" width="250"/>
 
 ### Used libraries & resources
-* [Bouncy Castle](https://www.bouncycastle.org/) for Java.
-* [Java-XTS-AES](https://github.com/horrorho/Java-XTS-AES) by horrorho with minimal changes.
 * [OpenJFX](https://wiki.openjdk.java.net/display/OpenJFX/Main)
 * Few icons taken from: [materialdesignicons.com](http://materialdesignicons.com/)
-
-#### Thanks 
-* Switch brew wiki
-* Original ScriesM software
-* roothorick, [shchmue](https://github.com/shchmue/), He, other Team AtlasNX discord members for their advices, notes and examples!
+* See libKonogonka project for details
 
 ### System requirements
 
@@ -42,9 +38,14 @@ JRE/JDK 8u60 or higher.
 
 1. Install JDK
 2. Install Maven
-3. $ git clone https://github.com/developersu/konogonka.git
-4. $ mvn -B -DskipTests clean package
-5. $ java -jar target/konogonka-0.x.x-jar-with-dependencies.jar
+3. Install libKonogonka to local repository:
+4. $ git clone https://git.redrise.ru/desu/libKonogonka
+5. $ mvn -B -DskipTests clean package
+6. $ mvn install:install-file -Dfile=./target/libKonogonka-*-jar-with-dependencies.jar -DgroupId=ru.redrise -DartifactId=libKonogonka -Dversion=`grep -m 1 '<version>' pom.xml| sed -e 's/\s*.\/\?version>//g'
+   ` -Dpackaging=jar -DgeneratePom=true;
+7. $ git clone https://github.com/developersu/konogonka.git
+8. $ mvn -B -DskipTests clean package
+9. $ java -jar target/konogonka-0.x.x-jar-with-dependencies.jar
 
 ### Checklist
 

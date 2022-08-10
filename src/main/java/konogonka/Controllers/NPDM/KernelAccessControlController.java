@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -24,7 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import konogonka.Tools.NPDM.KernelAccessControlProvider;
+import libKonogonka.Tools.NPDM.KernelAccessControlProvider;
 
 import java.util.Map;
 

@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -36,7 +36,7 @@ import konogonka.Controllers.XCI.XCIController;
 import konogonka.Controllers.XML.XMLController;
 import konogonka.MediatorControl;
 import konogonka.Settings.SettingsWindow;
-import konogonka.Tools.ISuperProvider;
+import libKonogonka.Tools.ISuperProvider;
 
 import java.io.*;
 import java.net.URL;

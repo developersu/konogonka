@@ -1,5 +1,5 @@
 /*
-    Copyright 2019-2020 Dmitry Isaenko
+    Copyright 2019-2022 Dmitry Isaenko
 
     This file is part of Konogonka.
 
@@ -20,9 +20,9 @@ package konogonka.Controllers.NCA;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import konogonka.Tools.NCA.NCAHeaderTableEntry;
+import libKonogonka.Tools.NCA.NCAHeaderTableEntry;
 
-import static konogonka.LoperConverter.byteArrToHexString;
+import static libKonogonka.LoperConverter.byteArrToHexString;
 
 public class NCATableController {
     @FXML
