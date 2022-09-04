@@ -34,13 +34,13 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import static libKonogonka.LoperConverter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexString;
 
 public class NCAController implements ITabController {
 
     private File selectedFile;
     @FXML
-    private NCASectionHeaderBlockController
+    private NCAFsHeaderController
             NCASectionHeaderFirstController,
             NCASectionHeaderSecondController,
             NCASectionHeaderThirdController,
@@ -179,7 +179,7 @@ public class NCAController implements ITabController {
         NCASectionContentFourthController.resetTab();
     }
 
-    private void populateFields(NCAProvider ncaProvider){
+    private void populateFields(NCAProvider ncaProvider) {
         if (ncaProvider == null)
             return;
         rsa2048oneTF.setText(byteArrToHexString(ncaProvider.getRsa2048one()));
@@ -224,17 +224,27 @@ public class NCAController implements ITabController {
         NCASectionHeaderThirdController.populateTab(ncaProvider.getSectionBlock2());
         NCASectionHeaderFourthController.populateTab(ncaProvider.getSectionBlock3());
         // Section content blocks
+
         NCASectionContentFirstController.populateFields(
-                ncaProvider.getNCAContentProvider(0),
+                getNcaContent(ncaProvider, 0),
                 0);
         NCASectionContentSecondController.populateFields(
-                ncaProvider.getNCAContentProvider(1),
+                getNcaContent(ncaProvider, 1),
                 1);
         NCASectionContentThirdController.populateFields(
-                ncaProvider.getNCAContentProvider(2),
+                getNcaContent(ncaProvider, 2),
                 2);
         NCASectionContentFourthController.populateFields(
-                    ncaProvider.getNCAContentProvider(3),
+                    getNcaContent(ncaProvider, 3),
                     3);
+    }
+    private NCAContent getNcaContent(NCAProvider provider, int i){
+        try{
+            return provider.getNCAContentProvider(i);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }

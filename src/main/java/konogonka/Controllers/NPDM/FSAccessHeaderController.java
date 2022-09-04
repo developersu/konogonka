@@ -27,8 +27,8 @@ import libKonogonka.Tools.NPDM.ACI0.FSAccessHeaderProvider;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static libKonogonka.LoperConverter.byteArrToHexString;
-import static libKonogonka.LoperConverter.longToOctString;
+import static libKonogonka.Converter.byteArrToHexString;
+import static libKonogonka.Converter.longToOctString;
 
 public class FSAccessHeaderController implements Initializable {
     @FXML

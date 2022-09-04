@@ -149,7 +149,7 @@ public class RomFsController implements ITabController {
     public void analyze(File file) {
         long lv6offset = -1;
         try{
-            System.out.println(file.getName().replaceAll("(^.*lv6\\s)|(]\\.bin)", ""));
+            System.out.println("lv6offset expected: "+file.getName().replaceAll("(^.*lv6\\s)|(]\\.bin)", ""));
             lv6offset = Long.parseLong(file.getName().replaceAll("(^.*lv6\\s)|(]\\.bin)", ""));
         }
         catch (Exception e){
@@ -161,7 +161,6 @@ public class RomFsController implements ITabController {
             this.setData(provider);
         });
         Thread workThread = new Thread(analyzer);
-        workThread.setDaemon(true);
         workThread.start();
     }
 

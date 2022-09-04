@@ -37,7 +37,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static libKonogonka.LoperConverter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexString;
 
 public class NSPController implements ITabController {
 

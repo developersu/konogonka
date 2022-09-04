@@ -28,7 +28,7 @@ import javafx.scene.layout.VBox;
 import konogonka.AppPreferences;
 import konogonka.Controllers.NSP.NSPController;
 import konogonka.Controllers.RFS.RomFsController;
-import libKonogonka.LoperConverter;
+import libKonogonka.Converter;
 import konogonka.MediatorControl;
 import libKonogonka.Tools.NCA.NCAContent;
 import konogonka.Workers.DumbNCA3ContentExtractor;
@@ -89,7 +89,7 @@ public class NCASectionContentController implements Initializable {
         for (int i = 0; i < sha256hashList.size(); i++){
             Label numberLblTmp = new Label(String.format("%10d", i));
             numberLblTmp.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
-            Label sha256LblTmp = new Label(LoperConverter.byteArrToHexString(sha256hashList.get(i)));
+            Label sha256LblTmp = new Label(Converter.byteArrToHexString(sha256hashList.get(i)));
             sha256LblTmp.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
 
             sha256pane.getChildren().add(new HBox(numberLblTmp, sha256LblTmp));

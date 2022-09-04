@@ -22,7 +22,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import libKonogonka.Tools.NCA.NCAHeaderTableEntry;
 
-import static libKonogonka.LoperConverter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexString;
 
 public class NCATableController {
     @FXML

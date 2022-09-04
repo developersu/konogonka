@@ -32,7 +32,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static libKonogonka.LoperConverter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexString;
 
 public class XCIController implements ITabController {
 

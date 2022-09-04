@@ -771,22 +771,22 @@
                   <children>
                      <TitledPane expanded="false" text="Section 0">
                         <content>
-                           <fx:include fx:id="NCASectionHeaderFirst" source="NCASectionHeaderBlock.fxml" />
+                           <fx:include fx:id="NCASectionHeaderFirst" source="NCAFsHeaderBlock.fxml" />
                         </content>
                      </TitledPane>
                      <TitledPane expanded="false" text="Section 1">
                         <content>
-                           <fx:include fx:id="NCASectionHeaderSecond" source="NCASectionHeaderBlock.fxml" />
+                           <fx:include fx:id="NCASectionHeaderSecond" source="NCAFsHeaderBlock.fxml" />
                         </content>
                      </TitledPane>
                      <TitledPane expanded="false" text="Section 2">
                         <content>
-                           <fx:include fx:id="NCASectionHeaderThird" source="NCASectionHeaderBlock.fxml" />
+                           <fx:include fx:id="NCASectionHeaderThird" source="NCAFsHeaderBlock.fxml" />
                         </content>
                      </TitledPane>
                      <TitledPane expanded="false" text="Section 3">
                         <content>
-                           <fx:include fx:id="NCASectionHeaderFourth" source="NCASectionHeaderBlock.fxml" />
+                           <fx:include fx:id="NCASectionHeaderFourth" source="NCAFsHeaderBlock.fxml" />
                         </content>
                      </TitledPane>
                   </children>
