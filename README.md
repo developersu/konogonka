@@ -47,6 +47,10 @@ JRE/JDK 8u60 or higher.
 8. $ mvn -B -DskipTests clean package
 9. $ java -jar target/konogonka-0.x.x-jar-with-dependencies.jar
 
+### Thanks!
+
+* [DDinghoya](https://github.com/DDinghoya), who translated this application to Korean!
+
 ### Checklist
 
 * [x] NSP (PFS0)
