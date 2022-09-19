@@ -215,7 +215,7 @@ public class Hfs0TableViewController implements Initializable {
             return;
         }
         // Note: 'i' in here is extra important to be stored in sequence items added.
-        for (int i = 0; i < hfs0.getFilesCnt(); i++){
+        for (int i = 0; i < hfs0.getFilesCount(); i++){
             rowsObsLst.add(new Hfs0RowModel(
                     hfs0.getHfs0Files()[i].getName(),
                     hfs0.getHfs0Files()[i].getSize(),

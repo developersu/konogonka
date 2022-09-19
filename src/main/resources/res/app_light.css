@@ -384,10 +384,10 @@
 {
     -fx-background-color: #efebe6;
     -fx-background-insets: 0, 1, 2;
-    -fx-background-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+    -fx-background-radius: 2 2 2 2;
     -fx-padding: 3 11 5 11;
     -fx-border-width: 1;
-    -fx-border-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+    -fx-border-radius: 2 2 2 2;
     -fx-border-color: #c8c8c8;
 }
 
@@ -395,10 +395,10 @@
 {
     -fx-background-color: #d5713f;
     -fx-background-insets: 0, 1, 2;
-    -fx-background-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+    -fx-background-radius: 2 2 2 2;
     -fx-padding: 3 11 5 11;
     -fx-border-width: 1;
-    -fx-border-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+    -fx-border-radius: 2 2 2 2;
     -fx-border-color: #c8c8c8;
 }
 
@@ -426,6 +426,36 @@
 .titled-pane:focused > .title > .arrow-button .arrow
 {
     -fx-background-color: white, white;
+}
+
+.patchInfo > .title
+{
+    -fx-background-color: #fed850;
+}
+
+.sparseInfo > .title
+{
+    -fx-background-color: #a6cdff;
+}
+
+.compressionInfo > .title
+{
+    -fx-background-color: #8eec5e;
+}
+
+.metaDataHashDataInfo > .title
+{
+    -fx-background-color: #eca576;
+}
+
+.romFsSuperblock > .title
+{
+    -fx-background-color: #9ed0e2;
+}
+
+.pfs0Superblock > .title
+{
+    -fx-background-color: #f4bdbd;
 }
 
 .regionFolder {

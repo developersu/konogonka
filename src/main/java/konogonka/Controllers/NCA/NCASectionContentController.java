@@ -23,6 +23,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import konogonka.AppPreferences;
@@ -32,6 +33,7 @@ import libKonogonka.Converter;
 import konogonka.MediatorControl;
 import libKonogonka.Tools.NCA.NCAContent;
 import konogonka.Workers.DumbNCA3ContentExtractor;
+import libKonogonka.Tools.PFS0.IPFS0Provider;
 
 import java.io.File;
 import java.net.URL;
@@ -44,25 +46,27 @@ public class NCASectionContentController implements Initializable {
     private int sectionNumber;
 
     @FXML
-    private Button extractRawConentBtn;
+    private Button extractRawContentBtn;
     @FXML
     private NSPController SectionPFS0Controller;
     @FXML
     private RomFsController SectionRomFsController;
     @FXML
     private VBox sha256pane;
+    @FXML
+    private TitledPane pfs0TitledPane, RomFsTitledPane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        extractRawConentBtn.setDisable(true);
-        extractRawConentBtn.setOnAction(event -> this.extractFiles());
+        extractRawContentBtn.setDisable(true);
+        extractRawContentBtn.setOnAction(event -> this.extractFiles());
     }
 
     public void resetTab() {
         SectionPFS0Controller.resetTab();
         SectionRomFsController.resetTab();
         sha256pane.getChildren().clear();
-        extractRawConentBtn.setDisable(true);
+        extractRawContentBtn.setDisable(true);
     }
 
     public void populateFields(NCAContent ncaContent, int sectionNumber) {
@@ -73,7 +77,7 @@ public class NCASectionContentController implements Initializable {
 
         this.ncaContent = ncaContent;
         this.sectionNumber = sectionNumber;
-        this.extractRawConentBtn.setDisable(false);
+        this.extractRawContentBtn.setDisable(false);
 
         setPFS0Content();
         setRomFsContent();
@@ -82,10 +86,16 @@ public class NCASectionContentController implements Initializable {
         if (ncaContent.getPfs0() != null)
             SectionPFS0Controller.setData(ncaContent.getPfs0(), null);;
 
-        LinkedList<byte[]> sha256hashList = ncaContent.getPfs0SHA256hashes();
+        IPFS0Provider ipfs0Provider = ncaContent.getPfs0();
+
+        if (ipfs0Provider == null)
+            return;
+
+        LinkedList<byte[]> sha256hashList = ipfs0Provider.getPfs0SHA256hashes();
 
         if (sha256hashList == null)
             return;
+
         for (int i = 0; i < sha256hashList.size(); i++){
             Label numberLblTmp = new Label(String.format("%10d", i));
             numberLblTmp.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
@@ -94,10 +104,13 @@ public class NCASectionContentController implements Initializable {
 
             sha256pane.getChildren().add(new HBox(numberLblTmp, sha256LblTmp));
         }
+        pfs0TitledPane.setExpanded(true);
     }
     private void setRomFsContent(){
-        if (ncaContent.getRomfs() != null)
-            SectionRomFsController.setData(ncaContent.getRomfs());
+        if (ncaContent.getRomfs() == null)
+            return;
+        SectionRomFsController.setData(ncaContent.getRomfs());
+        RomFsTitledPane.setExpanded(true);
     }
 
     private void extractFiles(){
@@ -114,11 +127,11 @@ public class NCASectionContentController implements Initializable {
         if (!dir.exists())
             return;
 
-        extractRawConentBtn.setDisable(true);
+        extractRawContentBtn.setDisable(true);
 
         DumbNCA3ContentExtractor extractor = new DumbNCA3ContentExtractor(ncaContent, sectionNumber, dir.getAbsolutePath()+File.separator);
         extractor.setOnSucceeded(e->{
-            extractRawConentBtn.setDisable(false);
+            extractRawContentBtn.setDisable(false);
         });
         Thread workThread = new Thread(extractor);
         workThread.setDaemon(true);

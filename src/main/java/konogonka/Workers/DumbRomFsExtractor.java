@@ -10,6 +10,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PipedInputStream;
+import java.nio.file.Files;
 import java.util.List;
 
 public class DumbRomFsExtractor extends Task<Void> {
@@ -63,17 +64,17 @@ public class DumbRomFsExtractor extends Task<Void> {
         }
         return null;
     }
-
+    // TODO: Update # backend and then here
     private void exportSingleFile(FileSystemEntry entry, String saveToLocation) throws Exception{
         File contentFile = new File(saveToLocation + entry.getName());
 
-        BufferedOutputStream extractedFileBOS = new BufferedOutputStream(new FileOutputStream(contentFile));
+        BufferedOutputStream extractedFileBOS = new BufferedOutputStream(Files.newOutputStream(contentFile.toPath()));
         PipedInputStream pis = provider.getContent(entry);
 
         byte[] readBuf = new byte[0x200]; // 8mb NOTE: consider switching to 1mb 1048576
         int readSize;
         //*** PROGRESS BAR VARS START
-        long progressHandleFSize = entry.getFileSize();
+        long progressHandleFSize = entry.getSize();
         int progressHandleFRead = 0;
         //*** PROGRESS BAR VARS END
         while ((readSize = pis.read(readBuf)) > -1) {

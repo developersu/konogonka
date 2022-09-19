@@ -35,6 +35,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static libKonogonka.Converter.byteArrToHexString;
+
 public class HFSBlockController implements Initializable {
     @FXML
     private TitledPane currentTitledPane;
@@ -91,13 +93,13 @@ public class HFSBlockController implements Initializable {
     public void populateTab(HFS0Provider hfs0Provider){
         if (hfs0Provider != null){
             bodySize = hfs0Provider.getRawFileDataStart();
-            hfs0mainMagicNumLbl.setText(Boolean.toString(hfs0Provider.isMagicHFS0()));
-            hfs0mainFileCntLbl.setText(Integer.toString(hfs0Provider.getFilesCnt()));
+            hfs0mainMagicNumLbl.setText(hfs0Provider.getMagic());
+            hfs0mainFileCntLbl.setText(Integer.toString(hfs0Provider.getFilesCount()));
             hfs0mainStrTblSizeLbl.setText(Integer.toString(hfs0Provider.getStringTableSize()));
-            hfs0mainPaddingLbl.setText(Boolean.toString(hfs0Provider.isPaddingHfs0()));
+            hfs0mainPaddingLbl.setText(byteArrToHexString(hfs0Provider.getPadding()));
             hfs0mainRawFileDataStartLbl.setText(Long.toString(hfs0Provider.getRawFileDataStart()));
             hfs0tableFilesListMainController.setContentToTable(hfs0Provider);
-            if (hfs0Provider.getFilesCnt() > 0)
+            if (hfs0Provider.getFilesCount() > 0)
                 extractMainBtn.setDisable(false);
         }
         else {

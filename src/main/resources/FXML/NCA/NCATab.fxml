@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Controllers.NCA.NCAController">
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konogonka.Controllers.NCA.NCAController">
 <VBox spacing="5.0">
          <children>
       <TitledPane animated="false" expanded="false" text="Header">
@@ -22,7 +22,7 @@
                   <GridPane>
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="125.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="450.0" prefWidth="500.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
                     </columnConstraints>
@@ -248,7 +248,7 @@
                            </AnchorPane>
                            <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="18">
                               <children>
-                              <Label text="0x10*0x4(0x40)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Label text="0x40" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
                                     <Insets left="5.0" right="5.0" />
                                  </padding>
@@ -257,7 +257,7 @@
                            </AnchorPane>
                            <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="17">
                               <children>
-                              <Label text="0x20*0x4(0x80)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Label text="0x80" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
                                     <Insets left="5.0" right="5.0" />
                                  </padding>
@@ -266,7 +266,7 @@
                            </AnchorPane>
                            <AnchorPane styleClass="customGrid" GridPane.columnIndex="1" GridPane.rowIndex="16">
                               <children>
-                              <Label text="0x10*0x4(0x40)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Label text="0x40" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
                                     <Insets left="5.0" right="5.0" />
                                  </padding>
@@ -442,7 +442,7 @@
                            </AnchorPane>
                            <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="17">
                               <children>
-                              <Label text="Table of SHA256 hashes, over each 0x200-byte Section Header Block." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Label text="Table of SHA256 hashes, over each 0x200-byte Section Header Block (0x20*0x4)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
                                     <Insets left="5.0" right="5.0" />
                                  </padding>
@@ -451,7 +451,7 @@
                            </AnchorPane>
                            <AnchorPane styleClass="customGrid" GridPane.columnIndex="2" GridPane.rowIndex="18">
                               <children>
-                              <Label text="Key area" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Label text="Key area (0x10 * 0x4)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
                                     <Insets left="5.0" right="5.0" />
                                  </padding>
@@ -592,12 +592,12 @@
                                        <Label text="Encrypted" />
                                        <TextField fx:id="keyAreaEnKey0TF" editable="false" />
                                        <TextField fx:id="keyAreaEnKey1TF" editable="false" />
-                                       <TextField fx:id="keyAreaEnKey2TF" editable="false" />
+                                       <TextField fx:id="keyAreaEnKey2TF" editable="false" style="-fx-background-color: #ffc2f2;" />
                                        <TextField fx:id="keyAreaEnKey3TF" editable="false" />
                                        <Label text="Decrypted" />
                                        <TextField fx:id="keyAreaDecKey0TF" editable="false" />
                                        <TextField fx:id="keyAreaDecKey1TF" editable="false" />
-                                       <TextField fx:id="keyAreaDecKey2TF" editable="false" />
+                                       <TextField fx:id="keyAreaDecKey2TF" editable="false" style="-fx-background-color: #ffc2f2;" />
                                        <TextField fx:id="keyAreaDecKey3TF" editable="false" />
                                     </children>
                                  </VBox>

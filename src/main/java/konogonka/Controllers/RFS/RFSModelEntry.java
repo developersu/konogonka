@@ -50,10 +50,10 @@ public class RFSModelEntry implements IRowModel {
     public String getFileName() { return fileSystemEntry.getName(); }
 
     @Override
-    public long getFileSize() { return fileSystemEntry.getFileSize(); }
+    public long getFileSize() { return fileSystemEntry.getSize(); }
 
     @Override
-    public long getFileOffset() { return fileSystemEntry.getFileOffset(); }
+    public long getFileOffset() { return fileSystemEntry.getOffset(); }
 
     @Override
     public boolean isMarkSelected() { return check; }
