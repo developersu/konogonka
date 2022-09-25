@@ -29,9 +29,9 @@ import libKonogonka.Tools.ISuperProvider;
 import libKonogonka.Tools.RomFs.FileSystemEntry;
 import libKonogonka.Tools.RomFs.IRomFsProvider;
 import libKonogonka.Tools.RomFs.Level6Header;
-import libKonogonka.Tools.RomFs.RomFsDecryptedProvider;
 import konogonka.Workers.Analyzer;
 import konogonka.Workers.DumbRomFsExtractor;
+import libKonogonka.Tools.RomFs.RomFsProvider;
 
 import java.io.File;
 import java.net.URL;
@@ -155,9 +155,9 @@ public class RomFsController implements ITabController {
         catch (Exception e){
             e.printStackTrace();
         }
-        Task<RomFsDecryptedProvider> analyzer = Analyzer.analyzeRomFS(file, lv6offset);
+        Task<RomFsProvider> analyzer = Analyzer.analyzeRomFS(file, lv6offset);
         analyzer.setOnSucceeded(e->{
-            RomFsDecryptedProvider provider = analyzer.getValue();
+            RomFsProvider provider = analyzer.getValue();
             this.setData(provider);
         });
         Thread workThread = new Thread(analyzer);

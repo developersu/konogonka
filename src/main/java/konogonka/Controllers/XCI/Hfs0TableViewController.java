@@ -157,13 +157,8 @@ public class Hfs0TableViewController implements Initializable {
             }
         });
 
-        uploadColumn.setCellFactory(new Callback<TableColumn<Hfs0RowModel, Boolean>, TableCell<Hfs0RowModel, Boolean>>() {
-            @Override
-            public TableCell<Hfs0RowModel, Boolean> call(TableColumn<Hfs0RowModel, Boolean> paramFeatures) {
-                CheckBoxTableCell<Hfs0RowModel, Boolean> cell = new CheckBoxTableCell<>();
-                return cell;
-            }
-        });
+        uploadColumn.setCellFactory(paramFeatures -> new CheckBoxTableCell<>());
+
         table.setRowFactory(        // this shit is made to implement context menu. It's such a pain..
                 new Callback<TableView<Hfs0RowModel>, TableRow<Hfs0RowModel>>() {
                     @Override
@@ -185,16 +180,14 @@ public class Hfs0TableViewController implements Initializable {
                         row.contextMenuProperty().bind(
                                 Bindings.when(Bindings.isNotNull(row.itemProperty())).then(contextMenu).otherwise((ContextMenu)null)
                         );
-                        row.setOnMouseClicked(new EventHandler<MouseEvent>() {      // Just.. don't ask..
-                            @Override
-                            public void handle(MouseEvent mouseEvent) {
-                                if (!row.isEmpty() && mouseEvent.getButton() == MouseButton.PRIMARY){
-                                    Hfs0RowModel thisItem = row.getItem();
-                                    thisItem.setMarkSelected(!thisItem.isMarkSelected());
-                                    table.refresh();
-                                }
-                                mouseEvent.consume();
+                        // Just.. don't ask..
+                        row.setOnMouseClicked(mouseEvent -> {
+                            if (!row.isEmpty() && mouseEvent.getButton() == MouseButton.PRIMARY){
+                                Hfs0RowModel thisItem = row.getItem();
+                                thisItem.setMarkSelected(!thisItem.isMarkSelected());
+                                table.refresh();
                             }
+                            mouseEvent.consume();
                         });
                         return row;
                     }

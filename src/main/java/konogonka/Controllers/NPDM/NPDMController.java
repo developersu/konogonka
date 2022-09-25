@@ -115,9 +115,9 @@ public class NPDMController implements ITabController {
     public void analyze(File file) { analyze(file, 0); }
     @Override
     public void analyze(ISuperProvider parentProvider, int fileNo) throws Exception {
-        Task analyzer = Analyzer.analyzeNPDM(parentProvider, fileNo);
+        Task<NPDMProvider> analyzer = Analyzer.analyzeNPDM(parentProvider, fileNo);
         analyzer.setOnSucceeded(e->{
-            NPDMProvider npdm = (NPDMProvider) analyzer.getValue();
+            NPDMProvider npdm = analyzer.getValue();
             setData(npdm, null);
         });
         Thread workThread = new Thread(analyzer);
@@ -126,9 +126,9 @@ public class NPDMController implements ITabController {
     }
     @Override
     public void analyze(File file, long offset) {
-        Task analyzer = Analyzer.analyzeNPDM(file, offset);
+        Task<NPDMProvider> analyzer = Analyzer.analyzeNPDM(file, offset);
         analyzer.setOnSucceeded(e->{
-            NPDMProvider npdm = (NPDMProvider) analyzer.getValue();
+            NPDMProvider npdm = analyzer.getValue();
             if (offset == 0)
                 setData(npdm, file);
             else

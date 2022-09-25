@@ -117,9 +117,9 @@ public class XCIController implements ITabController {
     public void analyze(File selectedFile){
         HFSBlockController.setSelectedFile(selectedFile);
 
-        Task analyzer = Analyzer.analyzeXCI(selectedFile, AppPreferences.getInstance().getXciHeaderKey());
+        Task<XCIProvider> analyzer = Analyzer.analyzeXCI(selectedFile, AppPreferences.getInstance().getXciHeaderKey());
         analyzer.setOnSucceeded(e->{
-            populateFields((XCIProvider) analyzer.getValue());
+            populateFields(analyzer.getValue());
         });
         Thread workThread = new Thread(analyzer);
         workThread.setDaemon(true);

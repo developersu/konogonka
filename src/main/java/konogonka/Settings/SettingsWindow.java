@@ -27,6 +27,7 @@ import konogonka.MainFx;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SettingsWindow {
@@ -50,10 +51,10 @@ public class SettingsWindow {
             stageSettings.setTitle(resourceBundle.getString("settings_SettingsName"));
 
             stageSettings.getIcons().addAll(
-                    new Image(MainFx.class.getResourceAsStream("/res/settings_icon32x32.png")),
-                    new Image(MainFx.class.getResourceAsStream("/res/settings_icon48x48.png")),
-                    new Image(MainFx.class.getResourceAsStream("/res/settings_icon64x64.png")),
-                    new Image(MainFx.class.getResourceAsStream("/res/settings_icon128x128.png"))
+                    new Image(Objects.requireNonNull(MainFx.class.getResourceAsStream("/res/settings_icon32x32.png"))),
+                    new Image(Objects.requireNonNull(MainFx.class.getResourceAsStream("/res/settings_icon48x48.png"))),
+                    new Image(Objects.requireNonNull(MainFx.class.getResourceAsStream("/res/settings_icon64x64.png"))),
+                    new Image(Objects.requireNonNull(MainFx.class.getResourceAsStream("/res/settings_icon128x128.png")))
             );
 
             Scene settingsScene = new Scene(parentAbout, 800, 800);
