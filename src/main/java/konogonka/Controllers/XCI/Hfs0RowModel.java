@@ -25,13 +25,13 @@ public class Hfs0RowModel implements IRowModel {
     private static int numberCnt = 0;
     public static void resetNumCnt(){ numberCnt = 0; }
 
-    private int number;
-    private String fileName;
-    private long fileSize;
-    private long fileOffset;
-    private long hashedRegionSize;
-    private boolean padding;
-    private String SHA256Hash;
+    private final int number;
+    private final String fileName;
+    private final long fileSize;
+    private final long fileOffset;
+    private final long hashedRegionSize;
+    private final boolean padding;
+    private final String SHA256Hash;
     private boolean markForUpload;
 
     Hfs0RowModel(String fileName, long size, long offset, long hashedRegionSize, boolean padding, byte[] SHA256Hash){

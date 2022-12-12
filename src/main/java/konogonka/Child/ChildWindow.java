@@ -30,6 +30,7 @@ import libKonogonka.Tools.ISuperProvider;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ChildWindow {
@@ -69,11 +70,11 @@ public class ChildWindow {
 
         // TODO: fix?
         if(model.getFileName().endsWith(".xml")){
-            XMLController myController = loaderSettings.<XMLController>getController();
+            XMLController myController = loaderSettings.getController();
             myController.analyze(provider.getFile(), provider.getRawFileDataStart()+model.getFileOffset(), model.getFileSize());
         }
         else if (model.getFileName().endsWith(".npdm")){
-            ITabController myController = loaderSettings.<ITabController>getController();
+            ITabController myController = loaderSettings.getController();
             try {
                 myController.analyze(provider, model.getNumber());
             }
@@ -82,17 +83,17 @@ public class ChildWindow {
             }
         }
         else {
-            ITabController myController = loaderSettings.<ITabController>getController();
+            ITabController myController = loaderSettings.getController();
             myController.analyze(provider.getFile(), provider.getRawFileDataStart()+model.getFileOffset());
         }
 
 
         stageSettings.setTitle(model.getFileName());
         stageSettings.getIcons().addAll(
-                new Image(getClass().getResourceAsStream("/res/app_icon32x32.png")),
-                new Image(getClass().getResourceAsStream("/res/app_icon48x48.png")),
-                new Image(getClass().getResourceAsStream("/res/app_icon64x64.png")),
-                new Image(getClass().getResourceAsStream("/res/app_icon128x128.png"))
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/res/app_icon32x32.png"))),
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/res/app_icon48x48.png"))),
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/res/app_icon64x64.png"))),
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/res/app_icon128x128.png")))
         );
         Scene settingsScene = new Scene(parentAbout, 800, 800);
         settingsScene.getStylesheets().add("/res/app_light.css");

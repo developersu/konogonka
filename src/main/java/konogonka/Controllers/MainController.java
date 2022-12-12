@@ -262,7 +262,6 @@ public class MainController implements Initializable {
         catch (IOException e){
             logArea.appendText("\nUnable to create windows for "+model.getFileName()+"\n"+e.getMessage());
         }
-
-    };
+    }
     public void exit(){ AppPreferences.getInstance().setRecentPath(previouslyOpenedPath); }
 }

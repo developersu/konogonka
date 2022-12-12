@@ -27,7 +27,6 @@ import konogonka.Controllers.ITabController;
 import konogonka.MediatorControl;
 import libKonogonka.Tools.ISuperProvider;
 import libKonogonka.Tools.RomFs.FileSystemEntry;
-import libKonogonka.Tools.RomFs.IRomFsProvider;
 import libKonogonka.Tools.RomFs.Level6Header;
 import konogonka.Workers.Analyzer;
 import konogonka.Workers.DumbRomFsExtractor;
@@ -66,7 +65,7 @@ public class RomFsController implements ITabController {
     @FXML
     private TreeView<RFSModelEntry> filesTreeView;
 
-    private IRomFsProvider provider;
+    private RomFsProvider provider;
 
     @FXML
     private RFSFolderTableViewController RFSTableViewController;
@@ -87,7 +86,7 @@ public class RomFsController implements ITabController {
         extractBtn.setOnAction(event -> extractSelectedBtn());
     }
     private void extractRootBtn(){
-        File dir = new File(AppPreferences.getInstance().getExtractFilesDir()+File.separator+ provider.getFile().getName()+" extracted");
+        File dir = new File(AppPreferences.getInstance().getExtractFilesDir()+File.separator+provider.toString()+" extracted");
         try {
             dir.mkdir();
         }
@@ -164,7 +163,7 @@ public class RomFsController implements ITabController {
         workThread.start();
     }
 
-    public void setData(IRomFsProvider provider) {
+    public void setData(RomFsProvider provider) {
         try {
             this.provider = provider;
             Level6Header header = provider.getHeader();

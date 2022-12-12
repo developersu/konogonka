@@ -35,7 +35,8 @@ import javafx.scene.input.MouseButton;
 import konogonka.Controllers.IRowModel;
 import konogonka.MediatorControl;
 import libKonogonka.Tools.ISuperProvider;
-import libKonogonka.Tools.PFS0.IPFS0Provider;
+import libKonogonka.Tools.PFS0.PFS0Provider;
+import libKonogonka.Tools.PFS0.PFS0subFile;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -166,7 +167,7 @@ public class Pfs0TableViewController implements Initializable {
     /**
      * Add files when user selected them
      * */
-    public void setNSPToTable(IPFS0Provider pfs){
+    public void setNSPToTable(PFS0Provider pfs){
         this.provider = pfs;
         rowsObsLst.clear();
         Pfs0RowModel.resetNumCnt();
@@ -174,12 +175,12 @@ public class Pfs0TableViewController implements Initializable {
             table.refresh();
             return;
         }
-
-        for (int i=0; i < pfs.getFilesCount(); i++){
+        PFS0subFile pfs0subFiles[] = pfs.getHeader().getPfs0subFiles();
+        for (int i=0; i < pfs.getHeader().getFilesCount(); i++){
             rowsObsLst.add(new Pfs0RowModel(
-                    pfs.getPfs0subFiles()[i].getName(),
-                    pfs.getPfs0subFiles()[i].getSize(),
-                    pfs.getPfs0subFiles()[i].getOffset()
+                    pfs0subFiles[i].getName(),
+                    pfs0subFiles[i].getSize(),
+                    pfs0subFiles[i].getOffset()
             ));
         }
         table.refresh();

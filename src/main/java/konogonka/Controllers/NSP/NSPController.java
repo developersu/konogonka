@@ -27,7 +27,6 @@ import konogonka.Controllers.IRowModel;
 import konogonka.Controllers.ITabController;
 import konogonka.MediatorControl;
 import libKonogonka.Tools.ISuperProvider;
-import libKonogonka.Tools.PFS0.IPFS0Provider;
 import libKonogonka.Tools.PFS0.PFS0Provider;
 import konogonka.Workers.Analyzer;
 import konogonka.Workers.Extractor;
@@ -70,7 +69,7 @@ public class NSPController implements ITabController {
         List<IRowModel> models = tableFilesListController.getFilesForDump();
         ISuperProvider provider = tableFilesListController.getProvider();
         if (models != null && !models.isEmpty() && (provider != null)){
-            File dir = new File(AppPreferences.getInstance().getExtractFilesDir()+File.separator+provider.getFile().getName()+" extracted");
+            File dir = new File(AppPreferences.getInstance().getExtractFilesDir()+File.separator+provider+" extracted");
             try {
                 dir.mkdir();
             }
@@ -132,12 +131,12 @@ public class NSPController implements ITabController {
     /**
      * Just populate fields by already analyzed PFS0
      * */
-    public void setData(IPFS0Provider pfs0, File fileWithNca){
+    public void setData(PFS0Provider pfs0, File fileWithNca){
         if (pfs0 == null)
             return;
         this.selectedFile = fileWithNca;
 
-        filesCountLbl.setText(Integer.toString(pfs0.getFilesCount()));
+        filesCountLbl.setText(Integer.toString(pfs0.getHeader().getFilesCount()));
         RawDataStartLbl.setText(Long.toString(pfs0.getRawFileDataStart()));
         rawFileDataStart = pfs0.getRawFileDataStart();
         tableFilesListController.setNSPToTable(pfs0);
@@ -147,13 +146,14 @@ public class NSPController implements ITabController {
             NSPSizeLbl.setText(Long.toString(selectedFile.length()));
 
         extractBtn.setDisable(false);
-        magicLbl.setText(pfs0.getMagic());
-        stringTableSizeLbl.setText(Integer.toString(pfs0.getStringTableSize()));
-        paddingLbl.setText(byteArrToHexString(pfs0.getPadding()));
+        magicLbl.setText(pfs0.getHeader().getMagic());
+        stringTableSizeLbl.setText(Integer.toString(pfs0.getHeader().getStringTableSize()));
+        paddingLbl.setText(byteArrToHexString(pfs0.getHeader().getPadding()));
 
-        fileEntryTableSizeLbl.setText(String.format("0x%02x", 0x18* pfs0.getFilesCount()));
-        stringsTableSizeLbl.setText(String.format("0x%02x", pfs0.getStringTableSize()));
-        stringsTableOffsetLbl.setText(String.format("0x%02x", 0x18* pfs0.getFilesCount()+0x10));
-        rawFileDataOffsetLbl.setText(String.format("0x%02x", 0x18* pfs0.getFilesCount()+0x10+ pfs0.getStringTableSize()));  // same to RawFileDataStart for NSP ONLY
+        fileEntryTableSizeLbl.setText(String.format("0x%02x", 0x18* pfs0.getHeader().getFilesCount()));
+        stringsTableSizeLbl.setText(String.format("0x%02x", pfs0.getHeader().getStringTableSize()));
+        stringsTableOffsetLbl.setText(String.format("0x%02x", 0x18* pfs0.getHeader().getFilesCount()+0x10));
+        rawFileDataOffsetLbl.setText(String.format("0x%02x", 0x18* pfs0.getHeader().getFilesCount()+0x10+
+                pfs0.getHeader().getStringTableSize()));  // same to RawFileDataStart for NSP ONLY
     }
 }

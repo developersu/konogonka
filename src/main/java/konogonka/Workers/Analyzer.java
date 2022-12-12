@@ -107,7 +107,7 @@ public class Analyzer {
             protected NPDMProvider call() {
                 logPrinter.print("\tStart chain: NPDM [stream]", EMsgType.INFO);
                 try{
-                    return new NPDMProvider(parentProvider.getProviderSubFilePipedInpStream(fileNo));
+                    return new NPDMProvider(parentProvider.getStreamProducer(fileNo));
                 }
                 catch (Exception e){
                     logPrinter.print("\tException: "+e.getMessage(), EMsgType.FAIL);

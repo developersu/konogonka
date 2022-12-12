@@ -33,7 +33,7 @@ import libKonogonka.Converter;
 import konogonka.MediatorControl;
 import libKonogonka.Tools.NCA.NCAContent;
 import konogonka.Workers.DumbNCA3ContentExtractor;
-import libKonogonka.Tools.PFS0.IPFS0Provider;
+import libKonogonka.Tools.PFS0.PFS0Provider;
 
 import java.io.File;
 import java.net.URL;
@@ -86,7 +86,7 @@ public class NCASectionContentController implements Initializable {
         if (ncaContent.getPfs0() != null)
             SectionPFS0Controller.setData(ncaContent.getPfs0(), null);;
 
-        IPFS0Provider ipfs0Provider = ncaContent.getPfs0();
+        PFS0Provider ipfs0Provider = ncaContent.getPfs0();
 
         if (ipfs0Provider == null)
             return;
