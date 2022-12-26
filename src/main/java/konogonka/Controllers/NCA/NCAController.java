@@ -34,7 +34,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import static libKonogonka.Converter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexStringAsLE;
 
 public class NCAController implements ITabController {
 
@@ -182,37 +182,37 @@ public class NCAController implements ITabController {
     private void populateFields(NCAProvider ncaProvider) {
         if (ncaProvider == null)
             return;
-        rsa2048oneTF.setText(byteArrToHexString(ncaProvider.getRsa2048one()));
-        rsa2048twoTF.setText(byteArrToHexString(ncaProvider.getRsa2048two()));
+        rsa2048oneTF.setText(byteArrToHexStringAsLE(ncaProvider.getRsa2048one()));
+        rsa2048twoTF.setText(byteArrToHexStringAsLE(ncaProvider.getRsa2048two()));
         magicnumLbl.setText(ncaProvider.getMagicnum());
         systemOrGcIndLbl.setText(Byte.toString(ncaProvider.getSystemOrGcIndicator()));
         contentTypeLbl.setText(Byte.toString(ncaProvider.getContentType()));
         cryptoType1Lbl.setText(Byte.toString(ncaProvider.getCryptoType1()));
         keyIndexLbl.setText(Byte.toString(ncaProvider.getKeyIndex()));
         ncaSizeLbl.setText(Long.toString(ncaProvider.getNcaSize()));
-        titleIdLbl.setText(byteArrToHexString(ncaProvider.getTitleId()));
-        contentIndexLbl.setText(byteArrToHexString(ncaProvider.getContentIndx()));   //
+        titleIdLbl.setText(byteArrToHexStringAsLE(ncaProvider.getTitleId()));
+        contentIndexLbl.setText(byteArrToHexStringAsLE(ncaProvider.getContentIndx()));   //
         sdkVersionLbl.setText(ncaProvider.getSdkVersion()[3]
                 +"."+ncaProvider.getSdkVersion()[2]
                 +"."+ncaProvider.getSdkVersion()[1]
                 +"."+ncaProvider.getSdkVersion()[0]);
         cryptoType2Lbl.setText(Byte.toString(ncaProvider.getCryptoType2()));
         header1SignatureKeyGenerationLbl.setText(Byte.toString(ncaProvider.getHeader1SignatureKeyGeneration()));
-        keyGenerationReservedLbl.setText(byteArrToHexString(ncaProvider.getKeyGenerationReserved()));
-        ticketLbl.setText(byteArrToHexString(ncaProvider.getRightsId()));
-        sha256section1TF.setText(byteArrToHexString(ncaProvider.getSha256hash0()));
-        sha256section2TF.setText(byteArrToHexString(ncaProvider.getSha256hash1()));
-        sha256section3TF.setText(byteArrToHexString(ncaProvider.getSha256hash2()));
-        sha256section4TF.setText(byteArrToHexString(ncaProvider.getSha256hash3()));
-        keyAreaEnKey0TF.setText(byteArrToHexString(ncaProvider.getEncryptedKey0()));
-        keyAreaEnKey1TF.setText(byteArrToHexString(ncaProvider.getEncryptedKey1()));
-        keyAreaEnKey2TF.setText(byteArrToHexString(ncaProvider.getEncryptedKey2()));
-        keyAreaEnKey3TF.setText(byteArrToHexString(ncaProvider.getEncryptedKey3()));
+        keyGenerationReservedLbl.setText(byteArrToHexStringAsLE(ncaProvider.getKeyGenerationReserved()));
+        ticketLbl.setText(byteArrToHexStringAsLE(ncaProvider.getRightsId()));
+        sha256section1TF.setText(byteArrToHexStringAsLE(ncaProvider.getSha256hash0()));
+        sha256section2TF.setText(byteArrToHexStringAsLE(ncaProvider.getSha256hash1()));
+        sha256section3TF.setText(byteArrToHexStringAsLE(ncaProvider.getSha256hash2()));
+        sha256section4TF.setText(byteArrToHexStringAsLE(ncaProvider.getSha256hash3()));
+        keyAreaEnKey0TF.setText(byteArrToHexStringAsLE(ncaProvider.getEncryptedKey0()));
+        keyAreaEnKey1TF.setText(byteArrToHexStringAsLE(ncaProvider.getEncryptedKey1()));
+        keyAreaEnKey2TF.setText(byteArrToHexStringAsLE(ncaProvider.getEncryptedKey2()));
+        keyAreaEnKey3TF.setText(byteArrToHexStringAsLE(ncaProvider.getEncryptedKey3()));
 
-        keyAreaDecKey0TF.setText(byteArrToHexString(ncaProvider.getDecryptedKey0()));
-        keyAreaDecKey1TF.setText(byteArrToHexString(ncaProvider.getDecryptedKey1()));
-        keyAreaDecKey2TF.setText(byteArrToHexString(ncaProvider.getDecryptedKey2()));
-        keyAreaDecKey3TF.setText(byteArrToHexString(ncaProvider.getDecryptedKey3()));
+        keyAreaDecKey0TF.setText(byteArrToHexStringAsLE(ncaProvider.getDecryptedKey0()));
+        keyAreaDecKey1TF.setText(byteArrToHexStringAsLE(ncaProvider.getDecryptedKey1()));
+        keyAreaDecKey2TF.setText(byteArrToHexStringAsLE(ncaProvider.getDecryptedKey2()));
+        keyAreaDecKey3TF.setText(byteArrToHexStringAsLE(ncaProvider.getDecryptedKey3()));
         // Tables
         NCATable1Controller.populateTab(ncaProvider.getTableEntry0());
         NCATable2Controller.populateTab(ncaProvider.getTableEntry1());

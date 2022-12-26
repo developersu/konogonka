@@ -27,7 +27,7 @@ import libKonogonka.Tools.NPDM.ACID.FSAccessControlProvider;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static libKonogonka.Converter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexStringAsLE;
 import static libKonogonka.Converter.longToOctString;
 
 public class FSAccessControlController implements Initializable {
@@ -186,12 +186,12 @@ public class FSAccessControlController implements Initializable {
 
     public void populateFields(FSAccessControlProvider provider){
         ACID_FSAcccessControlVersionLbl.setText(String.format("0x%02x", provider.getVersion()));
-        ACID_FSAcccessControlPaddingLbl.setText(byteArrToHexString(provider.getPadding()));
+        ACID_FSAcccessControlPaddingLbl.setText(byteArrToHexStringAsLE(provider.getPadding()));
         StringBuilder sb = new StringBuilder(longToOctString(provider.getPermissionsBitmask()));
         sb.reverse();
         String mask = sb.toString();
         ACID_FSAcccessControlBitbaskLbl.setText(mask);
-        ACID_FSAcccessControlReservedTf.setText(byteArrToHexString(provider.getReserved()));
+        ACID_FSAcccessControlReservedTf.setText(byteArrToHexStringAsLE(provider.getReserved()));
 
         for (int i = 0; i < 64; i++)
             masksArr[i].setText(mask.substring(i, i+1));

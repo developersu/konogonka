@@ -22,7 +22,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import libKonogonka.Tools.NCA.NCAHeaderTableEntry;
 
-import static libKonogonka.Converter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexStringAsLE;
 
 public class NCATableController {
     @FXML
@@ -42,7 +42,7 @@ public class NCATableController {
     public void populateTab(NCAHeaderTableEntry ncaHeaderTableEntry){
         mediaStartOffsetLbl.setText(Long.toString(ncaHeaderTableEntry.getMediaStartOffset()));
         mediaEndOffsetLbl.setText(Long.toString(ncaHeaderTableEntry.getMediaEndOffset()));
-        unknwn1Lbl.setText(byteArrToHexString(ncaHeaderTableEntry.getUnknwn1()));
-        unknwn2Lbl.setText(byteArrToHexString(ncaHeaderTableEntry.getUnknwn2()));
+        unknwn1Lbl.setText(byteArrToHexStringAsLE(ncaHeaderTableEntry.getUnknwn1()));
+        unknwn2Lbl.setText(byteArrToHexStringAsLE(ncaHeaderTableEntry.getUnknwn2()));
     }
 }

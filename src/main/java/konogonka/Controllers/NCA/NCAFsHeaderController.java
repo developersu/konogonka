@@ -27,7 +27,7 @@ import libKonogonka.Tools.NCA.NCASectionTableBlock.MetaDataHashDataInfo;
 import libKonogonka.Tools.NCA.NCASectionTableBlock.NcaFsHeader;
 import libKonogonka.Tools.NCA.NCASectionTableBlock.SparseInfo;
 
-import static libKonogonka.Converter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexStringAsLE;
 
 public class NCAFsHeaderController {
     @FXML
@@ -234,7 +234,7 @@ public class NCAFsHeaderController {
     }
 
     public void populateTab(NcaFsHeader ncaFsHeader){
-        versionLbl.setText(byteArrToHexString(ncaFsHeader.getVersion()));
+        versionLbl.setText(byteArrToHexStringAsLE(ncaFsHeader.getVersion()));
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("0x%02x ", ncaFsHeader.getFsType()));
         if (ncaFsHeader.getFsType() == 0)
@@ -277,7 +277,7 @@ public class NCAFsHeaderController {
                 metaDataHashTypeLbl.setText(String.format("%d", ncaFsHeader.getMetaDataHashType()));
         }
 
-        paddingLbl.setText(byteArrToHexString(ncaFsHeader.getPadding()));
+        paddingLbl.setText(byteArrToHexStringAsLE(ncaFsHeader.getPadding()));
         if ((ncaFsHeader.getFsType() == 0) && (ncaFsHeader.getHashType() == 0x3)){
             romFsMagicLbl.setText(ncaFsHeader.getSuperBlockIVFC().getMagic());
             romFsMagicNumberLbl.setText(ncaFsHeader.getSuperBlockIVFC().getMagic()
@@ -287,48 +287,48 @@ public class NCAFsHeaderController {
             romFsLvl1OffsetLbl.setText(getCuteDecHexRepresentation(ncaFsHeader.getSuperBlockIVFC().getLvl1Offset()));
             romFsLvl1SizeLbl.setText(getCuteDecHexRepresentation(ncaFsHeader.getSuperBlockIVFC().getLvl1Size()));
             romFsLvl1SBlockSizeLbl.setText(Integer.toString(ncaFsHeader.getSuperBlockIVFC().getLvl1SBlockSize()));
-            romFsReserved1Lbl.setText(byteArrToHexString(ncaFsHeader.getSuperBlockIVFC().getReserved1()));
+            romFsReserved1Lbl.setText(byteArrToHexStringAsLE(ncaFsHeader.getSuperBlockIVFC().getReserved1()));
 
             romFsLvl2OffsetLbl.setText(getCuteDecHexRepresentation(ncaFsHeader.getSuperBlockIVFC().getLvl2Offset()));
             romFsLvl2SizeLbl.setText(getCuteDecHexRepresentation(ncaFsHeader.getSuperBlockIVFC().getLvl2Size()));
             romFsLvl2SBlockSizeLbl.setText(Integer.toString(ncaFsHeader.getSuperBlockIVFC().getLvl2SBlockSize()));
-            romFsReserved2Lbl.setText(byteArrToHexString(ncaFsHeader.getSuperBlockIVFC().getReserved2()));
+            romFsReserved2Lbl.setText(byteArrToHexStringAsLE(ncaFsHeader.getSuperBlockIVFC().getReserved2()));
             
             romFsLvl3OffsetLbl.setText(getCuteDecHexRepresentation(ncaFsHeader.getSuperBlockIVFC().getLvl3Offset()));
             romFsLvl3SizeLbl.setText(getCuteDecHexRepresentation(ncaFsHeader.getSuperBlockIVFC().getLvl3Size()));
             romFsLvl3SBlockSizeLbl.setText(Integer.toString(ncaFsHeader.getSuperBlockIVFC().getLvl3SBlockSize()));
-            romFsReserved3Lbl.setText(byteArrToHexString(ncaFsHeader.getSuperBlockIVFC().getReserved3()));
+            romFsReserved3Lbl.setText(byteArrToHexStringAsLE(ncaFsHeader.getSuperBlockIVFC().getReserved3()));
 
             romFsLvl4OffsetLbl.setText(getCuteDecHexRepresentation(ncaFsHeader.getSuperBlockIVFC().getLvl4Offset()));
             romFsLvl4SizeLbl.setText(getCuteDecHexRepresentation(ncaFsHeader.getSuperBlockIVFC().getLvl4Size()));
             romFsLvl4SBlockSizeLbl.setText(Integer.toString(ncaFsHeader.getSuperBlockIVFC().getLvl4SBlockSize()));
-            romFsReserved4Lbl.setText(byteArrToHexString(ncaFsHeader.getSuperBlockIVFC().getReserved4()));
+            romFsReserved4Lbl.setText(byteArrToHexStringAsLE(ncaFsHeader.getSuperBlockIVFC().getReserved4()));
 
             romFsLvl5OffsetLbl.setText(getCuteDecHexRepresentation(ncaFsHeader.getSuperBlockIVFC().getLvl5Offset()));
             romFsLvl5SizeLbl.setText(getCuteDecHexRepresentation(ncaFsHeader.getSuperBlockIVFC().getLvl5Size()));
             romFsLvl5SBlockSizeLbl.setText(Integer.toString(ncaFsHeader.getSuperBlockIVFC().getLvl5SBlockSize()));
-            romFsReserved5Lbl.setText(byteArrToHexString(ncaFsHeader.getSuperBlockIVFC().getReserved5()));
+            romFsReserved5Lbl.setText(byteArrToHexStringAsLE(ncaFsHeader.getSuperBlockIVFC().getReserved5()));
 
             romFsLvl6OffsetLbl.setText(getCuteDecHexRepresentation(ncaFsHeader.getSuperBlockIVFC().getLvl6Offset()));
             romFsLvl6SizeLbl.setText(getCuteDecHexRepresentation(ncaFsHeader.getSuperBlockIVFC().getLvl6Size()));
             romFsLvl6SBlockSizeLbl.setText(Integer.toString(ncaFsHeader.getSuperBlockIVFC().getLvl6SBlockSize()));
-            romFsReserved6Lbl.setText(byteArrToHexString(ncaFsHeader.getSuperBlockIVFC().getReserved6()));
+            romFsReserved6Lbl.setText(byteArrToHexStringAsLE(ncaFsHeader.getSuperBlockIVFC().getReserved6()));
 
-            signatureSaltTf.setText(byteArrToHexString(ncaFsHeader.getSuperBlockIVFC().getSignatureSalt()));
-            romFsMasterHashTf.setText(byteArrToHexString(ncaFsHeader.getSuperBlockIVFC().getMasterHash()));
-            romFsReservedTailLbl.setText(byteArrToHexString(ncaFsHeader.getSuperBlockIVFC().getReservedTail()));
+            signatureSaltTf.setText(byteArrToHexStringAsLE(ncaFsHeader.getSuperBlockIVFC().getSignatureSalt()));
+            romFsMasterHashTf.setText(byteArrToHexStringAsLE(ncaFsHeader.getSuperBlockIVFC().getMasterHash()));
+            romFsReservedTailLbl.setText(byteArrToHexStringAsLE(ncaFsHeader.getSuperBlockIVFC().getReservedTail()));
 
             pfs0TitlePanel.setDisable(true);
         }
         else if ((ncaFsHeader.getFsType() == 0x1) && (ncaFsHeader.getHashType() == 0x2)){
-            pfs0SHA256hashTf.setText(byteArrToHexString(ncaFsHeader.getSuperBlockPFS0().getSHA256hash()));
+            pfs0SHA256hashTf.setText(byteArrToHexStringAsLE(ncaFsHeader.getSuperBlockPFS0().getSHA256hash()));
             pfs0blockSizeLbl.setText(Integer.toString(ncaFsHeader.getSuperBlockPFS0().getBlockSize()));
             pfs0LayerCountLbl.setText(Integer.toString(ncaFsHeader.getSuperBlockPFS0().getLayerCount()));
             pfs0hashTableOffsetLbl.setText(Long.toString(ncaFsHeader.getSuperBlockPFS0().getHashTableOffset()));
             pfs0hashTableSizeLbl.setText(Long.toString(ncaFsHeader.getSuperBlockPFS0().getHashTableSize()));
             pfs0relativeToSectionStartOffsetLbl.setText(Long.toString(ncaFsHeader.getSuperBlockPFS0().getPfs0offset()));
             pfs0sizePfs0Lbl.setText(Long.toString(ncaFsHeader.getSuperBlockPFS0().getPfs0size()));
-            pfs0zeroesTf.setText(byteArrToHexString(ncaFsHeader.getSuperBlockPFS0().getZeroes()));
+            pfs0zeroesTf.setText(byteArrToHexStringAsLE(ncaFsHeader.getSuperBlockPFS0().getZeroes()));
             romFsTitlePanel.setDisable(true);
         }
         else {
@@ -341,15 +341,15 @@ public class NCAFsHeaderController {
         indirectInfoMagicLbl.setText(ncaFsHeader.getPatchInfoMagicSection1());
         indirectInfoVersionLbl.setText(Long.toString(ncaFsHeader.getPatchInfoSizeSection1()));
         indirectInfoEntryCountLbl.setText(Integer.toString(ncaFsHeader.getEntryCountSection1()));
-        indirectInfoUnknownLbl.setText(byteArrToHexString(ncaFsHeader.getPatchInfoUnknownSection1()));
+        indirectInfoUnknownLbl.setText(byteArrToHexStringAsLE(ncaFsHeader.getPatchInfoUnknownSection1()));
         aesCtrExOffsetLbl.setText(Long.toString(ncaFsHeader.getPatchInfoOffsetSection2()));
         aesCtrExSizeLbl.setText(Long.toString(ncaFsHeader.getPatchInfoSizeSection2()));
         aesCtrExMagicLbl.setText(ncaFsHeader.getPatchInfoMagicSection2());
         aesCtrExVersionLbl.setText(Integer.toString(ncaFsHeader.getPatchInfoVersionSection2()));
         aesCtrExEntryCountLbl.setText(Integer.toString(ncaFsHeader.getEntryCountSection2()));
-        aesCtrExUnknownLbl.setText(byteArrToHexString(ncaFsHeader.getPatchInfoUnknownSection2()));
-        sectionCTRLbl.setText(byteArrToHexString(ncaFsHeader.getSectionCTR()));
-        generationLbl.setText(byteArrToHexString(ncaFsHeader.getGeneration()));
+        aesCtrExUnknownLbl.setText(byteArrToHexStringAsLE(ncaFsHeader.getPatchInfoUnknownSection2()));
+        sectionCTRLbl.setText(byteArrToHexStringAsLE(ncaFsHeader.getSectionCTR()));
+        generationLbl.setText(byteArrToHexStringAsLE(ncaFsHeader.getGeneration()));
 
         SparseInfo sparseInfo = ncaFsHeader.getSparseInfo();
         sparseInfoTableOffsetLbl.setText(Long.toString(sparseInfo.getOffset()));
@@ -357,10 +357,10 @@ public class NCAFsHeaderController {
         sparseInfoMagicLbl.setText(sparseInfo.getBktrMagic());
         sparseInfoVersionLbl.setText(Long.toString(sparseInfo.getBktrVersion()));
         sparseInfoEntryCountLbl.setText(Integer.toString(sparseInfo.getBktrEntryCount()));
-        sparseInfoUnknownLbl.setText(byteArrToHexString(sparseInfo.getBktrUnknown()));
+        sparseInfoUnknownLbl.setText(byteArrToHexStringAsLE(sparseInfo.getBktrUnknown()));
         sparseInfoPhysicalOffsetLbl.setText(Long.toString(sparseInfo.getPhysicalOffset()));
-        sparseInfoGenerationLbl.setText(byteArrToHexString(sparseInfo.getGeneration()));
-        sparseInfoReseredLbl.setText(byteArrToHexString(sparseInfo.getUnknown()));
+        sparseInfoGenerationLbl.setText(byteArrToHexStringAsLE(sparseInfo.getGeneration()));
+        sparseInfoReseredLbl.setText(byteArrToHexStringAsLE(sparseInfo.getUnknown()));
 
         CompressionInfo compressionInfo = ncaFsHeader.getCompressionInfo();
         compressionInfoTableOffsetLbl.setText(Long.toString(compressionInfo.getOffset()));
@@ -368,15 +368,15 @@ public class NCAFsHeaderController {
         compressionMagicLbl.setText(compressionInfo.getBktrMagic());
         compressionInfoVersionLbl.setText(Long.toString(compressionInfo.getBktrVersion()));
         compressionInfoEntryCountLbl.setText(Integer.toString(compressionInfo.getBktrEntryCount()));
-        compressionInfoUnknownLbl.setText(byteArrToHexString(compressionInfo.getBktrUnknown()));
-        compressionInfoReservedLbl.setText(byteArrToHexString(compressionInfo.getUnknown()));
+        compressionInfoUnknownLbl.setText(byteArrToHexStringAsLE(compressionInfo.getBktrUnknown()));
+        compressionInfoReservedLbl.setText(byteArrToHexStringAsLE(compressionInfo.getUnknown()));
 
         MetaDataHashDataInfo metaDataHashDataInfo = ncaFsHeader.getMetaDataHashDataInfo();
         metaDataHashDataTableOffsetLbl.setText(Long.toString(metaDataHashDataInfo.getOffset()));
         metaDataHashDataTableSizeLbl.setText(Long.toString(metaDataHashDataInfo.getSize()));
-        metaDataHashDataTableHashLbl.setText(byteArrToHexString(metaDataHashDataInfo.getTableHash()));
+        metaDataHashDataTableHashLbl.setText(byteArrToHexStringAsLE(metaDataHashDataInfo.getTableHash()));
 
-        unknwnEndPaddingTF.setText(byteArrToHexString(ncaFsHeader.getUnknownEndPadding()));
+        unknwnEndPaddingTF.setText(byteArrToHexStringAsLE(ncaFsHeader.getUnknownEndPadding()));
     }
 
     private String getCuteDecHexRepresentation(long value){

@@ -32,7 +32,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static libKonogonka.Converter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexStringAsLE;
 
 public class XCIController implements ITabController {
 
@@ -189,11 +189,11 @@ public class XCIController implements ITabController {
     private void populateFields(XCIProvider xci){
         if (xci != null){
             /* Header */
-            rsa2048pkcs1TF.setText(byteArrToHexString(xci.getGCHeader().getRsa2048PKCS1sig()));
+            rsa2048pkcs1TF.setText(byteArrToHexStringAsLE(xci.getGCHeader().getRsa2048PKCS1sig()));
             //RainbowHexDump.hexDumpUTF8(xci.getGCHeader().getRsa2048PKCS1sig());
             headLbl.setText(Boolean.toString(xci.getGCHeader().isMagicHeadOk()));
             //System.out.println(xci.getGCHeader().isMagicHeadOk());
-            secureAreaStartAddrTF.setText(byteArrToHexString(xci.getGCHeader().getSecureAreaStartAddr()));
+            secureAreaStartAddrTF.setText(byteArrToHexStringAsLE(xci.getGCHeader().getSecureAreaStartAddr()));
             //System.out.println(xci.getGCHeader().isSecureAreaStartAddrOk());
             bkupAreaStartAddrLbl.setText(Boolean.toString(xci.getGCHeader().isBkupAreaStartAddrOk()));
             //System.out.println(xci.getGCHeader().isBkupAreaStartAddrOk());
@@ -231,19 +231,19 @@ public class XCIController implements ITabController {
             //System.out.println(String.format("%02x", xci.getGCHeader().getGcVersion()));
             gcFlags.setText(String.format("%02x", xci.getGCHeader().getGcFlags()));
             //System.out.println(String.format("%02x", xci.getGCHeader().getGcFlags()));
-            pkgIdTF.setText(byteArrToHexString(xci.getGCHeader().getPkgID()));
+            pkgIdTF.setText(byteArrToHexStringAsLE(xci.getGCHeader().getPkgID()));
             //RainbowHexDump.hexDumpUTF8(xci.getGCHeader().getPkgID());
             vDataEndAddrLbl.setText(Long.toString(xci.getGCHeader().getValDataEndAddr()));
             //System.out.println(xci.getGCHeader().getValDataEndAddr());
-            gcInfoIVTF.setText(byteArrToHexString(xci.getGCHeader().getGcInfoIV()));
+            gcInfoIVTF.setText(byteArrToHexStringAsLE(xci.getGCHeader().getGcInfoIV()));
             //RainbowHexDump.hexDumpUTF8(xci.getGCHeader().getGcInfoIV());
             hfs0partOffLbl.setText(Long.toString(xci.getGCHeader().getHfs0partOffset()));
             //System.out.println(xci.getGCHeader().getHfs0partOffset());
             hfs0hdrSizeLbl.setText(Long.toString(xci.getGCHeader().getHfs0headerSize()));
             //System.out.println(xci.getGCHeader().getHfs0headerSize());
-            Hfs0headerSHA256Lbl.setText(byteArrToHexString(xci.getGCHeader().getHfs0headerSHA256()));
+            Hfs0headerSHA256Lbl.setText(byteArrToHexStringAsLE(xci.getGCHeader().getHfs0headerSHA256()));
             //RainbowHexDump.hexDumpUTF8(xci.getGCHeader().getHfs0headerSHA256());
-            Hfs0initDataSHA256Lbl.setText(byteArrToHexString(xci.getGCHeader().getHfs0initDataSHA256()));
+            Hfs0initDataSHA256Lbl.setText(byteArrToHexStringAsLE(xci.getGCHeader().getHfs0initDataSHA256()));
             //RainbowHexDump.hexDumpUTF8(xci.getGCHeader().getHfs0initDataSHA256() );
             secureModeFlagLbl.setText(xci.getGCHeader().isSecureModeFlagOk()+" ("+xci.getGCHeader().getSecureModeFlag()+")");
             //System.out.print(xci.getGCHeader().getSecureModeFlag());
@@ -254,12 +254,12 @@ public class XCIController implements ITabController {
             keyFlagLbl.setText(xci.getGCHeader().iskeyFlagOk()+" ("+xci.getGCHeader().getKeyFlag()+")");
             //System.out.print(xci.getGCHeader().getKeyFlag());
             //System.out.println(xci.getGCHeader().iskeyFlagOk());
-            normAreaEndAddrTF.setText(byteArrToHexString(xci.getGCHeader().getNormAreaEndAddr()));
+            normAreaEndAddrTF.setText(byteArrToHexStringAsLE(xci.getGCHeader().getNormAreaEndAddr()));
             //System.out.println(xci.getGCHeader().isNormAreaEndAddrOk());
 
             /* GC Info */
             fwVersionLbl.setText(Long.toString(xci.getGCInfo().getFwVersion()));
-            String tempACF = byteArrToHexString(xci.getGCInfo().getAccessCtrlFlags());
+            String tempACF = byteArrToHexStringAsLE(xci.getGCInfo().getAccessCtrlFlags());
             if (tempACF.equals("1100a100"))
                 accessCtrlFlagsLbl.setText("25Mhz [0x1100a100]");
             else if(tempACF.equals("1000a100"))
@@ -270,25 +270,25 @@ public class XCIController implements ITabController {
             readWaitTime2Lbl.setText(Long.toString(xci.getGCInfo().getReadWaitTime2()));
             writeWaitTime1.setText(Long.toString(xci.getGCInfo().getWriteWaitTime1()));
             writeWaitTime2.setText(Long.toString(xci.getGCInfo().getWriteWaitTime2()));
-            fwModeTF.setText(byteArrToHexString(xci.getGCInfo().getFwMode()));
-            cupVersionTF.setText(byteArrToHexString(xci.getGCInfo().getCupVersion()));
+            fwModeTF.setText(byteArrToHexStringAsLE(xci.getGCInfo().getFwMode()));
+            cupVersionTF.setText(byteArrToHexStringAsLE(xci.getGCInfo().getCupVersion()));
             emptyPadding1Lbl.setText(Boolean.toString(xci.getGCInfo().isEmptyPadding1()));
-            emptyPadding1TF.setText(byteArrToHexString(xci.getGCInfo().getEmptyPadding1()));
-            updPartHashTF.setText(byteArrToHexString(xci.getGCInfo().getUpdPartHash()));
-            cupIDTF.setText(byteArrToHexString(xci.getGCInfo().getCupID()));
+            emptyPadding1TF.setText(byteArrToHexStringAsLE(xci.getGCInfo().getEmptyPadding1()));
+            updPartHashTF.setText(byteArrToHexStringAsLE(xci.getGCInfo().getUpdPartHash()));
+            cupIDTF.setText(byteArrToHexStringAsLE(xci.getGCInfo().getCupID()));
             emptyPadding2Lbl.setText(Boolean.toString(xci.getGCInfo().isEmptyPadding2()));
-            emptyPadding2TF.setText(byteArrToHexString(xci.getGCInfo().getEmptyPadding2()));
+            emptyPadding2TF.setText(byteArrToHexStringAsLE(xci.getGCInfo().getEmptyPadding2()));
 
             /* Certificate  */
-            rsa2048PKCS1sigCertTF.setText(byteArrToHexString(xci.getGCCert().getRsa2048PKCS1sig()));
-            magicCertCertTF.setText(byteArrToHexString(xci.getGCCert().getMagicCert()));
+            rsa2048PKCS1sigCertTF.setText(byteArrToHexStringAsLE(xci.getGCCert().getRsa2048PKCS1sig()));
+            magicCertCertTF.setText(byteArrToHexStringAsLE(xci.getGCCert().getMagicCert()));
             magicCertCertOkLbl.setText(Boolean.toString(xci.getGCCert().isMagicCertOk()));
-            unknown1CertTF.setText(byteArrToHexString(xci.getGCCert().getUnknown1()));
+            unknown1CertTF.setText(byteArrToHexStringAsLE(xci.getGCCert().getUnknown1()));
             kekIndexCertLbl.setText(String.format("%02x", xci.getGCCert().getKekIndex()));
-            unknown2CertTF.setText(byteArrToHexString(xci.getGCCert().getUnknown2()));
-            deviceIDCertTF.setText(byteArrToHexString(xci.getGCCert().getDeviceID()));
-            unknown3CertTF.setText(byteArrToHexString(xci.getGCCert().getUnknown3()));
-            encryptedDataCertTF.setText(byteArrToHexString(xci.getGCCert().getEncryptedData()));
+            unknown2CertTF.setText(byteArrToHexStringAsLE(xci.getGCCert().getUnknown2()));
+            deviceIDCertTF.setText(byteArrToHexStringAsLE(xci.getGCCert().getDeviceID()));
+            unknown3CertTF.setText(byteArrToHexStringAsLE(xci.getGCCert().getUnknown3()));
+            encryptedDataCertTF.setText(byteArrToHexStringAsLE(xci.getGCCert().getEncryptedData()));
 
             /* HFS0 */
             HFSBlockMainController.populateTab(xci.getHfs0ProviderMain());

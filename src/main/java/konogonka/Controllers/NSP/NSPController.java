@@ -36,7 +36,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static libKonogonka.Converter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexStringAsLE;
 
 public class NSPController implements ITabController {
 
@@ -148,7 +148,7 @@ public class NSPController implements ITabController {
         extractBtn.setDisable(false);
         magicLbl.setText(pfs0.getHeader().getMagic());
         stringTableSizeLbl.setText(Integer.toString(pfs0.getHeader().getStringTableSize()));
-        paddingLbl.setText(byteArrToHexString(pfs0.getHeader().getPadding()));
+        paddingLbl.setText(byteArrToHexStringAsLE(pfs0.getHeader().getPadding()));
 
         fileEntryTableSizeLbl.setText(String.format("0x%02x", 0x18* pfs0.getHeader().getFilesCount()));
         stringsTableSizeLbl.setText(String.format("0x%02x", pfs0.getHeader().getStringTableSize()));

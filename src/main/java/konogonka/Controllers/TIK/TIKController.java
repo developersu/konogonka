@@ -33,7 +33,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static libKonogonka.Converter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexStringAsLE;
 
 public class TIKController implements ITabController {
     @FXML
@@ -109,7 +109,7 @@ public class TIKController implements ITabController {
         else
             tikSizeLbl.setText("skipping calculation for in-file ticket");
 
-        sigTypeLbl.setText(byteArrToHexString(tikProvider.getSigType()));
+        sigTypeLbl.setText(byteArrToHexStringAsLE(tikProvider.getSigType()));
         switch (sigTypeLbl.getText()){
             case "00000100":
                 sigTypeStrLbl.setText("RSA_4096 SHA1");
@@ -154,21 +154,21 @@ public class TIKController implements ITabController {
                 pSizeLbl.setText("???");
                 break;
         }
-        signatureTF.setText(byteArrToHexString(tikProvider.getSignature()));
+        signatureTF.setText(byteArrToHexStringAsLE(tikProvider.getSignature()));
 
         issuerTf.setText(tikProvider.getIssuer());
-        titleKeyBlockStartTf.setText(byteArrToHexString(tikProvider.getTitleKeyBlockStartingBytes()));
-        titleKeyBlockEndTf.setText(byteArrToHexString(tikProvider.getTitleKeyBlockEndingBytes()));
+        titleKeyBlockStartTf.setText(byteArrToHexStringAsLE(tikProvider.getTitleKeyBlockStartingBytes()));
+        titleKeyBlockEndTf.setText(byteArrToHexStringAsLE(tikProvider.getTitleKeyBlockEndingBytes()));
         unknown1Lbl.setText(String.format("0x%02x", tikProvider.getUnknown1()));
         titleKeyTypeLbl.setText(String.format("0x%02x", tikProvider.getTitleKeyType()));
-        unknown2Lbl.setText(byteArrToHexString(tikProvider.getUnknown2()));
+        unknown2Lbl.setText(byteArrToHexStringAsLE(tikProvider.getUnknown2()));
         masterKeyRevisionLbl.setText(String.format("0x%02x", tikProvider.getMasterKeyRevision()));
-        unknown3Lbl.setText(byteArrToHexString(tikProvider.getUnknown3()));
-        ticketIdLbl.setText(byteArrToHexString(tikProvider.getTicketId()));
-        deviceIdLbl.setText(byteArrToHexString(tikProvider.getDeviceId()));
-        rightsIdTf.setText(byteArrToHexString(tikProvider.getRightsId()));
-        accountIdLbl.setText(byteArrToHexString(tikProvider.getAccountId()));
-        unknown4Lbl.setText(byteArrToHexString(tikProvider.getUnknown4()));
+        unknown3Lbl.setText(byteArrToHexStringAsLE(tikProvider.getUnknown3()));
+        ticketIdLbl.setText(byteArrToHexStringAsLE(tikProvider.getTicketId()));
+        deviceIdLbl.setText(byteArrToHexStringAsLE(tikProvider.getDeviceId()));
+        rightsIdTf.setText(byteArrToHexStringAsLE(tikProvider.getRightsId()));
+        accountIdLbl.setText(byteArrToHexStringAsLE(tikProvider.getAccountId()));
+        unknown4Lbl.setText(byteArrToHexStringAsLE(tikProvider.getUnknown4()));
         btnImport.setDisable(false);
     }
     @Override

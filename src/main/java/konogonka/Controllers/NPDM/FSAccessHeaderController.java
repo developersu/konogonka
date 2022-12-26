@@ -27,7 +27,7 @@ import libKonogonka.Tools.NPDM.ACI0.FSAccessHeaderProvider;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static libKonogonka.Converter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexStringAsLE;
 import static libKonogonka.Converter.longToOctString;
 
 public class FSAccessHeaderController implements Initializable {
@@ -192,7 +192,7 @@ public class FSAccessHeaderController implements Initializable {
 
     public void populateFields(FSAccessHeaderProvider provider){
         versionLbl.setText(Integer.toString(provider.getVersion()));
-        paddingLbl.setText(byteArrToHexString(provider.getPadding()));
+        paddingLbl.setText(byteArrToHexStringAsLE(provider.getPadding()));
         StringBuilder sb = new StringBuilder(longToOctString(provider.getPermissionsBitmask()));
         sb.reverse();
         String mask = sb.toString();
@@ -201,7 +201,7 @@ public class FSAccessHeaderController implements Initializable {
         sizeContOwnIdLbl.setText(Integer.toString(provider.getContentOwnIdSectionSize()));
         dataSizePlusContOwnSizeLbl.setText(Integer.toString(provider.getDataNownerSizes()));
         sizeOfSaveDataOwnSecLbl.setText(Integer.toString(provider.getSaveDataOwnSectionSize()));
-        unknownTf.setText(byteArrToHexString(provider.getUnknownData()));
+        unknownTf.setText(byteArrToHexStringAsLE(provider.getUnknownData()));
 
         for (int i = 0; i < 64; i++)
             masksArr[i].setText(mask.substring(i, i+1));

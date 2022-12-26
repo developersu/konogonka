@@ -33,7 +33,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static libKonogonka.Converter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexStringAsLE;
 
 public class NPDMController implements ITabController {
 
@@ -209,18 +209,18 @@ public class NPDMController implements ITabController {
             npdmFileSize.setText("skipping calculation for in-file ticket");
 
         magicNumLbl.setText(npdmProvider.getMagicNum());
-        reserved1Lbl.setText(byteArrToHexString(npdmProvider.getReserved1()));
+        reserved1Lbl.setText(byteArrToHexStringAsLE(npdmProvider.getReserved1()));
         MMUFlagsLbl.setText(npdmProvider.getMMUFlags()+" (0b"+String.format("%8s", Integer.toBinaryString(npdmProvider.getMMUFlags() & 0xFF)).replace(' ', '0')+")");
         reserved2Lbl.setText(String.format("0x%02x", npdmProvider.getReserved2()));
         mainThreadPrioLbl.setText(Byte.toString(npdmProvider.getMainThreadPrio()));
         mainThreadCoreNumLbl.setText(Byte.toString(npdmProvider.getMainThreadCoreNum()));
-        reserved3Lbl.setText(byteArrToHexString(npdmProvider.getReserved3()));
+        reserved3Lbl.setText(byteArrToHexStringAsLE(npdmProvider.getReserved3()));
         personalMmHeapSizeLbl.setText(Integer.toString(npdmProvider.getPersonalMmHeapSize()));
         versionLbl.setText(Integer.toString(npdmProvider.getVersion()));
         mainThreadStackSizeLbl.setText(Long.toString(npdmProvider.getMainThreadStackSize()));
         titleNameTf.setText(npdmProvider.getTitleName());
-        productCodeTf.setText(byteArrToHexString(npdmProvider.getProductCode()));
-        reserved4Tf.setText(byteArrToHexString(npdmProvider.getReserved4()));
+        productCodeTf.setText(byteArrToHexStringAsLE(npdmProvider.getProductCode()));
+        reserved4Tf.setText(byteArrToHexStringAsLE(npdmProvider.getReserved4()));
         aci0offsetLbl.setText(Integer.toString(npdmProvider.getAci0offset()));
         aci0sizeLbl.setText(Integer.toString(npdmProvider.getAci0size()));
         acidOffsetLbl.setText(Integer.toString(npdmProvider.getAcidOffset()));
@@ -228,27 +228,27 @@ public class NPDMController implements ITabController {
         // ACI0
         ACI0Provider aci0 = npdmProvider.getAci0();
         aci0MagicNumLbl.setText(aci0.getMagicNum());
-        aci0Reserved1Lbl.setText(byteArrToHexString(aci0.getReserved1()));
-        aci0TitleIDLbl.setText(byteArrToHexString(aci0.getTitleID()));
-        aci0Reserved2Lbl.setText(byteArrToHexString(aci0.getReserved2()));
+        aci0Reserved1Lbl.setText(byteArrToHexStringAsLE(aci0.getReserved1()));
+        aci0TitleIDLbl.setText(byteArrToHexStringAsLE(aci0.getTitleID()));
+        aci0Reserved2Lbl.setText(byteArrToHexStringAsLE(aci0.getReserved2()));
         aci0FsAccessHeaderOffsetLbl.setText(Integer.toString(aci0.getFsAccessHeaderOffset()));
         aci0FsAccessHeaderSizeLbl.setText(Integer.toString(aci0.getFsAccessHeaderSize()));
         aci0ServiceAccessControlOffsetLbl.setText(Integer.toString(aci0.getServiceAccessControlOffset()));
         aci0ServiceAccessControlSizeLbl.setText(Integer.toString(aci0.getServiceAccessControlSize()));
         aci0KernelAccessControlOffsetLbl.setText(Integer.toString(aci0.getKernelAccessControlOffset()));
         aci0KernelAccessControlSizeLbl.setText(Integer.toString(aci0.getKernelAccessControlSize()));
-        aci0Reserved3Lbl.setText(byteArrToHexString(aci0.getReserved3()));
+        aci0Reserved3Lbl.setText(byteArrToHexStringAsLE(aci0.getReserved3()));
 
         ACI0FSAccessHeaderTableController.populateFields(aci0.getFsAccessHeaderProvider());
         ACI0ServiceAccessControlTableController.populateFields(aci0.getServiceAccessControlProvider().getCollection());
         ACI0KernelAccessControlTableController.populateFields(aci0.getKernelAccessControlProvider());
         // ACID
         ACIDProvider acid = npdmProvider.getAcid();
-        acidRsa2048signatureTf.setText(byteArrToHexString(acid.getRsa2048signature()));
-        acidRsa2048publicKeyTf.setText(byteArrToHexString(acid.getRsa2048publicKey()));
+        acidRsa2048signatureTf.setText(byteArrToHexStringAsLE(acid.getRsa2048signature()));
+        acidRsa2048publicKeyTf.setText(byteArrToHexStringAsLE(acid.getRsa2048publicKey()));
         acidMagicNumLbl.setText(acid.getMagicNum());
         acidDataSizeLbl.setText(Integer.toString(acid.getDataSize()));
-        acidReserved1Lbl.setText(byteArrToHexString(acid.getReserved1()));
+        acidReserved1Lbl.setText(byteArrToHexStringAsLE(acid.getReserved1()));
         acidFlag1Lbl.setText(String.format("0x%02x", acid.getFlag1()));
         acidFlag2Lbl.setText(String.format("0x%02x", acid.getFlag2()));
         acidFlag3Lbl.setText(String.format("0x%02x", acid.getFlag3()));
@@ -261,7 +261,7 @@ public class NPDMController implements ITabController {
         acidServiceAccessControlSizeLbl.setText(Integer.toString(acid.getServiceAccessControlSize()));
         acidKernelAccessControlOffsetLbl.setText(Integer.toString(acid.getKernelAccessControlOffset()));
         acidKernelAccessControlSizeLbl.setText(Integer.toString(acid.getKernelAccessControlSize()));
-        acidReserved2Lbl.setText(byteArrToHexString(acid.getReserved2()));
+        acidReserved2Lbl.setText(byteArrToHexStringAsLE(acid.getReserved2()));
 
         ACIDFSAccessControlTableController.populateFields(acid.getFsAccessControlProvider());
         ACIDServiceAccessControlTableController.populateFields(acid.getServiceAccessControlProvider().getCollection());

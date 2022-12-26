@@ -35,7 +35,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static libKonogonka.Converter.byteArrToHexString;
+import static libKonogonka.Converter.byteArrToHexStringAsLE;
 
 public class HFSBlockController implements Initializable {
     @FXML
@@ -96,7 +96,7 @@ public class HFSBlockController implements Initializable {
             hfs0mainMagicNumLbl.setText(hfs0Provider.getMagic());
             hfs0mainFileCntLbl.setText(Integer.toString(hfs0Provider.getFilesCount()));
             hfs0mainStrTblSizeLbl.setText(Integer.toString(hfs0Provider.getStringTableSize()));
-            hfs0mainPaddingLbl.setText(byteArrToHexString(hfs0Provider.getPadding()));
+            hfs0mainPaddingLbl.setText(byteArrToHexStringAsLE(hfs0Provider.getPadding()));
             hfs0mainRawFileDataStartLbl.setText(Long.toString(hfs0Provider.getRawFileDataStart()));
             hfs0tableFilesListMainController.setContentToTable(hfs0Provider);
             if (hfs0Provider.getFilesCount() > 0)
