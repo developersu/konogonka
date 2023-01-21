@@ -26,8 +26,8 @@ import konogonka.AppPreferences;
 import konogonka.Controllers.IRowModel;
 import konogonka.Controllers.ITabController;
 import konogonka.MediatorControl;
-import libKonogonka.Tools.ISuperProvider;
-import libKonogonka.Tools.PFS0.PFS0Provider;
+import libKonogonka.fs.ISuperProvider;
+import libKonogonka.fs.PFS0.PFS0Provider;
 import konogonka.Workers.Analyzer;
 import konogonka.Workers.Extractor;
 

@@ -23,10 +23,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import konogonka.Controllers.ITabController;
-import libKonogonka.Tools.ISuperProvider;
-import libKonogonka.Tools.NPDM.ACI0.ACI0Provider;
-import libKonogonka.Tools.NPDM.ACID.ACIDProvider;
-import libKonogonka.Tools.NPDM.NPDMProvider;
+import libKonogonka.fs.ISuperProvider;
+import libKonogonka.fs.NPDM.ACI0.ACI0Provider;
+import libKonogonka.fs.NPDM.ACID.ACIDProvider;
+import libKonogonka.fs.NPDM.NPDMProvider;
 import konogonka.Workers.Analyzer;
 
 import java.io.File;

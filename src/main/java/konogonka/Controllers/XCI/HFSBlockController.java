@@ -26,8 +26,8 @@ import javafx.scene.control.TitledPane;
 import konogonka.AppPreferences;
 import konogonka.Controllers.IRowModel;
 import konogonka.MediatorControl;
-import libKonogonka.Tools.ISuperProvider;
-import libKonogonka.Tools.XCI.HFS0Provider;
+import libKonogonka.fs.ISuperProvider;
+import libKonogonka.fs.XCI.HFS0Provider;
 import konogonka.Workers.Extractor;
 
 import java.io.File;

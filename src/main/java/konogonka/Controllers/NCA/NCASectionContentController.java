@@ -31,9 +31,9 @@ import konogonka.Controllers.NSP.NSPController;
 import konogonka.Controllers.RFS.RomFsController;
 import libKonogonka.Converter;
 import konogonka.MediatorControl;
-import libKonogonka.Tools.NCA.NCAContent;
+import libKonogonka.fs.NCA.NCAContent;
 import konogonka.Workers.DumbNCA3ContentExtractor;
-import libKonogonka.Tools.PFS0.PFS0Provider;
+import libKonogonka.fs.PFS0.PFS0Provider;
 
 import java.io.File;
 import java.net.URL;

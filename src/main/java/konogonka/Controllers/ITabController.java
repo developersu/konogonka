@@ -19,7 +19,7 @@
 package konogonka.Controllers;
 
 import javafx.fxml.Initializable;
-import libKonogonka.Tools.ISuperProvider;
+import libKonogonka.fs.ISuperProvider;
 
 import java.io.File;
 

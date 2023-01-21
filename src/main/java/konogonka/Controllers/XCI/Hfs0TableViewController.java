@@ -37,8 +37,8 @@ import javafx.scene.input.MouseButton;
 import javafx.util.Callback;
 import konogonka.Controllers.IRowModel;
 import konogonka.MediatorControl;
-import libKonogonka.Tools.ISuperProvider;
-import libKonogonka.Tools.XCI.HFS0Provider;
+import libKonogonka.fs.ISuperProvider;
+import libKonogonka.fs.XCI.HFS0Provider;
 
 
 import java.net.URL;

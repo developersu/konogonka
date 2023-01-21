@@ -20,7 +20,7 @@ package konogonka.Controllers.NCA;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import libKonogonka.Tools.NCA.NCAHeaderTableEntry;
+import libKonogonka.fs.NCA.NCAHeaderTableEntry;
 
 import static libKonogonka.Converter.byteArrToHexStringAsLE;
 

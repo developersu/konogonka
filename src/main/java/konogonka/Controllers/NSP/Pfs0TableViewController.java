@@ -34,9 +34,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import konogonka.Controllers.IRowModel;
 import konogonka.MediatorControl;
-import libKonogonka.Tools.ISuperProvider;
-import libKonogonka.Tools.PFS0.PFS0Provider;
-import libKonogonka.Tools.PFS0.PFS0subFile;
+import libKonogonka.fs.ISuperProvider;
+import libKonogonka.fs.PFS0.PFS0Provider;
+import libKonogonka.fs.PFS0.PFS0subFile;
 
 import java.net.URL;
 import java.util.ArrayList;

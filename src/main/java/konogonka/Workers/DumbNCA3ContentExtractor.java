@@ -3,7 +3,7 @@ package konogonka.Workers;
 import javafx.concurrent.Task;
 import konogonka.ModelControllers.EMsgType;
 import konogonka.ModelControllers.LogPrinter;
-import libKonogonka.Tools.NCA.NCAContent;
+import libKonogonka.fs.NCA.NCAContent;
 
 public class DumbNCA3ContentExtractor extends Task<Void> {
 

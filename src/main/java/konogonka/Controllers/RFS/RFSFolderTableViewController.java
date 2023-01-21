@@ -34,7 +34,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import libKonogonka.Tools.RomFs.FileSystemEntry;
+import libKonogonka.fs.RomFs.FileSystemEntry;
 
 import java.net.URL;
 import java.util.*;

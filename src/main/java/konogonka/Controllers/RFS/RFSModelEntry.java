@@ -19,7 +19,7 @@
 package konogonka.Controllers.RFS;
 
 import konogonka.Controllers.IRowModel;
-import libKonogonka.Tools.RomFs.FileSystemEntry;
+import libKonogonka.fs.RomFs.FileSystemEntry;
 
 public class RFSModelEntry implements IRowModel {
     private FileSystemEntry fileSystemEntry;

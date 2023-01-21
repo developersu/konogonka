@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 import konogonka.Controllers.IRowModel;
 import konogonka.Controllers.ITabController;
 import konogonka.Controllers.XML.XMLController;
-import libKonogonka.Tools.ISuperProvider;
+import libKonogonka.fs.ISuperProvider;
 
 import java.io.IOException;
 import java.util.Locale;

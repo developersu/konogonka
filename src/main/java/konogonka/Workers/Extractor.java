@@ -22,7 +22,7 @@ import javafx.concurrent.Task;
 import konogonka.Controllers.IRowModel;
 import konogonka.ModelControllers.EMsgType;
 import konogonka.ModelControllers.LogPrinter;
-import libKonogonka.Tools.ISuperProvider;
+import libKonogonka.fs.ISuperProvider;
 
 import java.util.List;
 

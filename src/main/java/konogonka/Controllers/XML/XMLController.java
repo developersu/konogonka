@@ -22,7 +22,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import konogonka.Controllers.ITabController;
 import konogonka.MediatorControl;
-import libKonogonka.Tools.ISuperProvider;
+import libKonogonka.fs.ISuperProvider;
 
 import java.io.BufferedInputStream;
 import java.io.File;

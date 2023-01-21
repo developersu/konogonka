@@ -36,7 +36,7 @@ import konogonka.Controllers.XCI.XCIController;
 import konogonka.Controllers.XML.XMLController;
 import konogonka.MediatorControl;
 import konogonka.Settings.SettingsWindow;
-import libKonogonka.Tools.ISuperProvider;
+import libKonogonka.fs.ISuperProvider;
 
 import java.io.*;
 import java.net.URL;

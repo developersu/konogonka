@@ -24,7 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import libKonogonka.Tools.NPDM.KernelAccessControlProvider;
+import libKonogonka.fs.NPDM.KernelAccessControlProvider;
 
 import java.util.Map;
 

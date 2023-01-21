@@ -24,9 +24,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import konogonka.AppPreferences;
 import konogonka.Controllers.ITabController;
-import libKonogonka.Tools.ISuperProvider;
-import libKonogonka.Tools.NCA.NCAContent;
-import libKonogonka.Tools.NCA.NCAProvider;
+import libKonogonka.fs.ISuperProvider;
+import libKonogonka.fs.NCA.NCAContent;
+import libKonogonka.fs.NCA.NCAProvider;
 import konogonka.Workers.Analyzer;
 
 import java.io.File;

@@ -61,7 +61,10 @@ JRE/JDK 8u60 or higher.
 * [x] NPDM support (to check)
 * [ ] CERT support
 * [ ] CNMT support
-* [ ] NSO support
+* [ ] NSO support (to add; available at lib)
+* [ ] package2 support (to add; available at lib)
+* [ ] INI1 support (to add; available at lib)
+* [ ] KIP support (to add; available at lib)
 * [x] RomFS
 * [ ] LogPrinter to singleton implementation. 
 * [x] 'Save to folder' option

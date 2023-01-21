@@ -22,10 +22,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import libKonogonka.Tools.NCA.NCASectionTableBlock.CompressionInfo;
-import libKonogonka.Tools.NCA.NCASectionTableBlock.MetaDataHashDataInfo;
-import libKonogonka.Tools.NCA.NCASectionTableBlock.NcaFsHeader;
-import libKonogonka.Tools.NCA.NCASectionTableBlock.SparseInfo;
+import libKonogonka.fs.NCA.NCASectionTableBlock.CompressionInfo;
+import libKonogonka.fs.NCA.NCASectionTableBlock.MetaDataHashDataInfo;
+import libKonogonka.fs.NCA.NCASectionTableBlock.NcaFsHeader;
+import libKonogonka.fs.NCA.NCASectionTableBlock.SparseInfo;
 
 import static libKonogonka.Converter.byteArrToHexStringAsLE;
 

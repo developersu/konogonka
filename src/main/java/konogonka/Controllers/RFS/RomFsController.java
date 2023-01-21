@@ -25,12 +25,12 @@ import javafx.scene.layout.Region;
 import konogonka.AppPreferences;
 import konogonka.Controllers.ITabController;
 import konogonka.MediatorControl;
-import libKonogonka.Tools.ISuperProvider;
-import libKonogonka.Tools.RomFs.FileSystemEntry;
-import libKonogonka.Tools.RomFs.Level6Header;
+import libKonogonka.fs.ISuperProvider;
+import libKonogonka.fs.RomFs.FileSystemEntry;
+import libKonogonka.fs.RomFs.Level6Header;
 import konogonka.Workers.Analyzer;
 import konogonka.Workers.DumbRomFsExtractor;
-import libKonogonka.Tools.RomFs.RomFsProvider;
+import libKonogonka.fs.RomFs.RomFsProvider;
 
 import java.io.File;
 import java.net.URL;
