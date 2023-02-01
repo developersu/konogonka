@@ -50,6 +50,7 @@ JRE/JDK 8u60 or higher.
 ### Thanks!
 
 * [DDinghoya](https://github.com/DDinghoya), who translated this application to Korean!
+* [kuragehime](https://github.com/kuragehimekurara1), who translated this application to Japanese and Ryukyuan languages!
 
 ### Checklist
 
