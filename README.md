@@ -1,6 +1,6 @@
 # konogonka
 
-![License](https://img.shields.io/badge/License-GPLv3-blue.svg) [![Build Status](https://ci.redrise.ru/api/badges/desu/konogonka/status.svg)](https://ci.redrise.ru/desu/konogonka)
+![License](https://img.shields.io/badge/License-GPLv3-blue.svg) [![status-badge](https://ci.redrise.ru/api/badges/10/status.svg)](https://ci.redrise.ru/repos/10)
 
 GitHub mirror. [Click here to get it from independent source code location](https://git.redrise.ru/desu/konogonka) 
 
